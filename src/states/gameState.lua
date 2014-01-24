@@ -4,11 +4,15 @@ require("components/positionComponent")
 require("components/cornerComponent")
 require("components/playerNodeComponent")
 require("components/drawableComponent")
+require("components/circleComponent")
+require("components/triangleComponent")
+require("components/rectangleComponent")
 -- Models
 require("models/nodeModel")
 --Systems
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
+require("systems/draw/drawSystem")
 require("systems/draw/gridDrawSystem")
 --Events
 
@@ -19,12 +23,33 @@ function GameState:__init()
     self.eventmanager = EventManager()
 
     local matrix = {}
-    local width = 10
-    local height = 10
-    for x = 1, width, 1 do
+    local nodesOnScreen = 10
+
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+
+    local verticalBorder = 10
+
+    local nodeWidth = (screenHeight - (verticalBorder * 2)) / nodesOnScreen
+
+    local gridXStart = (screenWidth - (nodeWidth * nodesOnScreen)) / 2
+
+    for x = 1, nodesOnScreen, 1 do
         matrix[x] = {}
-        for y = 1, height, 1 do
-            matrix[x][y] = NodeModel(x*50, y*50)
+        for y = 1, nodesOnScreen, 1 do
+            matrix[x][y] = NodeModel(gridXStart + (x * nodeWidth), verticalBorder + (y * nodeWidth))
+            local random = math.random(0, 100)
+            local entity = matrix[x][y]
+            if random <= 10 then
+                entity:addComponent(CircleComponent())
+                entity:addComponent(DrawableComponent(resources.images.circle))
+            elseif random <= 20 then
+                entity:addComponent(RectangleComponent())
+                entity:addComponent(DrawableComponent(resources.images.rectangle))
+            elseif random <= 30 then
+                entity:addComponent(TriangleComponent())
+                entity:addComponent(DrawableComponent(resources.images.triangle))
+            end 
         end
     end
     for x, column in pairs(matrix) do
@@ -49,14 +74,20 @@ function GameState:__init()
         end
     end
     matrix[1][1]:addComponent(CornerComponent("topleft"))
-    matrix[width][1]:addComponent(CornerComponent("topright"))
-    matrix[1][height]:addComponent(CornerComponent("bottomleft"))
-    matrix[width][height]:addComponent(CornerComponent("bottomright"))
+    matrix[nodesOnScreen][1]:addComponent(CornerComponent("topright"))
+    matrix[1][nodesOnScreen]:addComponent(CornerComponent("bottomleft"))
+    matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
+
+    local player = Entity()
+    player:addComponent(PlayerNodeComponent(matrix[nodesOnScreen/2][nodesOnScreen/2]))
+    self.engine:addEntity(player)
 
     local playercontrol = PlayerControlSystem()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
+    self.engine:addSystem(playercontrol, "logic", 1)
 
+    self.engine:addSystem(DrawSystem(), "draw", 2)
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
 end
 
