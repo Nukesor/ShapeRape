@@ -10,6 +10,7 @@ require("models/nodeModel")
 --Systems
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
+require("systems/draw/gridDrawSystem")
 --Events
 
 GameState = class("GameState2", State)
@@ -19,12 +20,12 @@ function GameState:__init()
     self.eventmanager = EventManager()
 
     local matrix = {}
-    local width = 16
-    local height = 9
+    local width = 10
+    local height = 10
     for x = 1, width, 1 do
         matrix[x] = {}
         for y = 1, height, 1 do
-            matrix[x][y] = NodeModel(x*10, y*10)
+            matrix[x][y] = NodeModel(x*50, y*50)
         end
     end
     for x, column in pairs(matrix) do
@@ -57,14 +58,15 @@ function GameState:__init()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
 
+    self.engine:addSystem(GridDrawSystem(), "draw", 1)
 end
 
 function GameState:update(dt)
-
+    self.engine:update()
 end
 
 function GameState:draw()
-
+    self.engine:draw()
 end
 
 function GameState:keypressed(key, isrepeat)
