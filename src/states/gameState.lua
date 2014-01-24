@@ -10,7 +10,6 @@ require("models/nodeModel")
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 --Events
-require("events/movedEvent")
 
 GameState = class("GameState2", State)
 
@@ -53,9 +52,9 @@ function GameState:__init()
     matrix[1][height]:addComponent(CornerComponent("bottomleft"))
     matrix[width][height]:addComponent(CornerComponent("bottomright"))
 
-
-    self.eventmanager:addListener("KeyPressed", {PlayerControlSystem, PlayerControlSystem.fireEvent})
-    self.eventmanager:addListener("MovedEvent", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
+    local playercontrol = PlayerControlSystem()
+    self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
+    self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
 
 end
 
