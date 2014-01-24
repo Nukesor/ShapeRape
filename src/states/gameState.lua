@@ -4,6 +4,7 @@ require("components/linkComponent")
 require("components/positionComponent")
 require("components/cornerComponent")
 require("components/playerNodeComponent")
+require("components/drawableComponent")
 -- Models
 require("models/nodeModel")
 --Systems
