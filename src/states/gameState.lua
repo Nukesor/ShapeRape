@@ -42,13 +42,13 @@ function GameState:__init()
             local entity = matrix[x][y]
             if random <= 10 then
                 entity:addComponent(CircleComponent())
-                entity:addComponent(DrawableComponent(resources.images.circle))
+                entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 20 then
                 entity:addComponent(RectangleComponent())
-                entity:addComponent(DrawableComponent(resources.images.rectangle))
+                entity:addComponent(DrawableComponent(resources.images.rectangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
                 entity:addComponent(TriangleComponent())
-                entity:addComponent(DrawableComponent(resources.images.triangle))
+                entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             end 
         end
     end
