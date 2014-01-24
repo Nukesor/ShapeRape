@@ -4,11 +4,15 @@ require("components/positionComponent")
 require("components/cornerComponent")
 require("components/playerNodeComponent")
 require("components/drawableComponent")
+require("components/circleComponent")
+require("components/triangleComponent")
+require("components/rectangleComponent")
 -- Models
 require("models/nodeModel")
 --Systems
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
+require("systems/draw/drawSystem")
 --Events
 
 GameState = class("GameState2", State)
@@ -24,6 +28,18 @@ function GameState:__init()
         matrix[x] = {}
         for y = 1, height, 1 do
             matrix[x][y] = NodeModel(x*10, y*10)
+            local random = math.random(0, 100)
+            local entity = matrix[x][y]
+            if random <= 10 then
+                entity:addComponent(CircleComponent())
+                entity:addComponent(DrawableComponent(resources.images.circle))
+            elseif random <= 20 then
+                entity:addComponent(RectangleComponent())
+                entity:addComponent(DrawableComponent(resources.images.rectangle))
+            elseif random <= 30 then
+                entity:addComponent(TriangleComponent())
+                entity:addComponent(DrawableComponent(resources.images.triangle))
+            end 
         end
     end
     for x, column in pairs(matrix) do
@@ -56,14 +72,15 @@ function GameState:__init()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
 
+    self.engine:addSystem(DrawSystem(), "draw", 1)
 end
 
 function GameState:update(dt)
-
+    self.engine:update(dt)
 end
 
 function GameState:draw()
-
+    self.engine:draw()
 end
 
 function GameState:keypressed(key, isrepeat)
