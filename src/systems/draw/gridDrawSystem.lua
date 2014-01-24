@@ -10,10 +10,10 @@ function GridDrawSystem:draw()
     local bottomleftY = self:getCornerNode("bottomleft"):getComponent("PositionComponent").y
     local height = bottomleftY - topleftY
 
+    love.graphics.setColor(255,255,255)
+
     --draw Vertical Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
-
-    love.graphics.setColor(255,255,255)
 
     while currentNode:getComponent("LinkComponent").right do 
         local x = currentNode:getComponent("PositionComponent").x
