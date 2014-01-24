@@ -29,7 +29,7 @@ function GameState:__init()
         matrix[x] = {}
         for y = 1, height, 1 do
             matrix[x][y] = NodeModel(x*50, y*50)
-            local random = math.random(0, 100)
+            local random = love.math.random(100)
             local entity = matrix[x][y]
             if random <= 10 then
                 entity:addComponent(CircleComponent())
