@@ -1,7 +1,19 @@
 require("lib/lua-lovetoys/lovetoys/engine")
 
+require("helper/tables")
+require("helper/math")
+
+require("events/mousePressed")
+require("events/keyPressed")
+
+require("core/stackhelper")
+require("core/state")
+require("core/resources")
 
 function love.load()
+    resources = Resources()
+
+    stack = Stack()
     
 end
 
