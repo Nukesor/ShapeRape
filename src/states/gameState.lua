@@ -18,8 +18,8 @@ function GameState:__init()
     self.eventmanager = EventManager()
 
     local matrix = {}
-    local width = 10
-    local height = 10
+    local width = 16
+    local height = 9
     for x = 1, width, 1 do
         matrix[x] = {}
         for y = 1, height, 1 do
