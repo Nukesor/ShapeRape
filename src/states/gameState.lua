@@ -42,7 +42,7 @@ function GameState:__init()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
 
-    local verticalBorder = 10
+    local verticalBorder = 30
 
     local nodeWidth = (screenHeight - (verticalBorder * 2)) / nodesOnScreen
 
@@ -51,7 +51,8 @@ function GameState:__init()
     for x = 1, nodesOnScreen, 1 do
         matrix[x] = {}
         for y = 1, nodesOnScreen, 1 do
-            matrix[x][y] = NodeModel(gridXStart + (x * nodeWidth), verticalBorder + (y * nodeWidth))
+            matrix[x][y] = NodeModel(gridXStart + ((x-1) * nodeWidth), verticalBorder + ((y-1) * nodeWidth))
+
             local random = love.math.random(0, 100)
             local entity = matrix[x][y]
             if random <= 10 then

@@ -4,30 +4,33 @@ function GridDrawSystem:draw()
 
     local topleftX = self:getCornerNode("topleft"):getComponent("PositionComponent").x
     local toprightX = self:getCornerNode("topright"):getComponent("PositionComponent").x
-    local width = toprightX - topleftX
+    local nodeWidth = self:getCornerNode("topleft"):getComponent("LinkComponent").right
+        :getComponent("PositionComponent").x - topleftX
+
+    local gridWidth = toprightX + nodeWidth - topleftX
 
     local topleftY = self:getCornerNode("topleft"):getComponent("PositionComponent").y
     local bottomleftY = self:getCornerNode("bottomleft"):getComponent("PositionComponent").y
-    local height = bottomleftY - topleftY
+    local gridHeight = bottomleftY + nodeWidth - topleftY
 
     love.graphics.setColor(255,255,255)
 
     --draw Vertical Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
 
-    while currentNode:getComponent("LinkComponent").right do 
+    while currentNode do 
         local x = currentNode:getComponent("PositionComponent").x
         local y = currentNode:getComponent("PositionComponent").y
-        love.graphics.line(x, y, x, y+height)
+        love.graphics.line(x, y, x, y+gridHeight)
         currentNode = currentNode:getComponent("LinkComponent").right
     end
     --draw Horizontal Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").down
 
-    while currentNode:getComponent("LinkComponent").down do 
+    while currentNode do 
         local x = currentNode:getComponent("PositionComponent").x
         local y = currentNode:getComponent("PositionComponent").y
-        love.graphics.line(x, y, x+width, y)
+        love.graphics.line(x, y, x+gridWidth, y)
         currentNode = currentNode:getComponent("LinkComponent").down
     end
 
