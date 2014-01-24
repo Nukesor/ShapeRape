@@ -7,8 +7,6 @@ function GridDrawSystem:draw()
     local nodeWidth = self:getCornerNode("topleft"):getComponent("LinkComponent").right
         :getComponent("PositionComponent").x - topleftX
 
-    print(nodeWidth)
-
     local gridWidth = toprightX + nodeWidth - topleftX
 
     local topleftY = self:getCornerNode("topleft"):getComponent("PositionComponent").y
