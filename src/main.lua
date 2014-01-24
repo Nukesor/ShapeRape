@@ -1,29 +1,39 @@
+-- Main Library
 require("lib/lua-lovetoys/lovetoys/engine")
-
+-- Helper
 require("helper/tables")
 require("helper/math")
-
+-- All Events
 require("events/mousePressed")
 require("events/keyPressed")
-
+-- Core Stuff
 require("core/stackhelper")
 require("core/state")
 require("core/resources")
+-- States
+require("states/menuState")
+require("states/gameState")
+
 
 function love.load()
     resources = Resources()
 
-    stack = Stack()
-    
+    resources:addFont("CoolFont", "data/font/Audiowide-Regular.ttf", 20)
+    resources:load()
+
+    love.graphics.setFont(resources.fonts.CoolFont)
+
+    stack = StackHelper()
+    stack:push(MenuState())
 end
 
 
 function love.update(dt)
-
+    stack:current():update(dt)
 end
 
 function love.draw()
-
+    stack:current():draw()
 end 
 
 function love.keypressed(key, isrepeat)
