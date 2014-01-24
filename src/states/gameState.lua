@@ -38,7 +38,7 @@ function GameState:__init()
         matrix[x] = {}
         for y = 1, nodesOnScreen, 1 do
             matrix[x][y] = NodeModel(gridXStart + ((x-1) * nodeWidth), verticalBorder + ((y-1) * nodeWidth))
-            local random = math.random(50, 100)
+            local random = math.random(0, 100)
             local entity = matrix[x][y]
             if random <= 10 then
                 entity:addComponent(CircleComponent())
