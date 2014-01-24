@@ -93,6 +93,7 @@ function GameState:__init()
     matrix[1][nodesOnScreen]:addComponent(CornerComponent("bottomleft"))
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
+    -- Player initialization
     local player = Entity()
     player:addComponent(PlayerNodeComponent(matrix[nodesOnScreen/2][nodesOnScreen/2]))
     player:addComponent(CircleComponent())
@@ -100,6 +101,7 @@ function GameState:__init()
     player:addComponent(ParticleComponent(resources.images.circle, 500))
 
     local position = player:getComponent("PlayerNodeComponent").node:getComponent("PositionComponent")
+    player:addComponent(position)
     local particle = player:getComponent("ParticleComponent").particle
     particle:setEmissionRate(50)
     particle:setSpeed(40, 20)
