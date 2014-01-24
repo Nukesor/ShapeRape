@@ -1,5 +1,4 @@
 -- Components
-require("components/contentComponent")
 require("components/linkComponent")
 require("components/positionComponent")
 require("components/cornerComponent")
