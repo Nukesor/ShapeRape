@@ -1,7 +1,7 @@
 LevelGeneratorSystem = class("LevelGeneratorSystem", System)
 
 function LevelGeneratorSystem:fireEvent(event)
-    if event.key == "left" then
+    if event.direction == "left" then
         
     end
 end
