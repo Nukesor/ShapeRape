@@ -30,14 +30,14 @@ function GameState:__init()
 
     local verticalBorder = 30
 
-    local nodeWidth = (screenHeight - (verticalBorder * 2)) / nodesOnScreen
+    self.nodeWidth = (screenHeight - (verticalBorder * 2)) / nodesOnScreen
 
-    local gridXStart = (screenWidth - (nodeWidth * nodesOnScreen)) / 2
+    local gridXStart = (screenWidth - (self.nodeWidth * nodesOnScreen)) / 2
 
     for x = 1, nodesOnScreen, 1 do
         matrix[x] = {}
         for y = 1, nodesOnScreen, 1 do
-            matrix[x][y] = NodeModel(gridXStart + ((x-1) * nodeWidth), verticalBorder + ((y-1) * nodeWidth))
+            matrix[x][y] = NodeModel(gridXStart + ((x-1) * self.nodeWidth), verticalBorder + ((y-1) * self.nodeWidth))
             local random = math.random(0, 100)
             local entity = matrix[x][y]
             if random <= 10 then

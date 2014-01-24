@@ -1,11 +1,12 @@
 GridDrawSystem = class("GridDrawSystem", System)
 
 function GridDrawSystem:draw()
+    local nodeWidth = stack:current().nodeWidth
 
     local topleftX = self:getCornerNode("topleft"):getComponent("PositionComponent").x
     local toprightX = self:getCornerNode("topright"):getComponent("PositionComponent").x
-    local nodeWidth = self:getCornerNode("topleft"):getComponent("LinkComponent").right
-        :getComponent("PositionComponent").x - topleftX
+    --local nodeWidth = self:getCornerNode("topleft"):getComponent("LinkComponent").right
+        --:getComponent("PositionComponent").x - topleftX
 
     local gridWidth = toprightX + nodeWidth - topleftX
 
