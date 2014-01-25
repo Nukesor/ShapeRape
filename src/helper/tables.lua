@@ -88,6 +88,13 @@ function table.resetIndice(thing)
     return newTable
 end
 
+function table.add(table1, table2)
+    local temp = {}
+    for index, value in pairs(table1) do
+        temp[index] = table1[index] + table2[index]
+    end
+    return temp
+end
 
 function table.show(t, name, indent)
    local cart     -- a container
