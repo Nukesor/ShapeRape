@@ -13,9 +13,15 @@ function PlayerControlSystem:__init()
         escape = "pause",
         p = "pause"
     }
+    self.holdcounter = 0
 end
 
 function PlayerControlSystem.fireEvent(self, event)
+
+    if self.keymap[event.key] then
+        self.holdcounter = 1
+    end
+
     local player = table.firstElement(self.targets)
 
     if self.keymap[event.key] then
@@ -26,6 +32,7 @@ function PlayerControlSystem.fireEvent(self, event)
         else
             local moveComp = player:getComponent("AnimatedMoveComponent")
             local playerNode = player:getComponent("PlayerNodeComponent")
+        end
 
         if moveComp then
             tween.stopAll()
@@ -34,14 +41,51 @@ function PlayerControlSystem.fireEvent(self, event)
             pos.y = moveComp.targetY
             playerNode.node = moveComp.targetNode
         end
+    end
+end
 
-        local targetNode = playerNode.node:getComponent("LinkComponent")[self.keymap[event.key]]
+function PlayerControlSystem:getRequiredComponents()
+    return {"PlayerNodeComponent"}
+end
+
+function PlayerControlSystem:update(dt)
+
+    self.holdcounter = self.holdcounter + dt
+    if self.holdcounter > 0.1 then
+        local player = table.firstElement(self.targets)
+        local moveComp = player:getComponent("AnimatedMoveComponent")
+        local playerNode = player:getComponent("PlayerNodeComponent")
+    
+        if moveComp then
+            tween.stopAll()
+            local pos = player:getComponent("PositionComponent")
+            pos.x = moveComp.targetX
+            pos.y = moveComp.targetY
+            playerNode.node = moveComp.targetNode
+        end
+        local keydown
+        if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
+            keydown = "up"
+        elseif love.keyboard.isDown("left") or love.keyboard.isDown("a") then
+            keydown = "left"
+        elseif love.keyboard.isDown("right") or love.keyboard.isDown("d") then
+            keydown = "right"
+        elseif love.keyboard.isDown("down") or love.keyboard.isDown("s") then
+            keydown = "down"
+        end
+            
+    
+        local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
+
         local playerWillMove = false
-        if targetNode and targetNode:getComponent("ShapeComponent") == nil then playerWillMove = true
+    
+        if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
+            playerWillMove = true
         elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
             playerWillMove = true
             local countComp = player:getComponent("PlayerChangeCountComponent")
             countComp.count = countComp.count + 1
+    
             if targetNode:getComponent("ShapeComponent").shape=="circle" then
                 love.audio.rewind()
                 resources.sounds.pling:play()
@@ -51,23 +95,18 @@ function PlayerControlSystem.fireEvent(self, event)
                 resources.sounds.plinglo:play()
             end
             if targetNode:getComponent("ShapeComponent").shape=="triangle" then
-                love.audio.rewind()
-                resources.sounds.plinghi:play()
+                    love.audio.rewind()
+                    resources.sounds.plinghi:play()
             end
         end
         if playerWillMove then                
-                targetNode:removeComponent("ShapeComponent")
-                targetNode:removeComponent("DrawableComponent")
-                local targetPosition = targetNode:getComponent("PositionComponent")
-                local origin = playerNode.node:getComponent("PositionComponent")
-                player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
-
-                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[event.key]))
-            end
+            targetNode:removeComponent("ShapeComponent")
+            targetNode:removeComponent("DrawableComponent")
+            local targetPosition = targetNode:getComponent("PositionComponent")
+            local origin = playerNode.node:getComponent("PositionComponent")
+            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
+            stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[keydown]))        
         end
-    end
-end
-
-function PlayerControlSystem:getRequiredComponents()
-    return {"PlayerNodeComponent"}
-end
+        self.holdcounter = 0
+    end  
+end 
