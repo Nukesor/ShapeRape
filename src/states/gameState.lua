@@ -16,6 +16,7 @@ require("components/node/cornerComponent")
 require("components/node/linkComponent")
 require("components/node/colorComponent")
 require("components/node/shapeComponent")
+require("components/node/powerUpComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -53,11 +54,14 @@ GameState = class("GameState", State)
 
 function GameState:__init(size)
     self.size = size
+    self.slowmo = 0
+    self.activeSlowmo = false
 end
 
 function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
+    resources.music.soundtrack:setPitch(1)
 
     self.score = 0
     self.actionBar = 100
@@ -93,6 +97,10 @@ function GameState:load()
                 entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
+            elseif random <= 31 then
+                entity:addComponent(ColorComponent(150,150,0))
+                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
+                entity:addComponent(PowerUpComponent("SlowMotion"))
             end 
         end
     end
@@ -164,7 +172,21 @@ end
 
 function GameState:update(dt)
     self.score = self.score + dt*100
-    self.engine:update(dt)
+
+    if self.slowmo > 0 then
+        if self.activeSlowmo == false then
+            self.activeSlowmo = true
+            resources.music.soundtrack:setPitch(0.9)
+        end
+        self.slowmo = self.slowmo - dt
+        self.engine:update(dt/2)
+    else
+        if self.activeSlowmo == true then
+            resources.music.soundtrack:setPitch(1)
+            self.activeSlowmo = false
+        end
+        self.engine:update(dt)
+    end
 end
 
 function GameState:draw()

@@ -104,17 +104,18 @@ function PlayerControlSystem:update(dt)
                 if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
     
                 if targetNode:getComponent("ShapeComponent").shape=="circle" then
-                    love.audio.rewind()
+                    resources.sounds.pling:rewind()
                     resources.sounds.pling:play()
-                end
-                if targetNode:getComponent("ShapeComponent").shape=="square" then
-                    love.audio.rewind()
+                elseif targetNode:getComponent("ShapeComponent").shape=="square" then
+                    resources.sounds.plinglo:rewind()
                     resources.sounds.plinglo:play()
+                elseif targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                    resources.sounds.plinghi:rewind()
+                    resources.sounds.plinghi:play()
                 end
-                if targetNode:getComponent("ShapeComponent").shape=="triangle" then
-                        love.audio.rewind()
-                        resources.sounds.plinghi:play()
-                end
+            end
+            if targetNode and targetNode:getComponent("PowerUpComponent") then
+                stack:current().slowmo = stack:current().slowmo + 2
             end
             if playerWillMove then                
                 targetNode:removeComponent("ShapeComponent")
