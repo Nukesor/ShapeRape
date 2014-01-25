@@ -32,6 +32,7 @@ require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
 require("systems/logic/animateSystem")
+require("systems/logic/randomRotationSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")
@@ -149,7 +150,8 @@ function GameState:load()
     self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
     self.engine:addSystem(AnimateSystem(), "logic", 4)
     self.engine:addSystem(playercontrol,"logic", 5)
-    self.engine:addSystem(GameOverSystem(), "logic", 6)    
+    self.engine:addSystem(RandomRotationSystem(), "logic", 6)
+    self.engine:addSystem(GameOverSystem(), "logic", 7)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
