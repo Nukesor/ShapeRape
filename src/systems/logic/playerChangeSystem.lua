@@ -16,6 +16,7 @@ function PlayerChangeSystem:playerMoved(event)
             nextShape = "circle"
         end
         player:getComponent("ShapeComponent").shape = nextShape
+        player:getComponent("ParticleComponent").particle:setImage(resources.images[nextShape])
         player:getComponent("DrawableComponent").image = resources.images[nextShape]
     end  
 end
