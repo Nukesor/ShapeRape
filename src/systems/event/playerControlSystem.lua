@@ -47,7 +47,6 @@ function PlayerControlSystem.fireEvent(self, event)
             playerWillMove = true
             local countComp = player:getComponent("PlayerChangeCountComponent")
             countComp.count = countComp.count + 1
-
                 if targetNode:getComponent("ShapeComponent").shape=="circle" then
                     AudioCircle:play()
                 end
