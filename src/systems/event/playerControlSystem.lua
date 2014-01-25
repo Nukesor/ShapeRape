@@ -97,7 +97,6 @@ function PlayerControlSystem:update(dt)
                 direction = self.keymap[self.current]
             else
                 self.current = nil
-                print("WHAT THE FUCK!")
             end
             --print(current)
         
