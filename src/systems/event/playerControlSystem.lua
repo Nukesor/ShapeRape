@@ -14,10 +14,12 @@ function PlayerControlSystem.fireEvent(self, event)
         s = "down"
     }
 
-    if keymap[event.key] then
+    if keymap[event.key] and player:getComponent("AnimatedMoveComponent") == nil then
         local targetNode = container:getComponent("LinkComponent")[keymap[event.key]]
-        local targetPosition = targetNode:getComponent("PositionComponent")
-        player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, targetNode))
+        if targetNode then
+            local targetPosition = targetNode:getComponent("PositionComponent")
+            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, targetNode))
+        end
     end
 end
 
