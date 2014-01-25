@@ -18,7 +18,6 @@ function PlayerControlSystem.fireEvent(self, event)
         local playerNode = player:getComponent("PlayerNodeComponent")
 
         if moveComp then
-            print("ported")
             local pos = player:getComponent("PositionComponent")
             pos.x = moveComp.targetX
             pos.y = moveComp.targetY
