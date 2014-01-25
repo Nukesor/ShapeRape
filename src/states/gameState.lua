@@ -134,7 +134,6 @@ function GameState:load()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
 
     self.engine:addSystem(levelgenerator)
-    self.engine:addSystem(playercontrol)
 
     local playerChangeSystem = PlayerChangeSystem()
     self.eventmanager:addListener("PlayerMoved", {playerChangeSystem, playerChangeSystem.playerMoved})
@@ -143,7 +142,8 @@ function GameState:load()
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
     self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
     self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
-    self.engine:addSystem(GameOverSystem(), "logic", 4)
+    self.engine:addSystem(GameOverSystem(), "logic", 4)    
+    self.engine:addSystem(playercontrol,"logic", 5)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
