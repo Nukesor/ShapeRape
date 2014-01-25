@@ -41,6 +41,7 @@ function love.load()
     love.graphics.setFont(resources.fonts.CoolFont)
 
     save = Save()
+    save:loadHighscore()
     stack = StackHelper()
     stack:push(MenuState())
 end

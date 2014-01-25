@@ -13,7 +13,18 @@ function PlayerControlSystem:__init()
         escape = "pause",
         p = "pause"
     }
+    self.moveKeymap = {
+        left = "left",
+        a = "left",
+        right = "right",
+        d = "right",
+        up = "up",
+        w = "up",
+        down = "down",
+        s = "down",
+        }   
     self.holdcounter = 0
+    self.pressed = nil
 end
 
 function PlayerControlSystem.fireEvent(self, event)
@@ -42,6 +53,9 @@ function PlayerControlSystem.fireEvent(self, event)
             playerNode.node = moveComp.targetNode
         end
     end
+    if self.moveKeymap[event.key] then
+        self.pressed = event.key
+    end
 end
 
 function PlayerControlSystem:getRequiredComponents()
@@ -64,16 +78,13 @@ function PlayerControlSystem:update(dt)
             playerNode.node = moveComp.targetNode
         end
         local keydown
-        if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
-            keydown = "up"
-        elseif love.keyboard.isDown("left") or love.keyboard.isDown("a") then
-            keydown = "left"
-        elseif love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-            keydown = "right"
-        elseif love.keyboard.isDown("down") or love.keyboard.isDown("s") then
-            keydown = "down"
+        if self.pressed then
+            if love.keyboard.isDown(self.pressed) then
+                keydown = self.moveKeymap[self.pressed]
+            else
+                self.pressed = nil
+            end
         end
-            
     
         local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
 
