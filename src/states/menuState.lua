@@ -21,7 +21,7 @@ function MenuState:load()
         item.x = screenWidth/5
         item.y = -100
         item.targetX = item.x
-        item.targetY = (1/2)*screenHeight + (100 * index)
+        item.targetY = (2/5)*screenHeight + (80 * index)
     end
 
     local targetX = love.graphics.getWidth()*(3/5)
