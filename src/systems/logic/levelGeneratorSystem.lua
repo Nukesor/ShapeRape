@@ -1,49 +1,47 @@
 LevelGeneratorSystem = class("LevelGeneratorSystem", System)
 
 function LevelGeneratorSystem:__init()
-    self.distance = {
-    left = {-stack:current().nodeWidth, 0},
-    right = {stack:current().nodeWidth, 0},
-    up = {0,  -stack:current().nodeWidth},
-    down = {0, stack:current().nodeWidth}
+    self.stepDistances = {
+        left = {-stack:current().nodeWidth, 0},
+        right = {stack:current().nodeWidth, 0},
+        up = {0,  -stack:current().nodeWidth},
+        down = {0, stack:current().nodeWidth}
     }
 end
 
 function LevelGeneratorSystem:fireEvent(event)
-    if event.direction then
-        local direction = event.direction
-        local count = 0
-        local goingnode = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent")):getComponent("PlayerNodeComponent").node
-        while goingnode:getComponent("LinkComponent")[direction] do
-            count = count + 1
-            goingnode = goingnode:getComponent("LinkComponent")[direction]
+    local direction = event.direction
+    local count = 0
+    local goingnode = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent")):getComponent("PlayerNodeComponent").node
+    while goingnode:getComponent("LinkComponent")[direction] do
+        count = count + 1
+        goingnode = goingnode:getComponent("LinkComponent")[direction]
+    end
+    if count < 4 then
+        local corner
+        local othercorner
+        if direction == "left" then
+            corner = self:getCorner("topleft")
+        elseif direction == "right" then
+            corner = self:getCorner("topright")
+        elseif direction == "up" then
+            corner = self:getCorner("topleft")
+        elseif direction == "down" then
+            corner = self:getCorner("bottomleft")
         end
-        if count < 4 then
-            local corner
-            local othercorner
-            if direction == "left" then
-                corner = self:getCorner("topleft")
-            elseif direction == "right" then
-                corner = self:getCorner("topright")
-            elseif direction == "up" then
-                corner = self:getCorner("topleft")
-            elseif direction == "down" then
-                corner = self:getCorner("bottomleft")
-            end
-            self:addRow(corner, direction)
-            self:changeCorners(direction)
-            self:shiftNodes(direction)
-            if direction == "left" then
-                othercorner = self:getCorner("topright")
-            elseif direction == "right" then
-                othercorner = self:getCorner("topleft")
-            elseif direction == "up" then
-                othercorner = self:getCorner("bottomleft")
-            elseif direction == "down" then
-                othercorner = self:getCorner("topleft")
-            end
-            self:removeRow(othercorner, direction)
+        self:addRow(corner, direction)
+        self:changeCorners(direction)
+        self:shiftNodes(direction)
+        if direction == "left" then
+            othercorner = self:getCorner("topright")
+        elseif direction == "right" then
+            othercorner = self:getCorner("topleft")
+        elseif direction == "up" then
+            othercorner = self:getCorner("bottomleft")
+        elseif direction == "down" then
+            othercorner = self:getCorner("topleft")
         end
+        self:removeRow(othercorner, direction)
     end
 end
 
@@ -74,16 +72,15 @@ function LevelGeneratorSystem:addRow(corner, direction)
         frontlink = "right"
         backlink = "left"
     end
-    local added
     local position = {corner:getComponent("PositionComponent").x, corner:getComponent("PositionComponent").y}
-    local newposition = table.add(position, self.distance[direction])
-    corner:getComponent("LinkComponent")[direction] = NodeModel(newposition[1], newposition[2], counterdirection, corner)
-    added = corner:getComponent("LinkComponent")[direction]
+    local newposition = table.add(position, self.stepDistances[direction])
+    local added = NodeModel(newposition[1], newposition[2], counterdirection, corner)
+    corner:getComponent("LinkComponent")[direction] = added
     stack:current().engine:addEntity(added)
     while added do
         position = {added:getComponent("PositionComponent").x, added:getComponent("PositionComponent").y}
         if corner:getComponent("LinkComponent")[frontlink] then
-            newposition = table.add(position, self.distance[frontlink])
+            newposition = table.add(position, self.stepDistances[frontlink])
             added:getComponent("LinkComponent")[frontlink] = NodeModel(newposition[1], newposition[2], backlink, added)
             stack:current().engine:addEntity(added:getComponent("LinkComponent")[frontlink])
 
@@ -138,6 +135,10 @@ function LevelGeneratorSystem:shiftNodes(direction)
             entity:getComponent("PositionComponent").y = entity:getComponent("PositionComponent").y - stack:current().nodeWidth
         end
     end
+    local moveComponent = table.firstElement(stack:current().engine:getEntityList("AnimatedMoveComponent"))
+        :getComponent("AnimatedMoveComponent")
+    moveComponent.targetX = moveComponent.targetNode:getComponent("PositionComponent").x
+    moveComponent.targetY = moveComponent.targetNode:getComponent("PositionComponent").y
 end
 
 function LevelGeneratorSystem:removeRow(corner, direction)
