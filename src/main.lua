@@ -10,6 +10,7 @@ require("events/keyPressed")
 require("core/stackhelper")
 require("core/state")
 require("core/resources")
+require("core/save")
 -- States
 require("states/menuState")
 require("states/gameState")
@@ -29,6 +30,7 @@ function love.load()
 
     love.graphics.setFont(resources.fonts.CoolFont)
 
+    save = Save()
     stack = StackHelper()
     stack:push(MenuState())
 end
