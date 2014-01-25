@@ -30,7 +30,6 @@ require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
-require("systems/logic/keyDownSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")
@@ -131,7 +130,6 @@ function GameState:load()
     local levelgenerator = LevelGeneratorSystem()
     self.eventmanager:addListener("KeyPressed", {levelgenerator, levelgenerator.fireEvent})
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
-    self.eventmanager:addListener("KeyPressed", {KeyDownSystem, KeyDownSystem.fireEvent})
 
     self.engine:addSystem(levelgenerator)
     self.engine:addSystem(playercontrol)
