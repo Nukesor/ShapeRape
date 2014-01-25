@@ -9,8 +9,13 @@ function DrawSystem:draw()
         local drawable = entity:getComponent("DrawableComponent")
         local pos = entity:getComponent("PositionComponent")
 
+        local nodeWidth = stack:current().nodeWidth
+        local offsetX = math.ceil((nodeWidth - (drawable.image:getWidth()))/2)
+        local offsetY = math.ceil((nodeWidth - (drawable.image:getHeight()))/2)
+        print(offset)
+
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
-        love.graphics.draw(drawable.image, pos.x, pos.y, drawable.r, drawable.sx, drawable.sy, drawable.ox, drawable.oy)
+        love.graphics.draw(drawable.image, pos.x, pos.y, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
     end
 end
 
