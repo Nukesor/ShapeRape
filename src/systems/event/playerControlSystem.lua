@@ -59,7 +59,7 @@ function PlayerControlSystem:update(dt)
     if stack:current().activeSlowmo then
         dt = dt*2
     end
-    self. current = nil
+    --self. current = nil
     for index, key in pairs(self.keymap) do
         --print(love.keyboard.isDown(self.keymap[index]))
 
@@ -92,7 +92,7 @@ function PlayerControlSystem:update(dt)
                 pos.y = moveComp.targetY
                 playerNode.node = moveComp.targetNode
             end
-            local direction
+            local direction = nil
             if love.keyboard.isDown(self.current) then
                 direction = self.keymap[self.current]
             else
@@ -105,9 +105,9 @@ function PlayerControlSystem:update(dt)
     
             local playerWillMove = false
     
-            if targetNode:getComponent("ShapeComponent") == nil then 
+            if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
                 playerWillMove = true
-            elseif targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
+            elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
                 playerWillMove = true
                 local countComp = player:getComponent("PlayerChangeCountComponent")
                 countComp.count = countComp.count + 1
@@ -125,7 +125,7 @@ function PlayerControlSystem:update(dt)
                     resources.sounds.plinghi:play()
                 end
             end
-            if targetNode:getComponent("PowerUpComponent") then
+            if targetNode and targetNode:getComponent("PowerUpComponent") then
                 if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
                     stack:current().slowmo = stack:current().slowmo + 2
                     targetNode:removeComponent("PowerUpComponent")
