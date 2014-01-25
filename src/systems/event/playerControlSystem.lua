@@ -97,9 +97,9 @@ function PlayerControlSystem:update(dt)
     
             local playerWillMove = false
     
-            if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
+            if targetNode:getComponent("ShapeComponent") == nil then 
                 playerWillMove = true
-            elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
+            elseif targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
                 playerWillMove = true
                 local countComp = player:getComponent("PlayerChangeCountComponent")
                 countComp.count = countComp.count + 1
@@ -117,8 +117,18 @@ function PlayerControlSystem:update(dt)
                     resources.sounds.plinghi:play()
                 end
             end
-            if targetNode and targetNode:getComponent("PowerUpComponent") then
-                stack:current().slowmo = stack:current().slowmo + 2
+            if targetNode:getComponent("PowerUpComponent") then
+                if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
+                    stack:current().slowmo = stack:current().slowmo + 2
+                    targetNode:removeComponent("PowerUpComponent")
+                elseif targetNode:getComponent("PowerUpComponent").type == "ShapeChange" then
+                    player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
+                    player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
+                    targetNode:removeComponent("PowerUpComponent")
+                    targetNode:removeComponent("ShapeComponent")
+                    targetNode:removeComponent("DrawableComponent")
+                end
+                playerWillMove = true
             end
             if playerWillMove then                
                 targetNode:removeComponent("ShapeComponent")
