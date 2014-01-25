@@ -55,6 +55,9 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
+    if stack:current().activeSlowmo then
+        dt = dt*2
+    end
     self. current = nil
     for index, key in pairs(self.keymap) do
         if not self.current then
