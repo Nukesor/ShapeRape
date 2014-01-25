@@ -16,8 +16,8 @@ function DrawSystem:draw()
         local posXnew = pos.x + middleoffset
         local posYnew = pos.y + middleoffset
 
-        local offsetX = (drawable.image:getWidth())/2+love.math.random(0,10)
-        local offsetY = (drawable.image:getHeight())/2+love.math.random(0,10)
+        local offsetX = (drawable.image:getWidth())/2
+        local offsetY = (drawable.image:getHeight())/2
 
         drawable.r = drawable.r + rotateflag
 
