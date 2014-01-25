@@ -54,8 +54,7 @@ GameState = class("GameState", State)
 
 function GameState:__init(size)
     self.size = size
-    self.slowmo = 0
-    self.activeSlowmo = false
+
 end
 
 function GameState:load()
@@ -65,6 +64,14 @@ function GameState:load()
 
     self.score = 0
     self.actionBar = 100
+    self.slowmo = 0
+    self.activeSlowmo = false
+
+    -- Shake Variablen
+    self.nextShake = 1
+    self.shakeX = 0
+    self.shakeY = 0
+    self.shaketimer = 0
 
     local matrix = {}
     local nodesOnScreen = self.size
@@ -173,6 +180,18 @@ end
 function GameState:update(dt)
     self.score = self.score + dt*100
 
+    -- Camerashake
+    if self.shaketimer > 0 then
+        self.nextShake = self.nextShake - (dt*50)
+        if self.nextShake < 0 then
+            self.nextShake = 1
+            self.shakeX = math.random(-10, 10)
+            self.shakeY = math.random(-10, 10)
+        end
+        self.shaketimer = self.shaketimer - dt
+    end
+
+    -- Slowmo stuff
     if self.slowmo > 0 then
         if self.activeSlowmo == false then
             self.activeSlowmo = true
@@ -190,6 +209,9 @@ function GameState:update(dt)
 end
 
 function GameState:draw()
+    -- Screenshake
+    if self.shaketimer > 0 then love.graphics.translate(self.shakeX, self.shakeY) end
+
     self.engine:draw()
 end
 

@@ -6,6 +6,8 @@ function PlayerChangeSystem:playerMoved(event)
     currentShape = player:getComponent("ShapeComponent").shape
     
     if player:getComponent("PlayerChangeCountComponent").count > stack:current().size-1 then
+        stack:current().shaketimer = 0.2
+
         player:getComponent("PlayerChangeCountComponent").count = 0
         
         if  currentShape == "circle" then
