@@ -13,7 +13,7 @@ function AnimatedMoveSystem:update(dt)
 
 		if moveComp.tweenID == nil then
 			moveComp.tweenID = 
-				tween.start(0.1, position, {x = moveComp.targetX, y = moveComp.targetY}, "inOutQuad", self.movementFinished, self, entity)
+				tween.start(0.1, position, {x = moveComp.targetX, y = moveComp.targetY}, "outBack", self.movementFinished, self, entity)
 		end
 	end
 	tween.update(dt)

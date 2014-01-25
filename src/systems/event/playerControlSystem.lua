@@ -9,22 +9,23 @@ function PlayerControlSystem:__init()
         up = "up",
         w = "up",
         down = "down",
-        s = "down"
+        s = "down",
+        escape = "pause",
+        p = "pause"
     }
 end
 
 function PlayerControlSystem.fireEvent(self, event)
-    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
-    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
-    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
-    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
-    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
-    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
     local player = table.firstElement(self.targets)
 
     if self.keymap[event.key] then
-        local moveComp = player:getComponent("AnimatedMoveComponent")
-        local playerNode = player:getComponent("PlayerNodeComponent")
+        if self.keymap[event.key] == "pause" then
+            local canvas = love.graphics.newScreenshot()
+            local screenshot = love.graphics.newImage(canvas)
+            stack:push(PauseState(screenshot))
+        else
+            local moveComp = player:getComponent("AnimatedMoveComponent")
+            local playerNode = player:getComponent("PlayerNodeComponent")
 
         if moveComp then
             tween.stopAll()
@@ -33,27 +34,33 @@ function PlayerControlSystem.fireEvent(self, event)
             pos.y = moveComp.targetY
             playerNode.node = moveComp.targetNode
         end
+
         local targetNode = playerNode.node:getComponent("LinkComponent")[self.keymap[event.key]]
-        --Sound Yeay
-        if targetNode then
-            if targetNode:getComponent("CircleComponent") then
-                AudioCircle:play()
-            end
+        local playerWillMove = false
+        if targetNode and targetNode:getComponent("ShapeComponent") == nil then playerWillMove = true
+        elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
+            playerWillMove = true
+            local countComp = player:getComponent("PlayerChangeCountComponent")
+            countComp.count = countComp.count + 1
+                if targetNode:getComponent("ShapeComponent").shape=="circle" then
+                    resources.sounds.pling:play()
+                end
+                if targetNode:getComponent("ShapeComponent").shape=="rectangle" then
+                    resources.sounds.plinglo:play()
+                end
+                if targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                    resources.sounds.plinghi:play()
+                end
         end
-        if targetNode then
-            if targetNode:getComponent("RectangleComponent") then
-                AudioRectangle:play()
+        if playerWillMove then                
+                targetNode:removeComponent("ShapeComponent")
+                targetNode:removeComponent("DrawableComponent")
+                local targetPosition = targetNode:getComponent("PositionComponent")
+                local origin = playerNode.node:getComponent("PositionComponent")
+                player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
+
+                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode))
             end
-        end
-        if targetNode then
-            if targetNode:getComponent("TriangleComponent") then
-                AudioTriangle:play()
-            end
-        end
-        if targetNode then
-            local targetPosition = targetNode:getComponent("PositionComponent")
-            local origin = playerNode.node:getComponent("PositionComponent")
-            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
         end
     end
 end

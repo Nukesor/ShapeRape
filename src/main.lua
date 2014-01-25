@@ -24,9 +24,17 @@ function love.load()
 
     resources:addImage("triangle", "data/img/triangle.png")
     resources:addImage("circle", "data/img/circle.png")
-    resources:addImage("rectangle", "data/img/square.png")
+    resources:addImage("square", "data/img/square.png")
+    
+    resources:addSound("pling", "data/audio/pling.wav", "static")
+    resources:addSound("plinglo", "data/audio/pling-lo.wav", "static")
+    resources:addSound("plinghi", "data/audio/pling-hi.wav", "static")
 
     resources:load()
+
+    resources.sounds.pling:setVolume(0.9)
+    resources.sounds.plinglo:setVolume(0.9)
+    resources.sounds.plinghi:setVolume(0.9)
 
     love.graphics.setFont(resources.fonts.CoolFont)
 

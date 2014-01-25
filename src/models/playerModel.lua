@@ -4,9 +4,10 @@ function PlayerModel:__init(start, nodeWidth)
     local scaledsize = 0.3
 
     self:addComponent(PlayerNodeComponent(start))
-    self:addComponent(CircleComponent())
+    self:addComponent(ShapeComponent("circle"))
     self:addComponent(DrawableComponent(resources.images.circle, 0, scaledsize, scaledsize, 0, 0))
     self:addComponent(ParticleComponent(resources.images.circle, 500))
+    self:addComponent(PlayerChangeCountComponent())
 
     local position = self:getComponent("PlayerNodeComponent").node:getComponent("PositionComponent")
     self:addComponent(PositionComponent(position.x, position.y))

@@ -1,18 +1,20 @@
 tween = require("lib/tween/tween")
+
+require("states/pauseState")
+
 -- Components
 require("components/positionComponent")
 require("components/playerNodeComponent")
 require("components/drawableComponent")
 require("components/animatedMoveComponent")
 require("components/stringComponent")
+require("components/playerChangeCountComponent")
 
 -- NodeStuffComponents
 require("components/node/cornerComponent")
-require("components/node/circleComponent")
-require("components/node/triangleComponent")
-require("components/node/rectangleComponent")
 require("components/node/linkComponent")
 require("components/node/colorComponent")
+require("components/node/shapeComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -20,12 +22,15 @@ require("components/particle/particleTimerComponent")
 -- Models
 require("models/nodeModel")
 require("models/playerModel")
+
 --Systems
 -- Logic
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
+require("systems/logic/playerChangeSystem")
+
 -- Particles
 require("systems/particle/particleDrawSystem")
 require("systems/particle/particleUpdateSystem")
@@ -38,6 +43,7 @@ require("systems/draw/stringDrawSystem")
 require("systems/draw/actionBarDisplaySystem")
 
 --Events
+require("events/playerMoved")
 
 GameState = class("GameState", State)
 
@@ -68,15 +74,15 @@ function GameState:load()
 
             local entity = matrix[x][y]
             if random <= 10 then
-                entity:addComponent(CircleComponent())
+                entity:addComponent(ShapeComponent("circle"))
                 entity:addComponent(ColorComponent(56, 69, 255))
                 entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 20 then
-                entity:addComponent(RectangleComponent())
+                entity:addComponent(ShapeComponent("square"))
                 entity:addComponent(ColorComponent(255, 69, 56))
-                entity:addComponent(DrawableComponent(resources.images.rectangle, 0, 0.2, 0.2, 0, 0))
+                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
-                entity:addComponent(TriangleComponent())
+                entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             end 
@@ -109,6 +115,8 @@ function GameState:load()
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
     -- Player initialization
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("ShapeComponent")
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     -- Highscore
@@ -124,6 +132,9 @@ function GameState:load()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.engine:addSystem(levelgenerator)
     self.engine:addSystem(playercontrol)
+
+    local playerChangeSystem = PlayerChangeSystem()
+    self.eventmanager:addListener("PlayerMoved", {playerChangeSystem, playerChangeSystem.playerMoved})
 
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
