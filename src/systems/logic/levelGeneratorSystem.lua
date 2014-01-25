@@ -84,20 +84,38 @@ function LevelGeneratorSystem:addRow(corner, direction)
             added:getComponent("LinkComponent")[frontlink] = NodeModel(newposition[1], newposition[2], backlink, added)
             stack:current().engine:addEntity(added:getComponent("LinkComponent")[frontlink])
 
-            local random = love.math.random(0, 60)
+            local random = love.math.random(0, 120)
             local entity = added:getComponent("LinkComponent")[frontlink]
-            if random <= 10 then
+            if random <= 20 then
                 entity:addComponent(ShapeComponent("circle"))
                 entity:addComponent(ColorComponent(56, 69, 255))
                 entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
-            elseif random <= 20 then
+            elseif random <= 40 then
                 entity:addComponent(ShapeComponent("square"))
                 entity:addComponent(ColorComponent(255, 69, 56))
                 entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
-            elseif random <= 30 then
+            elseif random <= 60 then
                 entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
+            elseif random <= 61 then
+                entity:addComponent(ColorComponent(255,255,0))
+                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                entity:addComponent(PowerUpComponent("SlowMotion"))
+            elseif random <= 62 then
+                local random2 = love.math.random(0, 100)
+                entity:addComponent(PowerUpComponent("ShapeChange"))
+                local shape
+                if random2 <= 33 then
+                    shape = "circle"
+                elseif random2 <= 66 then
+                    shape = "square"
+                elseif random2 <= 100 then
+                    shape = "triangle"
+                end
+                    entity:addComponent(ShapeComponent(shape))
+                    entity:addComponent(ColorComponent(255, 141, 0))
+                    entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
             end 
         end
         added:getComponent("LinkComponent")[counterdirection] = corner

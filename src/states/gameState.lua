@@ -16,6 +16,7 @@ require("components/node/cornerComponent")
 require("components/node/linkComponent")
 require("components/node/colorComponent")
 require("components/node/shapeComponent")
+require("components/node/powerUpComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -53,14 +54,24 @@ GameState = class("GameState", State)
 
 function GameState:__init(size)
     self.size = size
+
 end
 
 function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
+    resources.music.soundtrack:setPitch(1)
 
     self.score = 0
     self.actionBar = 100
+    self.slowmo = 0
+    self.activeSlowmo = false
+
+    -- Shake Variablen
+    self.nextShake = 1
+    self.shakeX = 0
+    self.shakeY = 0
+    self.shaketimer = 0
 
     local matrix = {}
     local nodesOnScreen = self.size
@@ -93,6 +104,24 @@ function GameState:load()
                 entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
+            elseif random <= 31 then
+                entity:addComponent(ColorComponent(255,255,0))
+                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                entity:addComponent(PowerUpComponent("SlowMotion"))
+            elseif random <= 32 then
+                local random2 = love.math.random(0, 100)
+                entity:addComponent(PowerUpComponent("ShapeChange"))
+                local shape
+                if random2 <= 33 then
+                    shape = "circle"
+                elseif random2 <= 66 then
+                    shape = "square"
+                elseif random2 <= 100 then
+                    shape = "triangle"
+                end
+                    entity:addComponent(ShapeComponent(shape))
+                    entity:addComponent(ColorComponent(255, 141, 0))
+                    entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
             end 
         end
     end
@@ -155,19 +184,48 @@ function GameState:load()
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
-    self.engine:addSystem(ParticleDrawSystem(), "draw", 2)
-    self.engine:addSystem(DrawSystem(), "draw", 3)
-    self.engine:addSystem(StringDrawSystem(), "draw", 4)
-    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 5)
-    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
+    self.engine:addSystem(DrawSystem(), "draw", 2)
+    self.engine:addSystem(StringDrawSystem(), "draw", 3)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 4)
+    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 5)
+    self.engine:addSystem(ParticleDrawSystem(), "draw", 6)
 end
 
 function GameState:update(dt)
     self.score = self.score + dt*100
-    self.engine:update(dt)
+
+    -- Camerashake
+    if self.shaketimer > 0 then
+        self.nextShake = self.nextShake - (dt*50)
+        if self.nextShake < 0 then
+            self.nextShake = 1
+            self.shakeX = math.random(-10, 10)
+            self.shakeY = math.random(-10, 10)
+        end
+        self.shaketimer = self.shaketimer - dt
+    end
+
+    -- Slowmo stuff
+    if self.slowmo > 0 then
+        if self.activeSlowmo == false then
+            self.activeSlowmo = true
+            resources.music.soundtrack:setPitch(0.9)
+        end
+        self.slowmo = self.slowmo - dt
+        self.engine:update(dt/2)
+    else
+        if self.activeSlowmo == true then
+            resources.music.soundtrack:setPitch(1)
+            self.activeSlowmo = false
+        end
+        self.engine:update(dt)
+    end
 end
 
 function GameState:draw()
+    -- Screenshake
+    if self.shaketimer > 0 then love.graphics.translate(self.shakeX, self.shakeY) end
+
     self.engine:draw()
 end
 

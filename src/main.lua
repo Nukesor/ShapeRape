@@ -27,6 +27,7 @@ function love.load()
     resources:addImage("triangle", "data/img/triangle.png")
     resources:addImage("circle", "data/img/circle.png")
     resources:addImage("square", "data/img/square.png")
+    resources:addImage("clock", "data/img/timer.png")
     
     resources:addSound("pling", "data/audio/pling.wav", "static")
     resources:addSound("plinglo", "data/audio/pling-lo.wav", "static")
