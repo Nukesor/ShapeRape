@@ -9,7 +9,7 @@ function MenuPointDisplaySystem:draw()
         if menu.index == index then
 
         else
-            love.graphics.print(name, x, y)
+            love.graphics.print(name[1], x, y)
         end
     end
 end

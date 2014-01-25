@@ -3,13 +3,15 @@ require("systems/menu/menuPointDisplaySystem")
 
 MenuState = class("MenuState", State)
 
-function MenuState:__init()
+function MenuState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
-    self.menupoints = {"Start Game", "Highscore", "Exit Game"}
+    self.menupoints = {{"Start Game", function() stack:push(GameState()) end}, 
+                        {"Highscore", function() end},
+                        {"Exit Game", function() love.event.quit() end}}
     self.index = 1
 
     self.engine:addSystem(MenuPointDisplaySystem(), "draw", 1)

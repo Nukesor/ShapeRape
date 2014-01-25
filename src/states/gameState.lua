@@ -24,6 +24,7 @@ require("models/playerModel")
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
+require("systems/logic/gameOverSystem")
 -- Particles
 require("systems/particle/particleDrawSystem")
 require("systems/particle/particleUpdateSystem")
@@ -39,7 +40,7 @@ require("systems/draw/actionBarDisplaySystem")
 
 GameState = class("GameState", State)
 
-function GameState:__init()
+function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
@@ -107,7 +108,7 @@ function GameState:__init()
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
     -- Player initialization
-    self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2]))
+    self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     -- Highscore
     local highscore = Entity()
@@ -124,7 +125,8 @@ function GameState:__init()
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
     self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
-    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 9)
+    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
+    self.engine:addSystem(GameOverSystem(), "logic", 4)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
