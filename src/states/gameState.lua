@@ -1,3 +1,4 @@
+tween = require("lib/tween/tween")
 -- Components
 require("components/positionComponent")
 require("components/playerNodeComponent")
