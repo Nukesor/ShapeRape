@@ -69,7 +69,7 @@ function PlayerControlSystem:update(dt)
             end
             local keydown
             if love.keyboard.isDown(self.pressed) then
-                keydown = self.moveKeymap[self.pressed]
+                keydown = self.keymap[self.pressed]
             else
                 self.pressed = nil
             end
