@@ -5,7 +5,7 @@ function PlayerChangeSystem:playerMoved(event)
     local player = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent"))
     currentShape = player:getComponent("ShapeComponent").shape
     
-    if player:getComponent("PlayerChangeCountComponent").count > 9 then
+    if player:getComponent("PlayerChangeCountComponent").count > stack:current().size-1 then
         player:getComponent("PlayerChangeCountComponent").count = 0
         
         if  currentShape == "circle" then

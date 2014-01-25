@@ -12,7 +12,9 @@ function MenuState:load()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
 
-    self.menupoints = {{"Play!", function() stack:push(GameState()) end}, 
+    self.menupoints = {{"Play! (Small)", function() stack:push(GameState(8)) end}, 
+                        {"Play! (Medium)", function() stack:push(GameState(12)) end},
+                        {"Play! (Large)", function() stack:push(GameState(16)) end},
                         {"Exit", function() love.event.quit() end}}
 
     for index, item in pairs(self.menupoints) do
