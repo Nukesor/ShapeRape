@@ -2,6 +2,7 @@
 require("components/positionComponent")
 require("components/playerNodeComponent")
 require("components/drawableComponent")
+require("components/animatedMoveComponent")
 
 -- NodeStuffComponents
 require("components/node/cornerComponent")
@@ -20,6 +21,7 @@ require("models/nodeModel")
 -- Logic
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
+require("systems/logic/animatedMoveSystem")
 -- Particles
 require("systems/particle/particleDrawSystem")
 require("systems/particle/particleUpdateSystem")
@@ -129,10 +131,10 @@ function GameState:__init()
     self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
     self.engine:addSystem(playercontrol, "logic", 1)
 
-
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
-    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 2)
+    self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
+    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 9)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
