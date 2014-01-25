@@ -43,6 +43,7 @@ require("systems/draw/drawSystem")
 require("systems/draw/gridDrawSystem")
 require("systems/draw/stringDrawSystem")
 require("systems/draw/actionBarDisplaySystem")
+require("systems/draw/playerChangeDisplaySystem")
 
 --Events
 require("events/playerMoved")
@@ -142,9 +143,9 @@ function GameState:load()
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
     self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
     self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
-    self.engine:addSystem(AnimateSystem(), "logic", 5)
-    self.engine:addSystem(GameOverSystem(), "logic", 4)    
-    self.engine:addSystem(playercontrol,"logic", 5)
+    self.engine:addSystem(AnimateSystem(), "logic", 4)
+    self.engine:addSystem(GameOverSystem(), "logic", 5)    
+    self.engine:addSystem(playercontrol,"logic", 6)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
@@ -152,6 +153,7 @@ function GameState:load()
     self.engine:addSystem(DrawSystem(), "draw", 3)
     self.engine:addSystem(StringDrawSystem(), "draw", 4)
     self.engine:addSystem(ActionBarDisplaySystem(), "draw", 5)
+    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
 end
 
 function GameState:update(dt)
