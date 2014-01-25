@@ -59,7 +59,7 @@ function PlayerControlSystem.fireEvent(self, event)
                 local origin = playerNode.node:getComponent("PositionComponent")
                 player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
 
-                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode))
+                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[event.key]))
             end
         end
     end

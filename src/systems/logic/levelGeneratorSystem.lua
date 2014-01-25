@@ -1,16 +1,6 @@
 LevelGeneratorSystem = class("LevelGeneratorSystem", System)
 
 function LevelGeneratorSystem:__init()
-    self.keymap = {
-        left = "left",
-        a = "left",
-        right = "right",
-        d = "right",
-        up = "up",
-        w = "up",
-        down = "down",
-        s = "down"
-    }
     self.distance = {
     left = {-stack:current().nodeWidth, 0},
     right = {stack:current().nodeWidth, 0},
@@ -20,15 +10,15 @@ function LevelGeneratorSystem:__init()
 end
 
 function LevelGeneratorSystem:fireEvent(event)
-    if self.keymap[event.key] then
-        local direction = self.keymap[event.key]
+    if event.direction then
+        local direction = event.direction
         local count = 0
         local goingnode = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent")):getComponent("PlayerNodeComponent").node
-    --    while goingnode:getComponent("LinkComponent")[direction] do
-    --        count = count + 1
-    --        goingnode = goingnode:getComponent("LinkComponent")[direction]
-    --    end
-    --    if count < 3 then
+        while goingnode:getComponent("LinkComponent")[direction] do
+            count = count + 1
+            goingnode = goingnode:getComponent("LinkComponent")[direction]
+        end
+        if count < 4 then
             local corner
             local othercorner
             if direction == "left" then
@@ -53,7 +43,7 @@ function LevelGeneratorSystem:fireEvent(event)
                 othercorner = self:getCorner("topleft")
             end
             self:removeRow(othercorner, direction)
-    --    end
+        end
     end
 end
 

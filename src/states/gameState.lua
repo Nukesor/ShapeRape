@@ -129,7 +129,7 @@ function GameState:load()
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
     local levelgenerator = LevelGeneratorSystem()
-    self.eventmanager:addListener("KeyPressed", {levelgenerator, levelgenerator.fireEvent})
+    self.eventmanager:addListener("PlayerMoved", {levelgenerator, levelgenerator.fireEvent})
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.eventmanager:addListener("KeyPressed", {KeyDownSystem, KeyDownSystem.fireEvent})
 
