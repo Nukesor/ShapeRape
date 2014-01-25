@@ -48,8 +48,6 @@ function PlayerControlSystem.fireEvent(self, event)
             local countComp = player:getComponent("PlayerChangeCountComponent")
             countComp.count = countComp.count + 1
 
-            --Sound Yeay
-                print(targetNode:getComponent("ShapeComponent").shape)
                 if targetNode:getComponent("ShapeComponent").shape=="circle" then
                     AudioCircle:play()
                 end
@@ -61,7 +59,8 @@ function PlayerControlSystem.fireEvent(self, event)
                 end
         end
         if playerWillMove then                
-            targetNode:removeComponent("ShapeComponent")
+                targetNode:removeComponent("ShapeComponent")
+                targetNode:removeComponent("DrawableComponent")
                 local targetPosition = targetNode:getComponent("PositionComponent")
                 local origin = playerNode.node:getComponent("PositionComponent")
                 player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
