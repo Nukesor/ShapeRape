@@ -13,8 +13,8 @@ function DrawSystem:draw()
         local posXnew = pos.x + middleoffset
         local posYnew = pos.y + middleoffset
 
-        local offsetX = math.floor((1+drawable.sx)*(drawable.image:getWidth()))/2
-        local offsetY = math.floor((1+drawable.sy)*(drawable.image:getHeight()))/2
+        local offsetX = (drawable.image:getWidth())/2
+        local offsetY = (drawable.image:getHeight())/2
         if entity:getComponent("ColorComponent") then
         	local color = entity:getComponent("ColorComponent")
         	love.graphics.setColor(color.r, color.g, color.b)
