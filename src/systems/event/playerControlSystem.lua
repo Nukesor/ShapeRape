@@ -49,7 +49,6 @@ function PlayerControlSystem.fireEvent(self, event)
             countComp.count = countComp.count + 1
 
             --Sound Yeay
-                print(targetNode:getComponent("ShapeComponent").shape)
                 if targetNode:getComponent("ShapeComponent").shape=="circle" then
                     AudioCircle:play()
                 end
