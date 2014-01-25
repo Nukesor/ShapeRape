@@ -84,7 +84,7 @@ function LevelGeneratorSystem:addRow(corner, direction)
             added:getComponent("LinkComponent")[frontlink] = NodeModel(newposition[1], newposition[2], backlink, added)
             stack:current().engine:addEntity(added:getComponent("LinkComponent")[frontlink])
 
-            local random = love.math.random(0, 100)
+            local random = love.math.random(0, 60)
             local entity = added:getComponent("LinkComponent")[frontlink]
             if random <= 10 then
                 entity:addComponent(ShapeComponent("circle"))
