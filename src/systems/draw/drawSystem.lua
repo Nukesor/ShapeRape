@@ -36,7 +36,7 @@ function DrawSystem:draw()
         end
 
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
-        love.graphics.draw(drawable.image, posXnew, posYnew, intensity, drawable.sx, drawable.sy, offsetX, offsetY)
+        love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r*intensity, drawable.sx, drawable.sy, offsetX, offsetY)
     end
 end
 
