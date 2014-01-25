@@ -119,9 +119,11 @@ function GameState:load()
 
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
+    local levelgenerator = LevelGeneratorSystem()
+    self.eventmanager:addListener("KeyPressed", {levelgenerator, levelgenerator.fireEvent})
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
-    self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
-    self.engine:addSystem(playercontrol, "logic", 1)
+    self.engine:addSystem(levelgenerator)
+    self.engine:addSystem(playercontrol)
 
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)

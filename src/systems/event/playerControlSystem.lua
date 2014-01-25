@@ -1,14 +1,7 @@
 PlayerControlSystem = class("PlayerControlSystem", System)
 
-function PlayerControlSystem.fireEvent(self, event)
-    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
-    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
-    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
-    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
-    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
-    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
-    local player = table.firstElement(self.targets)
-    local keymap = {
+function PlayerControlSystem:__init()
+    self.keymap = {
         left = "left",
         a = "left",
         right = "right",
@@ -18,8 +11,18 @@ function PlayerControlSystem.fireEvent(self, event)
         down = "down",
         s = "down"
     }
+end
 
-    if keymap[event.key] then
+function PlayerControlSystem.fireEvent(self, event)
+    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
+    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
+    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
+    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
+    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
+    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
+    local player = table.firstElement(self.targets)
+
+    if self.keymap[event.key] then
         local moveComp = player:getComponent("AnimatedMoveComponent")
         local playerNode = player:getComponent("PlayerNodeComponent")
 
@@ -30,7 +33,7 @@ function PlayerControlSystem.fireEvent(self, event)
             pos.y = moveComp.targetY
             playerNode.node = moveComp.targetNode
         end
-        local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
+        local targetNode = playerNode.node:getComponent("LinkComponent")[self.keymap[event.key]]
         --Sound Yeay
         if targetNode then
             if targetNode:getComponent("CircleComponent") then
