@@ -16,7 +16,8 @@ function GridDrawSystem:draw()
     local bottomleftY = self:getCornerNode("bottomleft"):getComponent("PositionComponent").y
     local gridHeight = bottomleftY + nodeWidth - topleftY
 
-    love.graphics.setColor(255,255,255)
+    love.graphics.setColor(255,255,255, 127)
+    love.graphics.setLineStyle("rough")
 
     --draw Vertical Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
