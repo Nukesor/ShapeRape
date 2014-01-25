@@ -16,7 +16,7 @@ function DrawSystem:draw()
         if entity:getComponent("PlayerNodeComponent") then
             player = entity
             intensity = player:getComponent("PlayerChangeCountComponent").count
-        end
+        end 
     end
 
     for index, entity in pairs(self.targets) do
