@@ -8,6 +8,7 @@ require("components/playerNodeComponent")
 require("components/drawableComponent")
 require("components/animatedMoveComponent")
 require("components/stringComponent")
+require("components/playerChangeCountComponent")
 
 -- NodeStuffComponents
 require("components/node/cornerComponent")
@@ -28,6 +29,8 @@ require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
+require("systems/logic/playerChangeSystem")
+
 -- Particles
 require("systems/particle/particleDrawSystem")
 require("systems/particle/particleUpdateSystem")
@@ -112,6 +115,8 @@ function GameState:load()
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
     -- Player initialization
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("ShapeComponent")
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     -- Highscore
@@ -125,6 +130,9 @@ function GameState:load()
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
     self.eventmanager:addListener("KeyPressed", {LevelGeneratorSystem, LevelGeneratorSystem.fireEvent})
     self.engine:addSystem(playercontrol, "logic", 1)
+
+    local playerChangeSystem = PlayerChangeSystem()
+    self.eventmanager:addListener("PlayerMoved", {playerChangeSystem, playerChangeSystem.playerMoved})
 
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
