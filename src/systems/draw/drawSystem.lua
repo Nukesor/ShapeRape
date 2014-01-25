@@ -13,11 +13,12 @@ function DrawSystem:draw()
         local posXnew = pos.x + middleoffset
         local posYnew = pos.y + middleoffset
 
-
-
         local offsetX = math.ceil((1+drawable.sx)*(drawable.image:getWidth()))/2
         local offsetY = math.ceil((1+drawable.sy)*(drawable.image:getHeight()))/2
-        print(nodeWidth)
+        if entity:getComponent("ColorComponent") then
+        	local color = entity:getComponent("ColorComponent")
+        	love.graphics.setColor(color.r, color.g, color.b)
+        end
 
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
         love.graphics.draw(drawable.image, posXnew, posYnew, 20, drawable.sx, drawable.sy, offsetX, offsetY)

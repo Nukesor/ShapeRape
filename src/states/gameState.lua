@@ -9,6 +9,7 @@ require("components/node/circleComponent")
 require("components/node/triangleComponent")
 require("components/node/rectangleComponent")
 require("components/node/linkComponent")
+require("components/node/colorComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -57,12 +58,15 @@ function GameState:__init()
             local entity = matrix[x][y]
             if random <= 10 then
                 entity:addComponent(CircleComponent())
+                entity:addComponent(ColorComponent(56, 69, 255))
                 entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 20 then
                 entity:addComponent(RectangleComponent())
+                entity:addComponent(ColorComponent(255, 69, 56))
                 entity:addComponent(DrawableComponent(resources.images.rectangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
                 entity:addComponent(TriangleComponent())
+                entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             end 
         end
@@ -102,21 +106,20 @@ function GameState:__init()
 
     local position = player:getComponent("PlayerNodeComponent").node:getComponent("PositionComponent")
     player:addComponent(position)
+    local playerColor = ColorComponent(255, 255, 255)
+    player:addComponent(playerColor)
     local particle = player:getComponent("ParticleComponent").particle
     particle:setEmissionRate(50)
-    particle:setSpeed(40, 20)
+    particle:setSpeed(40, 80)
     particle:setSizes(0.03, 0.04)
-    particle:setColors(0, 255, 0, 255, 0, 150, 0, 255)
+    particle:setColors(playerColor.r, playerColor.g, playerColor.b, 255, playerColor.r, playerColor.g, playerColor.b, 0)
     particle:setPosition(position.x, position.y)
     particle:setEmitterLifetime(-1) -- Zeit die der Partikelstrahl anhält
     particle:setParticleLifetime(0.2, 1) -- setzt Lebenszeit in min-max
     particle:setOffset(0, 0) -- Punkt um den der Partikel rotiert
-    particle:setRotation(0, 360) -- Der Rotationswert des Partikels bei seiner Erstellung
     particle:setDirection(0)
     particle:setSpread(360)
     particle:setRadialAcceleration(20, 30)
-    particle:setLinearAcceleration(300, 300)
-    particle:setAreaSpread( "normal", 5, 5 )
     particle:start()
 
     self.engine:addEntity(player)
