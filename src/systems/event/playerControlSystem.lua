@@ -55,13 +55,11 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-<<<<<<< HEAD
-=======
+
     if stack:current().activeSlowmo then
         dt = dt*2
     end
     self. current = nil
->>>>>>> 3cd86bf8aaf68afe8d115283bfd29c90870bc6df
     for index, key in pairs(self.keymap) do
         --print(love.keyboard.isDown(self.keymap[index]))
 
