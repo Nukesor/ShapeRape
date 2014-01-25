@@ -99,8 +99,8 @@ function LevelGeneratorSystem:addRow(corner, direction)
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 61 then
-                entity:addComponent(ColorComponent(150,150,0))
-                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
+                entity:addComponent(ColorComponent(255,255,0))
+                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
                 entity:addComponent(PowerUpComponent("SlowMotion"))
             end 
         end
