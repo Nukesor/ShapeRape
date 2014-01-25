@@ -2,6 +2,7 @@
 require("components/positionComponent")
 require("components/playerNodeComponent")
 require("components/drawableComponent")
+require("components/animatedMoveComponent")
 require("components/stringComponent")
 
 -- NodeStuffComponents
@@ -22,6 +23,8 @@ require("models/playerModel")
 -- Logic
 require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
+require("systems/logic/animatedMoveSystem")
+require("systems/logic/gameOverSystem")
 -- Particles
 require("systems/particle/particleDrawSystem")
 require("systems/particle/particleUpdateSystem")
@@ -31,16 +34,18 @@ require("systems/particle/particlePositionSyncSystem")
 require("systems/draw/drawSystem")
 require("systems/draw/gridDrawSystem")
 require("systems/draw/stringDrawSystem")
+require("systems/draw/actionBarDisplaySystem")
 
 --Events
 
 GameState = class("GameState", State)
 
-function GameState:__init()
+function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
     self.highscore = 0
+    self.actionBar = 100
 
     local matrix = {}
     local nodesOnScreen = 10
@@ -119,17 +124,21 @@ function GameState:__init()
 
     -- logic systems
     self.engine:addSystem(ParticleUpdateSystem(), "logic", 1)
-    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 2)
+    self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
+    self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
+    self.engine:addSystem(GameOverSystem(), "logic", 4)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
     self.engine:addSystem(ParticleDrawSystem(), "draw", 2)
     self.engine:addSystem(DrawSystem(), "draw", 3)
     self.engine:addSystem(StringDrawSystem(), "draw", 4)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 5)
 end
 
 function GameState:update(dt)
     self.engine:update(dt)
+    self.actionBar = self.actionBar - 8*dt
 end
 
 function GameState:draw()

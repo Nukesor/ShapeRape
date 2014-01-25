@@ -15,12 +15,6 @@ function MenuNavigationSystem.fireEvent(self, event)
     end
 
     if event.key == "return" then
-        if menu.index == 1 then
-            stack:push(GameState())
-        elseif menu.index == 2 then
-
-        elseif menu.index == 3 then
-            love.event.quit()
-        end
+        menu.menupoints[menu.index][2]()
     end
 end
