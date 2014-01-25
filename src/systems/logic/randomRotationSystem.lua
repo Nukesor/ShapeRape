@@ -1,6 +1,14 @@
 RandomRotationSystem = class("RandomRotationSystem", System)
 
 function RandomRotationSystem:update(dt)
+	local player
+    local intensity = 1
+    for index, entity in pairs(self.targets) do
+        if entity:getComponent("PlayerNodeComponent") then
+            player = entity
+            intensity = player:getComponent("PlayerChangeCountComponent").count*0.1+0.1
+        end 
+    end
 	for index, entity in pairs(self.targets) do
 		if entity:getComponent("AnimateComponent") == nil then
 			drawable = entity:getComponent("DrawableComponent")
@@ -11,7 +19,7 @@ function RandomRotationSystem:update(dt)
 				rotation = -1
 			end
 			local time = 1 + love.math.random(1,2)
-			local targetR = drawable.r + (love.math.random(1,3))*rotation
+			local targetR = drawable.r + (love.math.random(1,3))*(rotation*intensity)
 			local anim = AnimateComponent(time, drawable, {r = targetR}, "inOutCubic")
 			entity:addComponent(anim)
 		end
