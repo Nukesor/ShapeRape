@@ -14,7 +14,8 @@ function PlayerControlSystem:__init()
         p = "pause"
     }   
     self.holdcounter = 0
-    self.pressed = nil
+    self.current = nil
+    self.previous = nil
 end
 
 function PlayerControlSystem.fireEvent(self, event)
@@ -44,7 +45,8 @@ function PlayerControlSystem.fireEvent(self, event)
         end
     end
     if self.keymap[event.key] then
-        self.pressed = event.key
+        self.current = self.previous
+        self.current = event.key
     end
 end
 
@@ -53,7 +55,21 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-    if self.pressed then
+    self. current = nil
+    for index, key in pairs(self.keymap) do
+        if not self.current then
+            if love.keyboard.isDown(key) then
+                self.current = key
+            end
+        else
+            if love.keyboard.isDown(key) and (love.keyboard.isDown(key) ~= self.previous) then
+                self.previous = self.current
+                self.current = key
+            end
+        end
+    end
+
+    if self.current then
         self.holdcounter = self.holdcounter + dt
         if self.holdcounter > 0.1337 then
             local player = table.firstElement(self.targets)
@@ -68,10 +84,10 @@ function PlayerControlSystem:update(dt)
                 playerNode.node = moveComp.targetNode
             end
             local keydown
-            if love.keyboard.isDown(self.pressed) then
-                keydown = self.keymap[self.pressed]
+            if love.keyboard.isDown(self.current) then
+                keydown = self.keymap[self.current]
             else
-                self.pressed = nil
+                self.current = nil
             end
         
             local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
