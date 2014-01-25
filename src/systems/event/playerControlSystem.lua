@@ -1,12 +1,6 @@
 PlayerControlSystem = class("PlayerControlSystem", System)
 
 function PlayerControlSystem.fireEvent(self, event)
-    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
-    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
-    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
-    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
-    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
-    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
 
     local player = table.firstElement(self.targets)
     local keymap = {
@@ -31,26 +25,23 @@ function PlayerControlSystem.fireEvent(self, event)
             local moveComp = player:getComponent("AnimatedMoveComponent")
             local playerNode = player:getComponent("PlayerNodeComponent")
 
-            if moveComp then
-                tween.stopAll()
-                local pos = player:getComponent("PositionComponent")
-                pos.x = moveComp.targetX
-                pos.y = moveComp.targetY
-                playerNode.node = moveComp.targetNode
-            end
-            local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
-            --Sound Yeay
-            if targetNode then
-                if targetNode:getComponent("CircleComponent") then
-                    AudioCircle:play()
-                end
-                if targetNode:getComponent("RectangleComponent") then
-                    AudioRectangle:play()
-                end
-                if targetNode:getComponent("TriangleComponent") then
-                    AudioTriangle:play()
-                end
-
+        if moveComp then
+            tween.stopAll()
+            local pos = player:getComponent("PositionComponent")
+            pos.x = moveComp.targetX
+            pos.y = moveComp.targetY
+            playerNode.node = moveComp.targetNode
+        end
+        local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
+        local playerWillMove = false
+        if targetNode and targetNode:getComponent("ShapeComponent") == nil then playerWillMove = true
+        elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
+            playerWillMove = true
+            local countComp = player:getComponent("PlayerChangeCountComponent")
+            countComp.count = countComp.count + 1
+        end
+        if playerWillMove then                
+            targetNode:removeComponent("ShapeComponent")
                 local targetPosition = targetNode:getComponent("PositionComponent")
                 local origin = playerNode.node:getComponent("PositionComponent")
                 player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
