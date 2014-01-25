@@ -94,6 +94,8 @@ function PlayerControlSystem:update(dt)
                 playerWillMove = true
                 local countComp = player:getComponent("PlayerChangeCountComponent")
                 countComp.count = countComp.count + 1
+                stack:current().actionBar = stack:current().actionBar + 5
+                if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
     
                 if targetNode:getComponent("ShapeComponent").shape=="circle" then
                     love.audio.rewind()
