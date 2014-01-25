@@ -1,5 +1,15 @@
 GridDrawSystem = class("GridDrawSystem", System)
 
+function GridDrawSystem:__init()
+    self.time = 0
+    self.flash = love.graphics.newShader [[
+        extern float time;
+        vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+            return vec4(1.0, 1.0, 1.0, 0.5+(sin(time)/5.0));
+        }   
+    ]]
+end
+
 function GridDrawSystem:draw()
 
     local topleftX = self:getCornerNode("topleft"):getComponent("PositionComponent").x
@@ -16,8 +26,12 @@ function GridDrawSystem:draw()
     local bottomleftY = self:getCornerNode("bottomleft"):getComponent("PositionComponent").y
     local gridHeight = bottomleftY + nodeWidth - topleftY
 
-    love.graphics.setColor(255,255,255, 127)
+    love.graphics.setColor(255,255,255, 100)
     love.graphics.setLineStyle("rough")
+
+    love.graphics.setShader(self.flash)
+    self.time = self.time + love.timer.getDelta()*2
+    self.flash:send("time", self.time)
 
     --draw Vertical Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
@@ -38,6 +52,7 @@ function GridDrawSystem:draw()
         currentNode = currentNode:getComponent("LinkComponent").down
     end
 
+    love.graphics.setShader()
 end
 
 function GridDrawSystem:getRequiredComponents()

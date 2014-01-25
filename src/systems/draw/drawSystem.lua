@@ -1,8 +1,5 @@
 DrawSystem = class("DrawSystem", System)
 
-function DrawSystem:__init()
-end
-
 function DrawSystem:draw()
     local player 
     love.graphics.setColor(255, 255, 255, 255)
