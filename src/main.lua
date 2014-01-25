@@ -13,6 +13,7 @@ require("core/resources")
 -- States
 require("states/menuState")
 require("states/gameState")
+require("states/gameOverState")
 
 
 function love.load()
