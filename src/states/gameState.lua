@@ -9,6 +9,7 @@ require("components/node/circleComponent")
 require("components/node/triangleComponent")
 require("components/node/rectangleComponent")
 require("components/node/linkComponent")
+require("components/node/colorComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -57,12 +58,15 @@ function GameState:__init()
             local entity = matrix[x][y]
             if random <= 10 then
                 entity:addComponent(CircleComponent())
+                entity:addComponent(ColorComponent(56, 69, 255))
                 entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 20 then
                 entity:addComponent(RectangleComponent())
+                entity:addComponent(ColorComponent(255, 69, 56))
                 entity:addComponent(DrawableComponent(resources.images.rectangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
                 entity:addComponent(TriangleComponent())
+                entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             end 
         end
