@@ -1,9 +1,13 @@
 PlayerModel = class("PlayerModel", Entity)
 
-function PlayerModel:__init(start)
+function PlayerModel:__init(start,nodeWidth)
+
+    local scaledsize = 0.3
+
+
     self:addComponent(PlayerNodeComponent(start))
     self:addComponent(CircleComponent())
-    self:addComponent(DrawableComponent(resources.images.circle, 0, 0.4, 0.4, 0, 0))
+    self:addComponent(DrawableComponent(resources.images.circle, 0, scaledsize, scaledsize, 0, 0))
     self:addComponent(ParticleComponent(resources.images.circle, 500))
 
     local position = self:getComponent("PlayerNodeComponent").node:getComponent("PositionComponent")

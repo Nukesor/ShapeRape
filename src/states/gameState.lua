@@ -103,7 +103,7 @@ function GameState:__init()
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
     -- Player initialization
-    self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2]))
+    self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     -- Highscore
     local highscore = Entity()
