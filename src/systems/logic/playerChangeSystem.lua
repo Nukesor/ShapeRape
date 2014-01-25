@@ -36,6 +36,7 @@ function PlayerChangeSystem:playerMoved(event)
 
         entity:addComponent(ParticleTimerComponent(0.6, 0.6))
         entity:addComponent(ParticleComponent(resources.images[nextShape], 400))
+        entity:addComponent(position)
 
         local particle = entity:getComponent("ParticleComponent").particle
         particle:setEmissionRate(400)

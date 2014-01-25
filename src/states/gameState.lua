@@ -108,6 +108,20 @@ function GameState:load()
                 entity:addComponent(ColorComponent(255,255,0))
                 entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
                 entity:addComponent(PowerUpComponent("SlowMotion"))
+            elseif random <= 32 then
+                local random2 = love.math.random(0, 100)
+                entity:addComponent(PowerUpComponent("ShapeChange"))
+                local shape
+                if random2 <= 33 then
+                    shape = "circle"
+                elseif random2 <= 66 then
+                    shape = "square"
+                elseif random2 <= 100 then
+                    shape = "triangle"
+                end
+                    entity:addComponent(ShapeComponent(shape))
+                    entity:addComponent(ColorComponent(255, 141, 0))
+                    entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
             end 
         end
     end

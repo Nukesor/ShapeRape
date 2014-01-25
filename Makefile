@@ -1,12 +1,12 @@
 default: run
 
 clean:
-	@[[ ! -e game.love ]] || rm game.love
+	@[[ ! -e shaperape.love ]] || rm shaperape.love
 	@[[ ! -e pkg ]] || rm -r pkg        
 
 build: clean
-	@zip -r -0 game.love data/*
-	@cd src/ && zip -r ../game.love *
+	@zip -r -0 shaperape.love data/*
+	@cd src/ && zip -r ../shaperape.love *
 
 run: build
-	@love game.love
+	@love shaperape.love
