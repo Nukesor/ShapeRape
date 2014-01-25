@@ -50,6 +50,10 @@ require("events/playerMoved")
 
 GameState = class("GameState", State)
 
+function GameState:__init(size)
+    self.size = size
+end
+
 function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
@@ -58,7 +62,7 @@ function GameState:load()
     self.actionBar = 100
 
     local matrix = {}
-    local nodesOnScreen = 10
+    local nodesOnScreen = self.size
 
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
