@@ -39,13 +39,14 @@ function PlayerControlSystem.fireEvent(self, event)
             local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
             --Sound Yeay
             if targetNode then
-                if targetNode:getComponent("CircleComponent") then
+                print(targetNode:getComponent("ShapeComponent").shape)
+                if targetNode:getComponent("ShapeComponent")=="circle" then
                     AudioCircle:play()
                 end
-                if targetNode:getComponent("RectangleComponent") then
+                if targetNode:getComponent("ShapeComponent")=="rectangle" then
                     AudioRectangle:play()
                 end
-                if targetNode:getComponent("TriangleComponent") then
+                if targetNode:getComponent("ShapeComponent")=="triangle" then
                     AudioTriangle:play()
                 end
 
