@@ -21,6 +21,8 @@ function love.load()
     resources = Resources()
 
     resources:addFont("CoolFont", "data/font/Audiowide-Regular.ttf", 20)
+    resources:addFont("CoolFont40", "data/font/Audiowide-Regular.ttf", 40)
+    resources:addFont("CoolFont100", "data/font/Audiowide-Regular.ttf", 100)
 
     resources:addImage("triangle", "data/img/triangle.png")
     resources:addImage("circle", "data/img/circle.png")

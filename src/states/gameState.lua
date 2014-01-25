@@ -9,6 +9,7 @@ require("components/drawableComponent")
 require("components/animatedMoveComponent")
 require("components/stringComponent")
 require("components/playerChangeCountComponent")
+require("components/animateComponent")
 
 -- NodeStuffComponents
 require("components/node/cornerComponent")
@@ -31,6 +32,7 @@ require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
 require("systems/logic/keyDownSystem")
+require("systems/logic/animateSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")

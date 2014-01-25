@@ -11,12 +11,14 @@ function MenuPointDisplaySystem:update(dt)
 end
 
 function MenuPointDisplaySystem:draw()
+    love.graphics.setColor(255, 255, 255, 255)
     local menu = stack:current()
     for index, item in pairs(menu.menupoints) do
-        love.graphics.setColor(255, 255, 255, 255)
         if menu.index == index then
-            love.graphics.print(item[1], item.x, item.y, 0, 1.5, 1.5)
+            love.graphics.setFont(resources.fonts.CoolFont40)
+            love.graphics.print(item[1], item.x, item.y)
         else
+            love.graphics.setFont(resources.fonts.CoolFont)
             love.graphics.print(item[1], item.x, item.y)
         end
     end
