@@ -139,7 +139,6 @@ end
 
 function GameState:update(dt)
     self.engine:update(dt)
-    self.actionBar = self.actionBar - 200*dt
 end
 
 function GameState:draw()
