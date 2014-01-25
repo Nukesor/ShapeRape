@@ -1,6 +1,12 @@
 PlayerControlSystem = class("PlayerControlSystem", System)
 
 function PlayerControlSystem.fireEvent(self, event)
+    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
+    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
+    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
+    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
+    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
+    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
     local player = table.firstElement(self.targets)
     local keymap = {
         left = "left",
@@ -25,6 +31,16 @@ function PlayerControlSystem.fireEvent(self, event)
             playerNode.node = moveComp.targetNode
         end
         local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
+        --Sound Yeay
+        if targetNode:getComponent("CircleComponent") then
+            AudioCircle:play()
+        end
+        if targetNode:getComponent("RectangleComponent") then
+            AudioRectangle:play()
+        end
+        if targetNode:getComponent("TriangleComponent") then
+            AudioTriangle:play()
+        end
         if targetNode then
             local targetPosition = targetNode:getComponent("PositionComponent")
             local origin = playerNode.node:getComponent("PositionComponent")
