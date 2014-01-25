@@ -63,61 +63,60 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-
-    self.holdcounter = self.holdcounter + dt
-    if self.holdcounter > 0.1 then
-        local player = table.firstElement(self.targets)
-        local moveComp = player:getComponent("AnimatedMoveComponent")
-        local playerNode = player:getComponent("PlayerNodeComponent")
-    
-        if moveComp then
-            tween.stopAll()
-            local pos = player:getComponent("PositionComponent")
-            pos.x = moveComp.targetX
-            pos.y = moveComp.targetY
-            playerNode.node = moveComp.targetNode
-        end
-        local keydown
-        if self.pressed then
+    if self.pressed then
+        self.holdcounter = self.holdcounter + dt
+        if self.holdcounter > 0.1337 then
+            local player = table.firstElement(self.targets)
+            local moveComp = player:getComponent("AnimatedMoveComponent")
+            local playerNode = player:getComponent("PlayerNodeComponent")
+        
+            if moveComp then
+                tween.stopAll()
+                local pos = player:getComponent("PositionComponent")
+                pos.x = moveComp.targetX
+                pos.y = moveComp.targetY
+                playerNode.node = moveComp.targetNode
+            end
+            local keydown
             if love.keyboard.isDown(self.pressed) then
                 keydown = self.moveKeymap[self.pressed]
             else
                 self.pressed = nil
             end
-        end
+        
+            local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
     
-        local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
-
-        local playerWillMove = false
+            local playerWillMove = false
     
-        if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
-            playerWillMove = true
-        elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
-            playerWillMove = true
-            local countComp = player:getComponent("PlayerChangeCountComponent")
-            countComp.count = countComp.count + 1
+            if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
+                playerWillMove = true
+            elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape then
+                playerWillMove = true
+                local countComp = player:getComponent("PlayerChangeCountComponent")
+                countComp.count = countComp.count + 1
     
-            if targetNode:getComponent("ShapeComponent").shape=="circle" then
-                love.audio.rewind()
-                resources.sounds.pling:play()
-            end
-            if targetNode:getComponent("ShapeComponent").shape=="square" then
-                love.audio.rewind()
-                resources.sounds.plinglo:play()
-            end
-            if targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                if targetNode:getComponent("ShapeComponent").shape=="circle" then
                     love.audio.rewind()
-                    resources.sounds.plinghi:play()
+                    resources.sounds.pling:play()
+                end
+                if targetNode:getComponent("ShapeComponent").shape=="square" then
+                    love.audio.rewind()
+                    resources.sounds.plinglo:play()
+                end
+                if targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                        love.audio.rewind()
+                        resources.sounds.plinghi:play()
+                end
             end
+            if playerWillMove then                
+                targetNode:removeComponent("ShapeComponent")
+                targetNode:removeComponent("DrawableComponent")
+                local targetPosition = targetNode:getComponent("PositionComponent")
+                local origin = playerNode.node:getComponent("PositionComponent")
+                player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
+                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[keydown]))        
+            end
+            self.holdcounter = 0
         end
-        if playerWillMove then                
-            targetNode:removeComponent("ShapeComponent")
-            targetNode:removeComponent("DrawableComponent")
-            local targetPosition = targetNode:getComponent("PositionComponent")
-            local origin = playerNode.node:getComponent("PositionComponent")
-            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
-            stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[keydown]))        
-        end
-        self.holdcounter = 0
     end  
 end 
