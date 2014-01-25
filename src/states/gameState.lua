@@ -1,4 +1,5 @@
 tween = require("lib/tween/tween")
+
 -- Components
 require("components/positionComponent")
 require("components/playerNodeComponent")
@@ -20,6 +21,7 @@ require("components/particle/particleTimerComponent")
 -- Models
 require("models/nodeModel")
 require("models/playerModel")
+
 --Systems
 -- Logic
 require("systems/event/playerControlSystem")
@@ -38,6 +40,7 @@ require("systems/draw/stringDrawSystem")
 require("systems/draw/actionBarDisplaySystem")
 
 --Events
+require("events/playerMoved")
 
 GameState = class("GameState", State)
 

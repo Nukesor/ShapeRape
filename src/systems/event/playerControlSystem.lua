@@ -7,6 +7,7 @@ function PlayerControlSystem.fireEvent(self, event)
     AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
     AudioCircle:setVolume(0.9) -- 90% of ordinary volume
     AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
+
     local player = table.firstElement(self.targets)
     local keymap = {
         left = "left",
@@ -36,21 +37,18 @@ function PlayerControlSystem.fireEvent(self, event)
             if targetNode:getComponent("CircleComponent") then
                 AudioCircle:play()
             end
-        end
-        if targetNode then
             if targetNode:getComponent("RectangleComponent") then
                 AudioRectangle:play()
             end
-        end
-        if targetNode then
             if targetNode:getComponent("TriangleComponent") then
                 AudioTriangle:play()
             end
-        end
-        if targetNode then
+
             local targetPosition = targetNode:getComponent("PositionComponent")
             local origin = playerNode.node:getComponent("PositionComponent")
             player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
+
+            stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode))
         end
     end
 end
