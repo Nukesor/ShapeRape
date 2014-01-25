@@ -17,6 +17,13 @@ function PlayerChangeSystem:playerMoved(event)
         else
             nextShape = "circle"
         end
+        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:play()
+        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:play()
+        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:play()
+ 
         player:getComponent("ShapeComponent").shape = nextShape
         player:getComponent("ParticleComponent").particle:setImage(resources.images[nextShape])
         player:getComponent("DrawableComponent").image = resources.images[nextShape]
