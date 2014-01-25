@@ -115,6 +115,8 @@ function GameState:load()
     matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
 
     -- Player initialization
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("ShapeComponent")
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     -- Highscore
