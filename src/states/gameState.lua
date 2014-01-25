@@ -148,8 +148,8 @@ function GameState:load()
     self.engine:addSystem(AnimatedMoveSystem(), "logic", 2)
     self.engine:addSystem(ParticlePositionSyncSystem(), "logic", 3)
     self.engine:addSystem(AnimateSystem(), "logic", 4)
-    self.engine:addSystem(GameOverSystem(), "logic", 5)    
-    self.engine:addSystem(playercontrol,"logic", 6)
+    self.engine:addSystem(playercontrol,"logic", 5)
+    self.engine:addSystem(GameOverSystem(), "logic", 6)    
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
