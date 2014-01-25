@@ -8,10 +8,7 @@ function DrawSystem:draw()
     local nodeWidth = stack:current().nodeWidth
     local middleoffset = nodeWidth/2
 
-    local rotateflag = 0.05
-    if (love.math.random(0,5) < 2) then
-    	rotateflag = 0.05
-    end
+    local rotateflag = 0
 
     for index, entity in pairs(self.targets) do
         local drawable = entity:getComponent("DrawableComponent")
