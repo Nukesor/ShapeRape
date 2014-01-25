@@ -24,7 +24,7 @@ function love.load()
 
     resources:addImage("triangle", "data/img/triangle.png")
     resources:addImage("circle", "data/img/circle.png")
-    resources:addImage("rectangle", "data/img/square.png")
+    resources:addImage("square", "data/img/square.png")
 
     resources:load()
 
