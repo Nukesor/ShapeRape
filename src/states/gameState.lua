@@ -51,7 +51,7 @@ function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
-    self.highscore = 0
+    self.score = 0
     self.actionBar = 100
 
     local matrix = {}
@@ -119,11 +119,11 @@ function GameState:load()
     matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
-    -- Highscore
-    local highscore = Entity()
-    highscore:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
-    highscore:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Highscore:  %i", {{self, "highscore"}}))
-    self.engine:addEntity(highscore)
+    -- score
+    local scoreString = Entity()
+    scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
+    scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
+    self.engine:addEntity(scoreString)
 
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
@@ -151,6 +151,7 @@ function GameState:load()
 end
 
 function GameState:update(dt)
+    self.score = self.score + dt*100
     self.engine:update(dt)
 end
 

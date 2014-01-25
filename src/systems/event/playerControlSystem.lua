@@ -42,15 +42,15 @@ function PlayerControlSystem.fireEvent(self, event)
             playerWillMove = true
             local countComp = player:getComponent("PlayerChangeCountComponent")
             countComp.count = countComp.count + 1
-                if targetNode:getComponent("ShapeComponent").shape=="circle" then
-                    resources.sounds.pling:play()
-                end
-                if targetNode:getComponent("ShapeComponent").shape=="rectangle" then
-                    resources.sounds.plinglo:play()
-                end
-                if targetNode:getComponent("ShapeComponent").shape=="triangle" then
-                    resources.sounds.plinghi:play()
-                end
+            if targetNode:getComponent("ShapeComponent").shape=="circle" then
+                resources.sounds.pling:play()
+            end
+            if targetNode:getComponent("ShapeComponent").shape=="square" then
+                resources.sounds.plinglo:play()
+            end
+            if targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                resources.sounds.plinghi:play()
+            end
         end
         if playerWillMove then                
                 targetNode:removeComponent("ShapeComponent")
