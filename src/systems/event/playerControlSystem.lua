@@ -2,7 +2,6 @@ PlayerControlSystem = class("PlayerControlSystem", System)
 
 function PlayerControlSystem.fireEvent(self, event)
     local player = table.firstElement(self.targets)
-    local container = player:getComponent("PlayerNodeComponent").node
     local keymap = {
         left = "left",
         a = "left",
@@ -14,8 +13,18 @@ function PlayerControlSystem.fireEvent(self, event)
         s = "down"
     }
 
-    if keymap[event.key] and player:getComponent("AnimatedMoveComponent") == nil then
-        local targetNode = container:getComponent("LinkComponent")[keymap[event.key]]
+    if keymap[event.key] then
+        local moveComp = player:getComponent("AnimatedMoveComponent")
+        local playerNode = player:getComponent("PlayerNodeComponent")
+
+        if moveComp then
+            print("ported")
+            local pos = player:getComponent("PositionComponent")
+            pos.x = moveComp.targetX
+            pos.y = moveComp.targetY
+            playerNode.node = moveComp.targetNode
+        end
+        local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
         if targetNode then
             local targetPosition = targetNode:getComponent("PositionComponent")
             player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, targetNode))

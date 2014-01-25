@@ -5,7 +5,7 @@ function AnimatedMoveSystem:update()
 		local moveComp = entity:getComponent("AnimatedMoveComponent")
 		local position = entity:getComponent("PositionComponent")
 
-		local addValue = 10
+		local addValue = 20
 
 		if moveComp.targetX < position.x - addValue then position.x = position.x - addValue
 		elseif moveComp.targetX > position.x + addValue then position.x = position.x + addValue
