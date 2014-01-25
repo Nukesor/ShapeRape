@@ -30,6 +30,7 @@ function LevelGeneratorSystem:fireEvent(event)
     --    end
     --    if count < 3 then
             local corner
+            local othercorner
             if direction == "left" then
                 corner = self:getCorner("topleft")
             elseif direction == "right" then
@@ -42,6 +43,16 @@ function LevelGeneratorSystem:fireEvent(event)
             self:addRow(corner, direction)
             self:changeCorners(direction)
             self:shiftNodes(direction)
+            if direction == "left" then
+                othercorner = self:getCorner("topright")
+            elseif direction == "right" then
+                othercorner = self:getCorner("topleft")
+            elseif direction == "up" then
+                othercorner = self:getCorner("bottomleft")
+            elseif direction == "down" then
+                othercorner = self:getCorner("topleft")
+            end
+            self:removeRow(othercorner, direction)
     --    end
     end
 end
@@ -139,6 +150,33 @@ function LevelGeneratorSystem:shiftNodes(direction)
     end
 end
 
+function LevelGeneratorSystem:removeRow(corner, direction)
+    local counterdirection, frontlink, backlink
+    if direction == "right" then
+        counterdirection = "left"
+        frontlink = "down"
+        backlink = "up"
+    elseif direction == "left" then
+        counterdirection = "right"
+        frontlink = "down"
+        backlink = "up"
+    elseif direction == "up" then
+        counterdirection = "down"
+        frontlink = "right"
+        backlink = "left"
+    elseif direction == "down" then
+        counterdirection = "up"
+        frontlink = "right"
+        backlink = "left"
+    end
+
+    local oldcorner = corner:getComponent("LinkComponent")[counterdirection]
+    while oldcorner do
+        stack:current().engine:removeEntity(oldcorner)
+        oldcorner:getComponent("LinkComponent")[direction]:getComponent("LinkComponent")[counterdirection] = nil
+        oldcorner = oldcorner:getComponent("LinkComponent")[frontlink]
+    end
+end
 function LevelGeneratorSystem:getRequiredComponents()
     return {"CornerComponent"}
 end
