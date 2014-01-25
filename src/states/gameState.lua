@@ -170,11 +170,11 @@ function GameState:load()
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
-    self.engine:addSystem(ParticleDrawSystem(), "draw", 2)
-    self.engine:addSystem(DrawSystem(), "draw", 3)
-    self.engine:addSystem(StringDrawSystem(), "draw", 4)
-    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 5)
-    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
+    self.engine:addSystem(DrawSystem(), "draw", 2)
+    self.engine:addSystem(StringDrawSystem(), "draw", 3)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 4)
+    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 5)
+    self.engine:addSystem(ParticleDrawSystem(), "draw", 6)
 end
 
 function GameState:update(dt)
