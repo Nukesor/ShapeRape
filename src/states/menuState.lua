@@ -33,18 +33,18 @@ function MenuState:load()
     for index, value in pairs(save.highscore) do
         local highScore = Entity()
         local targetY = targetY*index +love.graphics.getHeight()*1/10
-        local positionComponent = PositionComponent(x, y)
+        local positionComponent = PositionComponent(x, targetY)
         highScore:addComponent(positionComponent)
-        highScore:addComponent(AnimateComponent(1+(0.15*index), positionComponent, {x = targetX, y = targetY}, "outQuad"))
+        highScore:addComponent(AnimateComponent((0.2*index), positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
         highScore:addComponent(StringComponent(resources.fonts.CoolFont40, {255, 255, 255, 255}, "%i", {{save.highscore, index}}))
         self.engine:addEntity(highScore)
     end
 
     local highDescriptor = Entity()
-    positionComponent = PositionComponent(x, y+100)
+    positionComponent = PositionComponent(x, y)
     highDescriptor:addComponent(positionComponent)
     highDescriptor:addComponent(AnimateComponent(2, positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
-    highDescriptor:addComponent(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "Highscore", {}))
+    highDescriptor:addComponent(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "Highscores", {}))
     self.engine:addEntity(highDescriptor)
 
     self.index = 1

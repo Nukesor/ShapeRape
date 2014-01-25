@@ -1,0 +1,7 @@
+- better color scheme
+- more particles
+- color animation for player
+- animation (particle system?) for item "filling" the player
+- menu juice
+- icon for change-shape-powerups
+- pulsing shapes
