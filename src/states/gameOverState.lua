@@ -7,6 +7,7 @@ function GameOverState:load()
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
     self.menupoints = {{"Restart", function() stack:popload() end}, 
+                        {"Main Menu", function() stack:pop() stack:pop() end},
                         {"Exit Game", function() love.event.quit() end}}
     self.index = 1
 
