@@ -1,5 +1,7 @@
 tween = require("lib/tween/tween")
 
+require("states/pauseState")
+
 -- Components
 require("components/positionComponent")
 require("components/playerNodeComponent")

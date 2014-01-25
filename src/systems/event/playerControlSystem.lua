@@ -11,12 +11,17 @@ function PlayerControlSystem.fireEvent(self, event)
         up = "up",
         w = "up",
         down = "down",
-        s = "down"
+        s = "down",
+        escape = "pause",
+        p = "pause"
     }
 
     if keymap[event.key] then
-        local moveComp = player:getComponent("AnimatedMoveComponent")
-        local playerNode = player:getComponent("PlayerNodeComponent")
+        if keymap[event.key] == "pause" then
+            stack:push(PauseState())
+        else
+            local moveComp = player:getComponent("AnimatedMoveComponent")
+            local playerNode = player:getComponent("PlayerNodeComponent")
 
         if moveComp then
             tween.stopAll()
@@ -35,12 +40,12 @@ function PlayerControlSystem.fireEvent(self, event)
         end
         if playerWillMove then                
             targetNode:removeComponent("ShapeComponent")
+                local targetPosition = targetNode:getComponent("PositionComponent")
+                local origin = playerNode.node:getComponent("PositionComponent")
+                player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
 
-            local targetPosition = targetNode:getComponent("PositionComponent")
-            local origin = playerNode.node:getComponent("PositionComponent")
-            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
-
-            stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode))
+                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode))
+            end
         end
     end
 end
