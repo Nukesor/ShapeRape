@@ -11,6 +11,15 @@ function PauseState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
+    local screenWidth = love.graphics.getWidth()
+
+    for index, item in pairs(self.menupoints) do
+        item.x = (screenWidth/3)
+        item.y = -100
+        item.targetX = item.x
+        item.targetY = 200 + (100 * index)
+    end
+
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
     self.index = 1

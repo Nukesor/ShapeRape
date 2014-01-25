@@ -9,9 +9,19 @@ function MenuState:load()
 
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
-    self.menupoints = {{"Start Game", function() stack:push(GameState()) end}, 
-                        {"Highscore", function() end},
-                        {"Exit Game", function() love.event.quit() end}}
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+
+    self.menupoints = {{"Play!", function() stack:push(GameState()) end}, 
+                        {"Exit", function() love.event.quit() end}}
+
+    for index, item in pairs(self.menupoints) do
+        item.x = screenWidth/5
+        item.y = -100
+        item.targetX = item.x
+        item.targetY = (1/2)*screenHeight + (100 * index)
+    end
+
     self.index = 1
 
     local menuPointDisplaySystem = MenuPointDisplaySystem()

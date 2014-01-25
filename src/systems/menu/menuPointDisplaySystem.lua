@@ -1,11 +1,8 @@
 MenuPointDisplaySystem = class("MenuPointDisplaySystem", System)
 
 function MenuPointDisplaySystem:__init()
-    local screenWidth = love.graphics.getWidth()
     for index, item in pairs(stack:current().menupoints) do
-        item.x = (screenWidth/2)-100
-        item.y = -200
-        tween.start(0.5/index, item, {x = item.x, y = 200 + (100 * index)}, "inOutExpo", self.animationFinished, self)
+        tween.start(0.5/index, item, {x = item.targetX, y = item.targetY}, "inOutExpo", self.animationFinished, self)
     end
 end
 
