@@ -1,24 +1,22 @@
 AnimatedMoveSystem = class("AnimatedMoveSystem", System)
 
-function AnimatedMoveSystem:update()
+function AnimatedMoveSystem:movementFinished(entity)
+	local moveComp = entity:getComponent("AnimatedMoveComponent")
+	entity:getComponent("PlayerNodeComponent").node = moveComp.targetNode
+	entity:removeComponent("AnimatedMoveComponent")
+end
+
+function AnimatedMoveSystem:update(dt)
 	for index, entity in pairs(self.targets) do
 		local moveComp = entity:getComponent("AnimatedMoveComponent")
 		local position = entity:getComponent("PositionComponent")
 
-		local addValue = 20
-
-		if moveComp.targetX < position.x - addValue then position.x = position.x - addValue
-		elseif moveComp.targetX > position.x + addValue then position.x = position.x + addValue
-		else position.x = moveComp.targetX end
-		if moveComp.targetY < position.y - addValue then position.y = position.y - addValue
-		elseif moveComp.targetY > position.y + addValue then position.y = position.y + addValue
-		else position.y = moveComp.targetY end
-
-		if position.x == moveComp.targetX and position.y == moveComp.targetY then
-			entity:getComponent("PlayerNodeComponent").node = moveComp.targetNode
-			entity:removeComponent("AnimatedMoveComponent")
+		if moveComp.tweenID == nil then
+			moveComp.tweenID = 
+				tween.start(0.1, position, {x = moveComp.targetX, y = moveComp.targetY}, "inOutQuad", self.movementFinished, self, entity)
 		end
 	end
+	tween.update(dt)
 end
 
 function AnimatedMoveSystem:getRequiredComponents()

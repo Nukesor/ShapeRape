@@ -1,9 +1,7 @@
 PlayerModel = class("PlayerModel", Entity)
 
 function PlayerModel:__init(start,nodeWidth)
-
     local scaledsize = 0.3
-
 
     self:addComponent(PlayerNodeComponent(start))
     self:addComponent(CircleComponent())
@@ -11,7 +9,7 @@ function PlayerModel:__init(start,nodeWidth)
     self:addComponent(ParticleComponent(resources.images.circle, 500))
 
     local position = self:getComponent("PlayerNodeComponent").node:getComponent("PositionComponent")
-    self:addComponent(position)
+    self:addComponent(PositionComponent(position.x, position.y))
     local selfColor = ColorComponent(255, 255, 255)
     self:addComponent(selfColor)
     local particle = self:getComponent("ParticleComponent").particle

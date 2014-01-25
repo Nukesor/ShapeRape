@@ -18,6 +18,7 @@ function PlayerControlSystem.fireEvent(self, event)
         local playerNode = player:getComponent("PlayerNodeComponent")
 
         if moveComp then
+            tween.stopAll()
             local pos = player:getComponent("PositionComponent")
             pos.x = moveComp.targetX
             pos.y = moveComp.targetY
@@ -26,7 +27,8 @@ function PlayerControlSystem.fireEvent(self, event)
         local targetNode = playerNode.node:getComponent("LinkComponent")[keymap[event.key]]
         if targetNode then
             local targetPosition = targetNode:getComponent("PositionComponent")
-            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, targetNode))
+            local origin = playerNode.node:getComponent("PositionComponent")
+            player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))
         end
     end
 end
