@@ -125,20 +125,22 @@ end
 
 function LevelGeneratorSystem:shiftNodes(direction)
     for index, entity in pairs(stack:current().engine:getEntityList("LinkComponent")) do
+        local targetX, targetY
         if direction == "right" then
-            entity:getComponent("PositionComponent").x = entity:getComponent("PositionComponent").x - stack:current().nodeWidth
+            targetX = entity:getComponent("PositionComponent").x - stack:current().nodeWidth
         elseif direction == "left" then
-            entity:getComponent("PositionComponent").x = entity:getComponent("PositionComponent").x + stack:current().nodeWidth
+            targetX = entity:getComponent("PositionComponent").x + stack:current().nodeWidth
         elseif direction == "up" then
-            entity:getComponent("PositionComponent").y = entity:getComponent("PositionComponent").y + stack:current().nodeWidth
+            targetY = entity:getComponent("PositionComponent").y + stack:current().nodeWidth
         elseif direction == "down" then
-            entity:getComponent("PositionComponent").y = entity:getComponent("PositionComponent").y - stack:current().nodeWidth
+            targetY = entity:getComponent("PositionComponent").y - stack:current().nodeWidth
         end
+        entity:addComponent(AnimateComponent(0.2, entity:getComponent("PositionComponent"), {x = targetX, y = targetY}, "inOutQuad"))
     end
     local moveComponent = table.firstElement(stack:current().engine:getEntityList("AnimatedMoveComponent"))
         :getComponent("AnimatedMoveComponent")
-    moveComponent.targetX = moveComponent.targetNode:getComponent("PositionComponent").x
-    moveComponent.targetY = moveComponent.targetNode:getComponent("PositionComponent").y
+    moveComponent.targetX = moveComponent.targetNode:getComponent("AnimateComponent").targetX
+    moveComponent.targetY = moveComponent.targetNode:getComponent("AnimateComponent").targetY
 end
 
 function LevelGeneratorSystem:removeRow(corner, direction)

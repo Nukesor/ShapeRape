@@ -15,3 +15,7 @@ function AnimateSystem:animationDone(entity)
 	entity:removeComponent("AnimateComponent")
 	anim.callback(unpack(anim.callbackArgs))
 end
+
+function AnimateSystem:getRequiredComponents()
+	return {"AnimateComponent"}
+end
