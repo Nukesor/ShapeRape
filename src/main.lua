@@ -31,12 +31,18 @@ function love.load()
     resources:addSound("pling", "data/audio/pling.wav", "static")
     resources:addSound("plinglo", "data/audio/pling-lo.wav", "static")
     resources:addSound("plinghi", "data/audio/pling-hi.wav", "static")
+    resources:addMusic("soundtrack", "data/audio/soundtrack.wav", "static")
 
     resources:load()
 
     resources.sounds.pling:setVolume(0.9)
+    resources.sounds.pling:setPitch(0.1)
     resources.sounds.plinglo:setVolume(0.9)
     resources.sounds.plinghi:setVolume(0.9)
+    resources.sounds.plinghi:setPitch(0.4)
+
+    resources.music.soundtrack:play()
+    resources.music.soundtrack:setLooping(true)
 
     love.graphics.setFont(resources.fonts.CoolFont)
 
@@ -49,6 +55,7 @@ end
 
 function love.update(dt)
     stack:current():update(dt)
+    
 end
 
 function love.draw()
