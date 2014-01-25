@@ -2,8 +2,10 @@ PauseState = class("PauseState", State)
 
 function PauseState:__init(screenshot)
     self.screenshot = screenshot
-    self.menupoints = {{"Resume", function() stack:pop() end},
-                    {"Restart", function() stack:popload() end}, 
+    self.menupoints = {{"Continue", function() stack:pop() end},
+                    {"Try Again", function() stack:popload() end},
+                    {"Main Menu", function() stack:pop()
+                                            stack:pop() end},
                     {"Exit Game", function() love.event.quit() end}}
 end
 

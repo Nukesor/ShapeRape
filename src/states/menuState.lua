@@ -22,11 +22,35 @@ function MenuState:load()
         item.targetY = (1/2)*screenHeight + (100 * index)
     end
 
+    self.highScore = 0
+
+    local highScore = Entity()
+    local targetX = love.graphics.getWidth()*(3/5)
+    local targetY = love.graphics.getHeight()/6
+
+    local x = love.graphics.getWidth() + 100
+    local y = targetY
+
+    local positionComponent = PositionComponent(x, y)
+    highScore:addComponent(positionComponent)
+    highScore:addComponent(AnimateComponent(1, positionComponent, {x = targetX, y = targetY}, "outQuad"))
+    highScore:addComponent(StringComponent(resources.fonts.CoolFont100, {255, 255, 255, 255}, "%i", {{self, "highScore"}}))
+    self.engine:addEntity(highScore)
+
+    local highDescriptor = Entity()
+    positionComponent = PositionComponent(x, y+100)
+    highDescriptor:addComponent(positionComponent)
+    highDescriptor:addComponent(AnimateComponent(2, positionComponent, {x = targetX+20, y = targetY + 100}, "inOutQuad"))
+    highDescriptor:addComponent(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "high", {}))
+    self.engine:addEntity(highDescriptor)
+
     self.index = 1
 
     local menuPointDisplaySystem = MenuPointDisplaySystem()
     self.engine:addSystem(menuPointDisplaySystem, "draw", 1)
     self.engine:addSystem(menuPointDisplaySystem, "logic", 1)
+    self.engine:addSystem(AnimateSystem(), "logic", 2)
+    self.engine:addSystem(StringDrawSystem(), "draw", 2)
 
 end
 

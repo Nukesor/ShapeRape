@@ -43,12 +43,15 @@ function PlayerControlSystem.fireEvent(self, event)
             local countComp = player:getComponent("PlayerChangeCountComponent")
             countComp.count = countComp.count + 1
             if targetNode:getComponent("ShapeComponent").shape=="circle" then
+                love.audio.rewind()
                 resources.sounds.pling:play()
             end
             if targetNode:getComponent("ShapeComponent").shape=="square" then
+                love.audio.rewind()
                 resources.sounds.plinglo:play()
             end
             if targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                love.audio.rewind()
                 resources.sounds.plinghi:play()
             end
         end
