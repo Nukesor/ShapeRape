@@ -31,6 +31,7 @@ require("systems/particle/particlePositionSyncSystem")
 require("systems/draw/drawSystem")
 require("systems/draw/gridDrawSystem")
 require("systems/draw/stringDrawSystem")
+require("systems/draw/actionBarDisplaySystem")
 
 --Events
 
@@ -41,6 +42,7 @@ function GameState:__init()
     self.eventmanager = EventManager()
 
     self.highscore = 0
+    self.actionBar = 100
 
     local matrix = {}
     local nodesOnScreen = 10
@@ -126,10 +128,12 @@ function GameState:__init()
     self.engine:addSystem(ParticleDrawSystem(), "draw", 2)
     self.engine:addSystem(DrawSystem(), "draw", 3)
     self.engine:addSystem(StringDrawSystem(), "draw", 4)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 5)
 end
 
 function GameState:update(dt)
     self.engine:update(dt)
+    self.actionBar = self.actionBar - 8*dt
 end
 
 function GameState:draw()
