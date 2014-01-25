@@ -2,6 +2,14 @@ PlayerControlSystem = class("PlayerControlSystem", System)
 
 function PlayerControlSystem.fireEvent(self, event)
 
+    --sound settings
+    AudioCircle = love.audio.newSource("data/audio/pling.wav", "static")
+    AudioRectangle = love.audio.newSource("data/audio/pling-lo.wav", "static")
+    AudioTriangle = love.audio.newSource("data/audio/pling-hi.wav", "static")
+    AudioTriangle:setVolume(0.9) -- 90% of ordinary volume
+    AudioCircle:setVolume(0.9) -- 90% of ordinary volume
+    AudioRectangle:setVolume(0.9) -- 90% of ordinary volume
+
     local player = table.firstElement(self.targets)
     local keymap = {
         left = "left",
