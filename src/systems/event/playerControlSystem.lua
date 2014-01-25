@@ -12,17 +12,7 @@ function PlayerControlSystem:__init()
         s = "down",
         escape = "pause",
         p = "pause"
-    }
-    self.moveKeymap = {
-        left = "left",
-        a = "left",
-        right = "right",
-        d = "right",
-        up = "up",
-        w = "up",
-        down = "down",
-        s = "down",
-        }   
+    }   
     self.holdcounter = 0
     self.pressed = nil
 end
@@ -53,7 +43,7 @@ function PlayerControlSystem.fireEvent(self, event)
             playerNode.node = moveComp.targetNode
         end
     end
-    if self.moveKeymap[event.key] then
+    if self.keymap[event.key] then
         self.pressed = event.key
     end
 end
@@ -79,7 +69,7 @@ function PlayerControlSystem:update(dt)
             end
             local keydown
             if love.keyboard.isDown(self.pressed) then
-                keydown = self.moveKeymap[self.pressed]
+                keydown = self.keymap[self.pressed]
             else
                 self.pressed = nil
             end
