@@ -14,11 +14,14 @@ function MenuState:load()
                         {"Exit Game", function() love.event.quit() end}}
     self.index = 1
 
-    self.engine:addSystem(MenuPointDisplaySystem(), "draw", 1)
+    local menuPointDisplaySystem = MenuPointDisplaySystem()
+    self.engine:addSystem(menuPointDisplaySystem, "draw", 1)
+    self.engine:addSystem(menuPointDisplaySystem, "logic", 1)
+
 end
 
 function MenuState:update(dt)
-    self.engine:update()
+    self.engine:update(dt)
 end
 
 

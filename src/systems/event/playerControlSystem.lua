@@ -24,7 +24,9 @@ function PlayerControlSystem.fireEvent(self, event)
 
     if keymap[event.key] then
         if keymap[event.key] == "pause" then
-            stack:push(PauseState())
+            local canvas = love.graphics.newScreenshot()
+            local screenshot = love.graphics.newImage(canvas)
+            stack:push(PauseState(screenshot))
         else
             local moveComp = player:getComponent("AnimatedMoveComponent")
             local playerNode = player:getComponent("PlayerNodeComponent")
