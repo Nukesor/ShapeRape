@@ -30,6 +30,7 @@ function DrawSystem:draw()
 
         drawable.r = drawable.r + rotateflag
 
+        local color
         if entity:getComponent("ColorComponent") then
             local color = entity:getComponent("ColorComponent")
             love.graphics.setColor(color.r, color.g, color.b)
@@ -37,6 +38,18 @@ function DrawSystem:draw()
 
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
         love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r*intensity, drawable.sx, drawable.sy, offsetX, offsetY)
+-- VERSION VON SVEN         
+--        	color = entity:getComponent("ColorComponent")
+--        	love.graphics.setColor(color.r, color.g, color.b)
+--        end
+
+        -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
+--        love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
+--        love.graphics.setColor(color.r, color.g, color.b, 100)
+--        love.graphics.setBlendMode("additive")
+--        love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx * 1.2, drawable.sy * 1.2, offsetX, offsetY)
+--        love.graphics.setBlendMode("alpha")
+--        love.graphics.setColor(color.r, color.g, color.b, 255)
     end
 end
 
