@@ -45,7 +45,7 @@ function PlayerControlSystem.fireEvent(self, event)
         end
     end
     if self.keymap[event.key] then
-        self.current = self.previous
+        self.previous = self.current
         self.current = event.key
     end
 end
@@ -55,19 +55,23 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-    self. current = nil
     for index, key in pairs(self.keymap) do
+        --print(love.keyboard.isDown(self.keymap[index]))
+
         if not self.current then
-            if love.keyboard.isDown(key) then
+            if love.keyboard.isDown(self.keymap[index]) then
                 self.current = key
             end
         else
-            if love.keyboard.isDown(key) and (love.keyboard.isDown(key) ~= self.previous) then
+            if love.keyboard.isDown(self.keymap[index]) and (self.keymap[index] ~= self.previous) then
                 self.previous = self.current
                 self.current = key
             end
         end
     end
+    --print(self.current)
+    --print(self.previous)
+    --print("---")
 
     if self.current then
         self.holdcounter = self.holdcounter + dt
@@ -83,14 +87,16 @@ function PlayerControlSystem:update(dt)
                 pos.y = moveComp.targetY
                 playerNode.node = moveComp.targetNode
             end
-            local keydown
+            local direction
             if love.keyboard.isDown(self.current) then
-                keydown = self.keymap[self.current]
+                direction = self.keymap[self.current]
             else
                 self.current = nil
+                print("WHAT THE FUCK!")
             end
+            --print(current)
         
-            local targetNode = playerNode.node:getComponent("LinkComponent")[keydown]
+            local targetNode = playerNode.node:getComponent("LinkComponent")[direction]
     
             local playerWillMove = false
     
@@ -123,7 +129,7 @@ function PlayerControlSystem:update(dt)
                 local targetPosition = targetNode:getComponent("PositionComponent")
                 local origin = playerNode.node:getComponent("PositionComponent")
                 player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
-                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, self.keymap[keydown]))        
+                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, direction))        
             end
             self.holdcounter = 0
         end
