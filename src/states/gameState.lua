@@ -75,7 +75,7 @@ function GameState:load()
             elseif random <= 20 then
                 entity:addComponent(ShapeComponent("square"))
                 entity:addComponent(ColorComponent(255, 69, 56))
-                entity:addComponent(DrawableComponent(resources.images.rectangle, 0, 0.2, 0.2, 0, 0))
+                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
                 entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
