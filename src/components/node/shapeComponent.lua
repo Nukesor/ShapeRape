@@ -1,0 +1,1 @@
+ShapeComponent = class("ShapeComponent", Component)
