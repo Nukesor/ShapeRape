@@ -54,6 +54,7 @@ require("systems/draw/playerChangeDisplaySystem")
 --Event
 require("systems/event/playerControlSystem")
 require("systems/event/shapeDestroySystem")
+require("systems/draw/squishyPlayerSystem")
 
 --Events
 require("events/playerMoved")
@@ -210,6 +211,9 @@ function GameState:load()
 
     self.engine:addSystem(shapedestroy)
     self.engine:addSystem(levelgenerator)
+
+    local squishySystem = SquishyPlayerSystem()
+    self.eventmanager:addListener("PlayerMoved", {squishySystem, squishySystem.playerMoved})
 
     local playerChangeSystem = PlayerChangeSystem()
     self.eventmanager:addListener("PlayerMoved", {playerChangeSystem, playerChangeSystem.playerMoved})
