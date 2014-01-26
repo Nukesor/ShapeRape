@@ -22,13 +22,20 @@ function DrawSystem:draw()
         end
 
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
-        love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
--- VERSION VON SVEN         
---        	color = entity:getComponent("ColorComponent")
---        	love.graphics.setColor(color.r, color.g, color.b)
---        end
+        if entity:getComponent("WobbleComponent") then
+            scale = 1 + 0.1*math.sin(entity:getComponent("WobbleComponent").value)
+            love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx*scale, drawable.sy*scale, offsetX, offsetY)
+        else
+            love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
+        end
 
-        -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
+
+--        VERSION VON SVEN         
+--        color = entity:getComponent("ColorComponent")
+--        love.graphics.setColor(color.r, color.g, color.b)
+--        end
+--
+--        -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
 --        love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
 --        love.graphics.setColor(color.r, color.g, color.b, 100)
 --        love.graphics.setBlendMode("additive")

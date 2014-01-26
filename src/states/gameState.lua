@@ -10,6 +10,7 @@ require("components/animatedMoveComponent")
 require("components/stringComponent")
 require("components/playerChangeCountComponent")
 require("components/animateComponent")
+require("components/ultiComponent")
 
 -- NodeStuffComponents
 require("components/node/cornerComponent")
@@ -17,6 +18,7 @@ require("components/node/linkComponent")
 require("components/node/colorComponent")
 require("components/node/shapeComponent")
 require("components/node/powerUpComponent")
+require("components/wobbleComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -27,13 +29,15 @@ require("models/playerModel")
 
 --Systems
 -- Logic
-require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
 require("systems/logic/animateSystem")
 require("systems/logic/randomRotationSystem")
+require("systems/logic/wobbleSystem")
+require("systems/logic/playerColorSystem")
+require("systems/logic/ultiUpdateSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")
@@ -47,8 +51,13 @@ require("systems/draw/stringDrawSystem")
 require("systems/draw/actionBarDisplaySystem")
 require("systems/draw/playerChangeDisplaySystem")
 
+--Event
+require("systems/event/playerControlSystem")
+require("systems/event/shapeDestroySystem")
+
 --Events
 require("events/playerMoved")
+require("events/shapeDestroyEvent")
 
 GameState = class("GameState", State)
 
@@ -164,9 +173,12 @@ function GameState:load()
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
     local levelgenerator = LevelGeneratorSystem()
+    local shapedestroy = ShapeDestroySystem()
     self.eventmanager:addListener("PlayerMoved", {levelgenerator, levelgenerator.fireEvent})
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
+    self.eventmanager:addListener("ShapeDestroyEvent", {shapedestroy, shapedestroy.fireEvent})
 
+    self.engine:addSystem(shapedestroy)
     self.engine:addSystem(levelgenerator)
 
     local playerChangeSystem = PlayerChangeSystem()
@@ -179,15 +191,18 @@ function GameState:load()
     self.engine:addSystem(AnimateSystem(), "logic", 4)
     self.engine:addSystem(playercontrol,"logic", 5)
     self.engine:addSystem(RandomRotationSystem(), "logic", 6)
-    self.engine:addSystem(GameOverSystem(), "logic", 7)
+    self.engine:addSystem(WobbleSystem(), "logic", 7)
+    self.engine:addSystem(PlayerColorSystem(), "logic", 8)
+    self.engine:addSystem(UltiUpdateSystem(), "logic", 9)
+    self.engine:addSystem(GameOverSystem(), "logic", 60)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
-    self.engine:addSystem(DrawSystem(), "draw", 2)
-    self.engine:addSystem(StringDrawSystem(), "draw", 3)
-    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 4)
-    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 5)
-    self.engine:addSystem(ParticleDrawSystem(), "draw", 6)
+    self.engine:addSystem(StringDrawSystem(), "draw", 2)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 3)
+    self.engine:addSystem(ParticleDrawSystem(), "draw", 4)
+    self.engine:addSystem(DrawSystem(), "draw", 5)
+    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
 end
 
 function GameState:update(dt)

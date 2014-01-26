@@ -6,4 +6,5 @@ function NodeModel:__init(x, y, direction, node)
     if direction and node then
         self:getComponent("LinkComponent")[direction] = node
     end
+    self:addComponent(WobbleComponent())
 end

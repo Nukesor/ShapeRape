@@ -55,7 +55,7 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-
+    -- Reset Slowmo because we don't want soggy controls
     if stack:current().activeSlowmo then
         dt = dt*2
     end
@@ -110,6 +110,7 @@ function PlayerControlSystem:update(dt)
                 playerWillMove = true
                 local countComp = player:getComponent("PlayerChangeCountComponent")
                 countComp.count = countComp.count + 1
+                
                 stack:current().actionBar = stack:current().actionBar + 5
                 if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
     
@@ -127,19 +128,25 @@ function PlayerControlSystem:update(dt)
             if targetNode and targetNode:getComponent("PowerUpComponent") then
                 if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
                     stack:current().slowmo = stack:current().slowmo + 2
-                    targetNode:removeComponent("PowerUpComponent")
                 elseif targetNode:getComponent("PowerUpComponent").type == "ShapeChange" then
                     player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
                     player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
-                    targetNode:removeComponent("PowerUpComponent")
-                    targetNode:removeComponent("ShapeComponent")
-                    targetNode:removeComponent("DrawableComponent")
+                elseif targetNode:getComponent("PowerUpComponent").type == "DestroyShapes" then
+                    stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:getComponent("ShapeComponent").shape))
                 end
+                targetNode:removeComponent("PowerUpComponent")
                 playerWillMove = true
             end
-            if playerWillMove then                
-                targetNode:removeComponent("ShapeComponent")
-                targetNode:removeComponent("DrawableComponent")
+            if player:getComponent("UltiComponent") then
+                playerWillMove = true
+            end
+            if playerWillMove and targetNode then                
+                if targetNode:getComponent("ShapeComponent") then
+                    targetNode:removeComponent("ShapeComponent")
+                end
+                if targetNode:getComponent("DrawableComponent") then
+                    targetNode:removeComponent("DrawableComponent")
+                end
                 local targetPosition = targetNode:getComponent("PositionComponent")
                 local origin = playerNode.node:getComponent("PositionComponent")
                 player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            

@@ -7,6 +7,7 @@ function MenuState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
+
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
     local screenWidth = love.graphics.getWidth()
@@ -55,6 +56,7 @@ function MenuState:load()
     self.engine:addSystem(AnimateSystem(), "logic", 2)
     self.engine:addSystem(StringDrawSystem(), "draw", 2)
 
+    love.graphics.setBackgroundColor(5,5,18)
 end
 
 
