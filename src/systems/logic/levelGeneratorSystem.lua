@@ -110,14 +110,16 @@ function LevelGeneratorSystem:addRow(corner, direction)
                     local shape
                     if random3 == 1 then
                         shape = "circle"
+                        entity:addComponent(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 2 then
                         shape = "square"
+                        entity:addComponent(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 3 then
                         shape = "triangle"
+                        entity:addComponent(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
                     end
                         entity:addComponent(ShapeComponent(shape))
                         entity:addComponent(ColorComponent(255, 255, 0))
-                        entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
                 elseif random2 ==3 then
                     local random3 = love.math.random(1, 3)
                     if random3 == 1 then
