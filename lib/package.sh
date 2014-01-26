@@ -1,7 +1,7 @@
 #!/bin/bash
 TARGET=$1
 
-GAME="game.love"
+GAME="shaperape.love"
 ROOTDIR=$(pwd)
 
 if ! [ -f $ROOTDIR/$GAME ]; then
@@ -29,7 +29,7 @@ mkdir -p $PKGDIR
 cp $LIBDIR/* $PKGDIR
 
 cd $PKGDIR
-cat $ROOTDIR/game.love >> "$BINARY"
+cat $ROOTDIR/shaperape.love >> "$BINARY"
 mv "$BINARY" $NAME$ext
 
 echo "DONE"

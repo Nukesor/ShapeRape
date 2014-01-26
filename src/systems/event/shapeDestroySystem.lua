@@ -28,7 +28,7 @@ function ShapeDestroySystem:fireEvent(event)
             particle:setColors(255, 255, 255, 255,
                                 255, 255, 0, 255,
                                 200, 0, 0, 255,
-                                255, 100, 0, 155)
+                                255, 100, 0, 10)
             particle:setPosition(position.x+nodeWidth, position.y+nodeWidth)
             particle:setEmitterLifetime(0.6) -- Zeit die der Partikelstrahl anhält
             particle:setParticleLifetime(0.5, 0.6) -- setzt Lebenszeit in min-max
