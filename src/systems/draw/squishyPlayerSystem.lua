@@ -7,7 +7,6 @@ function SquishyPlayerSystem:playerMoved(event)
 	local anim = player:getComponent("AnimateComponent")
 	if anim then 
 		tween.stop(anim.tweenID)
-		print(anim.sx, anim.sy)
 		if anim.sx then drawable.sx = anim.sx end
 		if anim.sy then drawable.sy = anim.sy end
 		player:removeComponent("AnimateComponent")

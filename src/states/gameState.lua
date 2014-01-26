@@ -106,6 +106,7 @@ function GameState:load()
 
     -- Shake Variablen
     self.nextShake = 1
+    self.translate = 10
     self.shakeX = 0
     self.shakeY = 0
     self.shaketimer = 0
@@ -142,24 +143,29 @@ function GameState:load()
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 31 then
-                entity:addComponent(ColorComponent(255,255,0))
-                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
-                entity:addComponent(PowerUpComponent("SlowMotion"))
-            elseif random <= 32 then
-                local random2 = love.math.random(0, 100)
-                entity:addComponent(PowerUpComponent("ShapeChange"))
-                local shape
-                if random2 <= 33 then
-                    shape = "circle"
-                elseif random2 <= 66 then
-                    shape = "square"
-                elseif random2 <= 100 then
-                    shape = "triangle"
-                end
-                    entity:addComponent(ShapeComponent(shape))
-                    entity:addComponent(ColorComponent(255, 141, 0))
-                    entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
-            end 
+                local random2 = love.math.random(1,2)
+                if random2 == 1 then
+                    entity:addComponent(ColorComponent(255,255,0))
+                    entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                    entity:addComponent(PowerUpComponent("SlowMotion"))
+                elseif random2 == 2 then
+                    local random3 = love.math.random(1, 3)
+                    entity:addComponent(PowerUpComponent("ShapeChange"))
+                    local shape
+                    if random3 == 1 then
+                        shape = "circle"
+                        entity:addComponent(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
+                    elseif random3 == 2 then
+                        shape = "square"
+                        entity:addComponent(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
+                    elseif random3 == 3 then
+                        shape = "triangle"
+                        entity:addComponent(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
+                    end
+                        entity:addComponent(ShapeComponent(shape))
+                        entity:addComponent(ColorComponent(255, 255, 0))
+                end 
+            end
         end
     end
     for x, column in pairs(matrix) do
@@ -250,8 +256,8 @@ function GameState:update(dt)
         self.nextShake = self.nextShake - (dt*50)
         if self.nextShake < 0 then
             self.nextShake = 1
-            self.shakeX = math.random(-10, 10)
-            self.shakeY = math.random(-10, 10)
+            self.shakeX = math.random(-self.translate, self.translate)
+            self.shakeY = math.random(-self.translate, self.translate)
         end
         self.shaketimer = self.shaketimer - dt
     end

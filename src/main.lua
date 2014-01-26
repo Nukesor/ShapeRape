@@ -33,6 +33,10 @@ function love.load()
     resources:addImage("bombCircle", "data/img/bombCircle.png")
     resources:addImage("bombSquare", "data/img/bombSquare.png")
 
+    resources:addImage("changeTriangle", "data/img/changeTriangle.png")
+    resources:addImage("changeCircle", "data/img/changeCircle.png")
+    resources:addImage("changeSquare", "data/img/changeSquare.png")
+
     resources:addSound("pling", "data/audio/pling.wav", "static")
     resources:addSound("plinglo", "data/audio/pling-lo.wav", "static")
     resources:addSound("plinghi", "data/audio/pling-hi.wav", "static")

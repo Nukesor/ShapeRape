@@ -1,7 +1,9 @@
 ShapeDestroySystem = class("ShapeDestroySystem", System)
 
 function ShapeDestroySystem:fireEvent(event)
+    local bomb = false
     for index, entity in pairs(self.targets) do
+        bomb = true
         if entity:getComponent("ShapeComponent").shape == event.shape then
             entity:removeComponent("ShapeComponent")
             entity:removeComponent("DrawableComponent")
@@ -36,9 +38,12 @@ function ShapeDestroySystem:fireEvent(event)
             particle:setSpread(360)
             particle:setRadialAcceleration((radius*-7.5), (radius*-7.5))
             particle:start()
-
             stack:current().engine:addEntity(explosion)
         end
+    end
+    if bomb then
+        stack:current().shaketimer = 0.5
+        stack:current().translate = 10
     end
 end
 

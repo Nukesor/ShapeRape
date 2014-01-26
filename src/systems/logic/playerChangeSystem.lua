@@ -7,10 +7,17 @@ function PlayerChangeSystem:playerMoved(event)
     
     if player:getComponent("PlayerChangeCountComponent").count > stack:current().size-1 then
         stack:current().shaketimer = 0.4
+        stack:current().translate = 10
+
+
+        stack:current().actionBar = stack:current().actionBar + 10
+        if stack:current().actionBar > 100 then
+            stack:current().actionBar = 100 
+        end
 
         player:getComponent("PlayerChangeCountComponent").count = 0
         player:getComponent("PlayerChangeCountComponent").ulti = player:getComponent("PlayerChangeCountComponent").ulti + 1
-        if player:getComponent("PlayerChangeCountComponent").ulti > 5 then
+        if player:getComponent("PlayerChangeCountComponent").ulti > 3 then
             player:addComponent(UltiComponent())
             player:getComponent("PlayerChangeCountComponent").ulti = 0
         end
