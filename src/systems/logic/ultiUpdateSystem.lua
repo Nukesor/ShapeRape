@@ -12,6 +12,7 @@ function UltiUpdateSystem:update(dt)
             entity:getComponent("ColorComponent").r = love.math.random(0, 255)
             entity:getComponent("ColorComponent").g = love.math.random(0, 255)
             entity:getComponent("ColorComponent").b = love.math.random(0, 255)
+            stack:current().shaketimer = 0.1
         end
     end
 end

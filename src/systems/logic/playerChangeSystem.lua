@@ -10,7 +10,7 @@ function PlayerChangeSystem:playerMoved(event)
 
         player:getComponent("PlayerChangeCountComponent").count = 0
         player:getComponent("PlayerChangeCountComponent").ulti = player:getComponent("PlayerChangeCountComponent").ulti + 1
-        if player:getComponent("PlayerChangeCountComponent").ulti > 0 then
+        if player:getComponent("PlayerChangeCountComponent").ulti > 5 then
             player:addComponent(UltiComponent())
             player:getComponent("PlayerChangeCountComponent").ulti = 0
         end
