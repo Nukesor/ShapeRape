@@ -5,6 +5,7 @@
     - PowerUp that lets explode all shapes of a special type
     - Increasing difficulty
     - "Meditation Mode"?
+    - Some additional time bonus when changing shape
 
 # Juice and graphics stuff
     - better color scheme
