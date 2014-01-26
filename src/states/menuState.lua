@@ -7,7 +7,6 @@ function MenuState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
 
-
     self.eventmanager:addListener("KeyPressed", {MenuNavigationSystem, MenuNavigationSystem.fireEvent})
 
     local screenWidth = love.graphics.getWidth()
@@ -41,13 +40,22 @@ function MenuState:load()
         highScore:addComponent(StringComponent(resources.fonts.CoolFont40, {255, 255, 255, 255}, "%i", {{save.highscore, index}}))
         self.engine:addEntity(highScore)
     end
-
+    
     local highDescriptor = Entity()
     positionComponent = PositionComponent(x, y)
     highDescriptor:addComponent(positionComponent)
     highDescriptor:addComponent(AnimateComponent(2, positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
     highDescriptor:addComponent(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "Highscores", {}))
     self.engine:addEntity(highDescriptor)
+
+    local title = Entity()
+    positionComponent = PositionComponent(-500, 100)
+    title:addComponent(positionComponent)
+    targetX = 100
+    targetY = positionComponent.y
+    title:addComponent(AnimateComponent(2, positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
+    title:addComponent(StringComponent(resources.fonts.CoolFont100, {255,255,255,255}, "ShapeRape", {}))
+    self.engine:addEntity(title)
 
     self.index = 1
 
