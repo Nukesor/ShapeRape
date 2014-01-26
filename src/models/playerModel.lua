@@ -1,7 +1,7 @@
 PlayerModel = class("PlayerModel", Entity)
 
 function PlayerModel:__init(start, nodeWidth)
-    local scaledsize = 0.3
+    local scaledsize = (nodeWidth/resources.images.square:getWidth())*0.9
 
     self:addComponent(PlayerNodeComponent(start))
     self:addComponent(ShapeComponent("circle"))
