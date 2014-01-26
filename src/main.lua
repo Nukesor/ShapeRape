@@ -11,10 +11,12 @@ require("core/stackhelper")
 require("core/state")
 require("core/resources")
 require("core/save")
+require("core/achievement")
 -- States
 require("states/menuState")
 require("states/gameState")
 require("states/gameOverState")
+require("states/achievementState")
 
 
 function love.load()
@@ -49,6 +51,8 @@ function love.load()
 
     save = Save()
     save:loadHighscore()
+    achievement = Achievement()
+    achievement:loadAchievements()
     stack = StackHelper()
     stack:push(MenuState())
 end
