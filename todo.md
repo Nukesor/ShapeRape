@@ -1,7 +1,6 @@
 # Gameplay stuff
     - Ultimate after a few morphs
     - Achievements?
-    - PowerUp that lets explode all shapes of a special type
     - Increasing difficulty
     - "Meditation Mode"?
 

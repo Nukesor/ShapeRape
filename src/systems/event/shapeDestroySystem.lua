@@ -16,6 +16,7 @@ function ShapeDestroySystem:fireEvent(event)
 
             explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
             explosion:addComponent(ParticleComponent(resources.images[event.shape], 400))
+            explosion:addComponent(position)
 
             local radius = 100/nodeWidth
             local particle = explosion:getComponent("ParticleComponent").particle
