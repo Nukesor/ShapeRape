@@ -105,6 +105,7 @@ function GameState:load()
 
     -- Shake Variablen
     self.nextShake = 1
+    self.translate = 10
     self.shakeX = 0
     self.shakeY = 0
     self.shaketimer = 0
@@ -246,8 +247,8 @@ function GameState:update(dt)
         self.nextShake = self.nextShake - (dt*50)
         if self.nextShake < 0 then
             self.nextShake = 1
-            self.shakeX = math.random(-10, 10)
-            self.shakeY = math.random(-10, 10)
+            self.shakeX = math.random(-self.translate, self.translate)
+            self.shakeY = math.random(-self.translate, self.translate)
         end
         self.shaketimer = self.shaketimer - dt
     end
