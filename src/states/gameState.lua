@@ -237,12 +237,12 @@ function GameState:load()
 
     if not self.noob then
         self.engine:addSystem(GameOverSystem(), "logic", 60)
+        self.engine:addSystem(ActionBarDisplaySystem(), "draw", 3)
     end
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
     self.engine:addSystem(StringDrawSystem(), "draw", 2)
-    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 3)
     self.engine:addSystem(ParticleDrawSystem(), "draw", 4)
     self.engine:addSystem(DrawSystem(), "draw", 5)
     self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
