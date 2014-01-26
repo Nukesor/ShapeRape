@@ -17,6 +17,7 @@ require("components/node/linkComponent")
 require("components/node/colorComponent")
 require("components/node/shapeComponent")
 require("components/node/powerUpComponent")
+require("components/wobbleComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -34,6 +35,7 @@ require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
 require("systems/logic/animateSystem")
 require("systems/logic/randomRotationSystem")
+require("systems/logic/wobbleSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")
@@ -179,7 +181,8 @@ function GameState:load()
     self.engine:addSystem(AnimateSystem(), "logic", 4)
     self.engine:addSystem(playercontrol,"logic", 5)
     self.engine:addSystem(RandomRotationSystem(), "logic", 6)
-    self.engine:addSystem(GameOverSystem(), "logic", 7)
+    self.engine:addSystem(WobbleSystem(), "logic", 7)
+    self.engine:addSystem(GameOverSystem(), "logic", 8)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
