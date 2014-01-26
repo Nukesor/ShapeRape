@@ -1,20 +1,23 @@
 default: run
 
 clean:
-	@[[ ! -e shaperape.love ]] || rm shaperape.love
+	@[[ ! -e ShapeRape.love ]] || rm ShapeRape.love
 	@[[ ! -e pkg ]] || rm -r pkg        
 
 build: clean
-	@zip -r -0 shaperape.love data/*
-	@cd src/ && zip -r ../shaperape.love *
+	@zip -r -0 ShapeRape.love data/*
+	@cd src/ && zip -r ../ShapeRape.love *
 
 run: build
-	@love shaperape.love
+	@love ShapeRape.love
 
 package-windows:
 	@lib/packagewin.sh
 
 package-linux:
-	@lib/packageunix.sh
+	@lib/packagelinux.sh
 
-package: package-linux package-windows
+package-mac:
+	@lib/packagemac.sh
+
+package: package-linux package-windows package-mac

@@ -1,7 +1,7 @@
 #!/bin/bash
-TARGET=linux_x64
+TARGET=macintosh_x64
 
-GAME="shaperape.love"
+GAME="ShapeRape.love"
 ROOTDIR=$(pwd)
 
 if ! [ -f $ROOTDIR/$GAME ]; then
@@ -14,17 +14,15 @@ echo -n "Packaging for $TARGET... "
 PKGDIR=pkg/$TARGET
 LIBDIR=lib/$TARGET
 NAME=$(lua lib/get_title.lua)
-BINARY=$(cd $LIBDIR && ls love*)
-
-ext=."${BINARY##*.}"
-if [[ $ext == ".love" ]]; then ext=""; fi
+ext=.app
 
 # prepare directory
 mkdir -p $PKGDIR
 
-cp $LIBDIR/* $PKGDIR
+cp $LIBDIR/ $PKGDIR
 cd $PKGDIR
-cat $ROOTDIR/shaperape.love >> "$BINARY"
-mv "$BINARY" $NAME$ext
+[[ ! -e $NAME$ext ]] || rm -r $NAME$ext
+cp -r $ROOTDIR/$LIBDIR/love.app $ROOTDIR/$PKGDIR/$NAME$ext
+cp $ROOTDIR/$GAME $ROOTDIR/$PKGDIR/$NAME$ext/Contents/Resources/$GAME
 
 echo "DONE"

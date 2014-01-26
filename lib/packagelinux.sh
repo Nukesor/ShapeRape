@@ -1,5 +1,5 @@
 #!/bin/bash
-TARGET=windows_x86
+TARGET=linux_x64
 
 GAME="ShapeRape.love"
 ROOTDIR=$(pwd)
@@ -14,15 +14,17 @@ echo -n "Packaging for $TARGET... "
 PKGDIR=pkg/$TARGET
 LIBDIR=lib/$TARGET
 NAME=$(lua lib/get_title.lua)
-BINARY=love.exe
-ext=.exe
+BINARY=$(cd $LIBDIR && ls love*)
 
+ext=."${BINARY##*.}"
 if [[ $ext == ".love" ]]; then ext=""; fi
 
 # prepare directory
 mkdir -p $PKGDIR
+
 cp $LIBDIR/* $PKGDIR
 cd $PKGDIR
-cat $ROOTDIR/$LIBDIR/$BINARY $ROOTDIR/ShapeRape.love > $NAME$ext
+cat $ROOTDIR/ShapeRape.love >> "$BINARY"
+mv "$BINARY" $NAME$ext
 
 echo "DONE"
