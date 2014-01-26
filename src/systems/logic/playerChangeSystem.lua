@@ -12,7 +12,7 @@ function PlayerChangeSystem:playerMoved(event)
 
         stack:current().actionBar = stack:current().actionBar + 10
         if stack:current().actionBar > 100 then
-            stack:current().actionBar = 0 
+            stack:current().actionBar = 100 
         end
 
         player:getComponent("PlayerChangeCountComponent").count = 0
