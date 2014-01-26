@@ -1,5 +1,5 @@
 #!/bin/bash
-TARGET=$1
+TARGET=linux_x64
 
 GAME="shaperape.love"
 ROOTDIR=$(pwd)
@@ -9,17 +9,13 @@ if ! [ -f $ROOTDIR/$GAME ]; then
     exit 1
 fi
 
-if ! [[ $TARGET =~ ^(linux|windows)_x(86|64)$ ]]; then
-    echo "Invalid target: use one of (linux|windows)_x(86|64)"
-    exit 1
-fi
-
 echo -n "Packaging for $TARGET... "
 
 PKGDIR=pkg/$TARGET
 LIBDIR=lib/$TARGET
-BINARY=$(cd $LIBDIR && ls love*)
 NAME=$(lua lib/get_title.lua)
+BINARY=$(cd $LIBDIR && ls love*)
+
 ext=."${BINARY##*.}"
 if [[ $ext == ".love" ]]; then ext=""; fi
 
@@ -27,7 +23,6 @@ if [[ $ext == ".love" ]]; then ext=""; fi
 mkdir -p $PKGDIR
 
 cp $LIBDIR/* $PKGDIR
-
 cd $PKGDIR
 cat $ROOTDIR/shaperape.love >> "$BINARY"
 mv "$BINARY" $NAME$ext

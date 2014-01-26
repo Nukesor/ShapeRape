@@ -10,3 +10,11 @@ build: clean
 
 run: build
 	@love shaperape.love
+
+package-windows:
+	@lib/packagewin.sh
+
+package-linux:
+	@lib/packageunix.sh
+
+package: package-linux package-windows
