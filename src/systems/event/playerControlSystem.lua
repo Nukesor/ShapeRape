@@ -137,7 +137,7 @@ function PlayerControlSystem:update(dt)
                 particle:setEmissionRate(200)
                 particle:setSpeed((radius*80), (radius*80))
                 particle:setSizes(0.05, 0.05)
-                particle:setColors(255, 255, 255, 255)
+                particle:setColors(255, 255, 255, 255, 255,255,255,0)
                 particle:setPosition(position.x+nodeWidth, position.y+nodeWidth)
                 particle:setEmitterLifetime(0.1) -- Zeit die der Partikelstrahl anhält
                 particle:setParticleLifetime(0.2, 0.3) -- setzt Lebenszeit in min-max

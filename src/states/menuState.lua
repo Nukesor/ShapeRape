@@ -20,10 +20,10 @@ function MenuState:load()
                         {"Exit", function() love.event.quit() end}}
 
     for index, item in pairs(self.menupoints) do
-        item.x = screenWidth/5
+        item.x = screenWidth/6
         item.y = -100
         item.targetX = item.x
-        item.targetY = (1/5)*screenHeight + (80 * index)
+        item.targetY = (2/7)*screenHeight + (70 * index)
     end
 
     local targetX = love.graphics.getWidth()*(3/5)
