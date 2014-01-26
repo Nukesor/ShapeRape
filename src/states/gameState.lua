@@ -61,7 +61,7 @@ require("events/shapeDestroyEvent")
 
 GameState = class("GameState", State)
 
-function GameState:__init(size)
+function GameState:__init(size, noob)
     self.size = size
 
     self.bloom = love.graphics.newShader [[
@@ -87,6 +87,7 @@ function GameState:__init(size)
             return vec4(average.rgb + source.rgb/2, average.a + source.a);
         }
     ]]
+    self.noob = noob or false
 end
 
 function GameState:load()
@@ -191,11 +192,13 @@ function GameState:load()
     matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
-    -- score
-    local scoreString = Entity()
-    scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
-    scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
-    self.engine:addEntity(scoreString)
+    if not self.noob then
+        -- score
+        local scoreString = Entity()
+        scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
+        scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
+        self.engine:addEntity(scoreString)
+    end
 
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
@@ -221,7 +224,10 @@ function GameState:load()
     self.engine:addSystem(WobbleSystem(), "logic", 7)
     self.engine:addSystem(PlayerColorSystem(), "logic", 8)
     self.engine:addSystem(UltiUpdateSystem(), "logic", 9)
-    self.engine:addSystem(GameOverSystem(), "logic", 60)
+
+    if not self.noob then
+        self.engine:addSystem(GameOverSystem(), "logic", 60)
+    end
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)

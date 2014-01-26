@@ -16,6 +16,7 @@ function MenuState:load()
     self.menupoints = {{"Play! (Small)", function() stack:push(GameState(8)) end}, 
                         {"Play! (Medium)", function() stack:push(GameState(12)) end},
                         {"Play! (Large)", function() stack:push(GameState(16)) end},
+                        {"Play! (Sandbox)", function() stack:push(GameState(16, true)) end},
                         {"Exit", function() love.event.quit() end}}
 
     for index, item in pairs(self.menupoints) do

@@ -1,5 +1,5 @@
 UltiComponent = class("UltiComponent", Component)
 
 function UltiComponent:__init()
-    self.timer = 10
+    self.timer = 8
 end
