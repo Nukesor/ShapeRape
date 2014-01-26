@@ -15,7 +15,7 @@ function MenuState:load()
     self.menupoints = {{"Arcade Mode - Small", function() stack:push(GameState(8)) end}, 
                         {"Arcade Mode - Medium", function() stack:push(GameState(12)) end},
                         {"Arcade Mode - Large", function() stack:push(GameState(16)) end},
-                        {"Meditation Mode", function() stack:push(GameState(16, true)) end},
+                        {"Meditative Mode", function() stack:push(GameState(16, true)) end},
                         {"Achievements", function() stack:push(AchievementState()) end},
                         {"Exit", function() love.event.quit() end}}
 
