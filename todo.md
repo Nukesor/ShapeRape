@@ -16,3 +16,8 @@
     - animation (particle system?) for item "filling" the player
     - more particles
     - color animation for player
+
+
+Camerashake parameter
+small camerashake beim shape
+increasing difficulty
