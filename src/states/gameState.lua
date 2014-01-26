@@ -63,10 +63,38 @@ GameState = class("GameState", State)
 
 function GameState:__init(size, noob)
     self.size = size
+
+    self.bloom = love.graphics.newShader [[
+        extern int samples = 6;
+        extern float stepSize = 1.9; 
+        extern vec2 size;
+         
+        vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc)
+        {
+            vec4 source = texture2D(tex, tc);
+            vec4 sum = vec4(0);
+            int diff = (samples - 1) / 2;
+
+            for (int x = -diff; x <= diff; x++)
+            {
+                for (int y = -diff; y <= diff; y++)
+                {
+                    vec2 offset = vec2(x, y) * stepSize / size;
+                    sum += texture2D(tex, tc + offset);
+                }
+            }
+            vec4 average = sum / (samples * samples);
+            return vec4(average.rgb + source.rgb/2, average.a + source.a);
+        }
+    ]]
     self.noob = noob or false
 end
 
 function GameState:load()
+    self.bloom:send("size", {love.graphics.getWidth(), love.graphics.getHeight()})
+
+    self.canvas = love.graphics.newCanvas()
+
     self.engine = Engine()
     self.eventmanager = EventManager()
 
@@ -234,10 +262,19 @@ function GameState:update(dt)
 end
 
 function GameState:draw()
+    self.canvas:clear()
+    love.graphics.setCanvas(self.canvas)
     -- Screenshake
     if self.shaketimer > 0 then love.graphics.translate(self.shakeX, self.shakeY) end
 
     self.engine:draw()
+
+    love.graphics.setCanvas()
+    love.graphics.clear()
+    love.graphics.setColor(255,255,255,255)
+    love.graphics.setShader(self.bloom)
+    love.graphics.draw(self.canvas)
+    love.graphics.setShader()
 end
 
 function GameState:keypressed(key, isrepeat)
