@@ -54,6 +54,7 @@ require("systems/draw/playerChangeDisplaySystem")
 --Event
 require("systems/event/playerControlSystem")
 require("systems/event/shapeDestroySystem")
+require("systems/draw/squishyPlayerSystem")
 
 --Events
 require("events/playerMoved")
@@ -61,12 +62,40 @@ require("events/shapeDestroyEvent")
 
 GameState = class("GameState", State)
 
-function GameState:__init(size)
+function GameState:__init(size, noob)
     self.size = size
 
+    self.bloom = love.graphics.newShader [[
+        extern int samples = 6;
+        extern float stepSize = 1.9; 
+        extern vec2 size;
+         
+        vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc)
+        {
+            vec4 source = texture2D(tex, tc);
+            vec4 sum = vec4(0);
+            int diff = (samples - 1) / 2;
+
+            for (int x = -diff; x <= diff; x++)
+            {
+                for (int y = -diff; y <= diff; y++)
+                {
+                    vec2 offset = vec2(x, y) * stepSize / size;
+                    sum += texture2D(tex, tc + offset);
+                }
+            }
+            vec4 average = sum / (samples * samples);
+            return vec4(average.rgb + source.rgb/2, average.a + source.a);
+        }
+    ]]
+    self.noob = noob or false
 end
 
 function GameState:load()
+    self.bloom:send("size", {love.graphics.getWidth(), love.graphics.getHeight()})
+
+    self.canvas = love.graphics.newCanvas()
+
     self.engine = Engine()
     self.eventmanager = EventManager()
 
@@ -77,6 +106,7 @@ function GameState:load()
 
     -- Shake Variablen
     self.nextShake = 1
+    self.translate = 10
     self.shakeX = 0
     self.shakeY = 0
     self.shaketimer = 0
@@ -113,24 +143,29 @@ function GameState:load()
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 31 then
-                entity:addComponent(ColorComponent(255,255,0))
-                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
-                entity:addComponent(PowerUpComponent("SlowMotion"))
-            elseif random <= 32 then
-                local random2 = love.math.random(0, 100)
-                entity:addComponent(PowerUpComponent("ShapeChange"))
-                local shape
-                if random2 <= 33 then
-                    shape = "circle"
-                elseif random2 <= 66 then
-                    shape = "square"
-                elseif random2 <= 100 then
-                    shape = "triangle"
-                end
-                    entity:addComponent(ShapeComponent(shape))
-                    entity:addComponent(ColorComponent(255, 141, 0))
-                    entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
-            end 
+                local random2 = love.math.random(1,2)
+                if random2 == 1 then
+                    entity:addComponent(ColorComponent(255,255,0))
+                    entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                    entity:addComponent(PowerUpComponent("SlowMotion"))
+                elseif random2 == 2 then
+                    local random3 = love.math.random(1, 3)
+                    entity:addComponent(PowerUpComponent("ShapeChange"))
+                    local shape
+                    if random3 == 1 then
+                        shape = "circle"
+                        entity:addComponent(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
+                    elseif random3 == 2 then
+                        shape = "square"
+                        entity:addComponent(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
+                    elseif random3 == 3 then
+                        shape = "triangle"
+                        entity:addComponent(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
+                    end
+                        entity:addComponent(ShapeComponent(shape))
+                        entity:addComponent(ColorComponent(255, 255, 0))
+                end 
+            end
         end
     end
     for x, column in pairs(matrix) do
@@ -164,11 +199,13 @@ function GameState:load()
     matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
-    -- score
-    local scoreString = Entity()
-    scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
-    scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
-    self.engine:addEntity(scoreString)
+    if not self.noob then
+        -- score
+        local scoreString = Entity()
+        scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
+        scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
+        self.engine:addEntity(scoreString)
+    end
 
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
@@ -180,6 +217,9 @@ function GameState:load()
 
     self.engine:addSystem(shapedestroy)
     self.engine:addSystem(levelgenerator)
+
+    local squishySystem = SquishyPlayerSystem()
+    self.eventmanager:addListener("PlayerMoved", {squishySystem, squishySystem.playerMoved})
 
     local playerChangeSystem = PlayerChangeSystem()
     self.eventmanager:addListener("PlayerMoved", {playerChangeSystem, playerChangeSystem.playerMoved})
@@ -194,7 +234,10 @@ function GameState:load()
     self.engine:addSystem(WobbleSystem(), "logic", 7)
     self.engine:addSystem(PlayerColorSystem(), "logic", 8)
     self.engine:addSystem(UltiUpdateSystem(), "logic", 9)
-    self.engine:addSystem(GameOverSystem(), "logic", 60)
+
+    if not self.noob then
+        self.engine:addSystem(GameOverSystem(), "logic", 60)
+    end
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
@@ -213,8 +256,8 @@ function GameState:update(dt)
         self.nextShake = self.nextShake - (dt*50)
         if self.nextShake < 0 then
             self.nextShake = 1
-            self.shakeX = math.random(-10, 10)
-            self.shakeY = math.random(-10, 10)
+            self.shakeX = math.random(-self.translate, self.translate)
+            self.shakeY = math.random(-self.translate, self.translate)
         end
         self.shaketimer = self.shaketimer - dt
     end
@@ -229,10 +272,19 @@ function GameState:update(dt)
 end
 
 function GameState:draw()
+    self.canvas:clear()
+    love.graphics.setCanvas(self.canvas)
     -- Screenshake
     if self.shaketimer > 0 then love.graphics.translate(self.shakeX, self.shakeY) end
 
     self.engine:draw()
+
+    love.graphics.setCanvas()
+    love.graphics.clear()
+    love.graphics.setColor(255,255,255,255)
+    love.graphics.setShader(self.bloom)
+    love.graphics.draw(self.canvas)
+    love.graphics.setShader()
 end
 
 function GameState:keypressed(key, isrepeat)

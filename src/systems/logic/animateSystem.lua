@@ -12,8 +12,10 @@ end
 
 function AnimateSystem:animationDone(entity)
 	local anim = entity:getComponent("AnimateComponent")
-	entity:removeComponent("AnimateComponent")
-	if anim.callback then anim.callback(unpack(anim.callbackArgs)) end
+	if anim then
+		entity:removeComponent("AnimateComponent")
+		if anim.callback then anim.callback(unpack(anim.callbackArgs)) end
+	end
 end
 
 function AnimateSystem:getRequiredComponents()

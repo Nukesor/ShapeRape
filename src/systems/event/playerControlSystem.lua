@@ -124,6 +124,30 @@ function PlayerControlSystem:update(dt)
                     resources.sounds.plinghi:rewind()
                     resources.sounds.plinghi:play()
                 end
+                local nodeWidth = stack:current().nodeWidth/2
+                local position = targetNode:getComponent("PositionComponent")
+                explosion = Entity()
+
+                explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
+                explosion:addComponent(ParticleComponent(resources.images[targetNode:getComponent("ShapeComponent").shape], 400))
+                explosion:addComponent(position)
+
+                local radius = 100/nodeWidth
+                local particle = explosion:getComponent("ParticleComponent").particle
+                particle:setEmissionRate(200)
+                particle:setSpeed((radius*80), (radius*80))
+                particle:setSizes(0.05, 0.05)
+                particle:setColors(255, 255, 255, 255)
+                particle:setPosition(position.x+nodeWidth, position.y+nodeWidth)
+                particle:setEmitterLifetime(0.1) -- Zeit die der Partikelstrahl anhält
+                particle:setParticleLifetime(0.2, 0.3) -- setzt Lebenszeit in min-max
+                -- particle:setOffset(x, y) -- Punkt um den der Partikel rotiert
+                particle:setRotation(0, 360) -- Der Rotationswert des Partikels bei seiner Erstellung
+                particle:setDirection(0)
+                particle:setSpread(360)
+                particle:setRadialAcceleration((radius*-7.5), (radius*-7.5))
+                particle:start()
+                stack:current().engine:addEntity(explosion)
             end
             if targetNode and targetNode:getComponent("PowerUpComponent") then
                 if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
