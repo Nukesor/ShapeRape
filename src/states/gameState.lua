@@ -17,6 +17,7 @@ require("components/node/linkComponent")
 require("components/node/colorComponent")
 require("components/node/shapeComponent")
 require("components/node/powerUpComponent")
+require("components/wobbleComponent")
 -- ParticleComponents
 require("components/particle/particleComponent")
 require("components/particle/particleTimerComponent")
@@ -34,6 +35,8 @@ require("systems/logic/gameOverSystem")
 require("systems/logic/playerChangeSystem")
 require("systems/logic/animateSystem")
 require("systems/logic/randomRotationSystem")
+require("systems/logic/wobbleSystem")
+require("systems/logic/playerColorSystem")
 
 -- Particles
 require("systems/particle/particleDrawSystem")
@@ -60,7 +63,6 @@ end
 function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
-    resources.music.soundtrack:setPitch(1)
 
     self.score = 0
     self.actionBar = 100
@@ -180,15 +182,17 @@ function GameState:load()
     self.engine:addSystem(AnimateSystem(), "logic", 4)
     self.engine:addSystem(playercontrol,"logic", 5)
     self.engine:addSystem(RandomRotationSystem(), "logic", 6)
-    self.engine:addSystem(GameOverSystem(), "logic", 7)
+    self.engine:addSystem(WobbleSystem(), "logic", 7)
+    self.engine:addSystem(PlayerColorSystem(), "logic", 8)
+    self.engine:addSystem(GameOverSystem(), "logic", 9)
 
     -- draw systems
     self.engine:addSystem(GridDrawSystem(), "draw", 1)
-    self.engine:addSystem(DrawSystem(), "draw", 2)
-    self.engine:addSystem(StringDrawSystem(), "draw", 3)
-    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 4)
-    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 5)
-    self.engine:addSystem(ParticleDrawSystem(), "draw", 6)
+    self.engine:addSystem(StringDrawSystem(), "draw", 2)
+    self.engine:addSystem(ActionBarDisplaySystem(), "draw", 3)
+    self.engine:addSystem(ParticleDrawSystem(), "draw", 4)
+    self.engine:addSystem(DrawSystem(), "draw", 5)
+    self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
 end
 
 function GameState:update(dt)
@@ -207,17 +211,9 @@ function GameState:update(dt)
 
     -- Slowmo stuff
     if self.slowmo > 0 then
-        if self.activeSlowmo == false then
-            self.activeSlowmo = true
-            resources.music.soundtrack:setPitch(0.9)
-        end
         self.slowmo = self.slowmo - dt
         self.engine:update(dt/2)
     else
-        if self.activeSlowmo == true then
-            resources.music.soundtrack:setPitch(1)
-            self.activeSlowmo = false
-        end
         self.engine:update(dt)
     end
 end
