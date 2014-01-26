@@ -20,7 +20,7 @@ function PlayerChangeDisplaySystem:draw()
         local offsetY = (resources.images[self.next[shape]]:getHeight())/2+love.math.random(0,10)
 
         local color = entity:getComponent("ColorComponent")
-        love.graphics.setColor(0, 0, 0, 255)
+        love.graphics.setColor(0, 0, 0, 200)
 
         local max = stack:current().size
         local count = entity:getComponent("PlayerChangeCountComponent").count
