@@ -56,7 +56,7 @@ function MenuState:load()
     self.engine:addSystem(AnimateSystem(), "logic", 2)
     self.engine:addSystem(StringDrawSystem(), "draw", 2)
 
-    love.graphics.setBackgroundColor(4,4,20)
+    love.graphics.setBackgroundColor(5,5,18)
 end
 
 
