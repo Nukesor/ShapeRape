@@ -27,5 +27,4 @@ function PlayerModel:__init(start, nodeWidth)
     particle:setRadialAcceleration(20, 30)
     particle:setPosition(position.x+nodeWidth/2, position.y+nodeWidth/2)
     particle:start()
-
 end
