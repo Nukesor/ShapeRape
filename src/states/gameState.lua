@@ -60,7 +60,6 @@ end
 function GameState:load()
     self.engine = Engine()
     self.eventmanager = EventManager()
-    resources.music.soundtrack:setPitch(1)
 
     self.score = 0
     self.actionBar = 100
@@ -207,17 +206,9 @@ function GameState:update(dt)
 
     -- Slowmo stuff
     if self.slowmo > 0 then
-        if self.activeSlowmo == false then
-            self.activeSlowmo = true
-            resources.music.soundtrack:setPitch(0.9)
-        end
         self.slowmo = self.slowmo - dt
         self.engine:update(dt/2)
     else
-        if self.activeSlowmo == true then
-            resources.music.soundtrack:setPitch(1)
-            self.activeSlowmo = false
-        end
         self.engine:update(dt)
     end
 end
