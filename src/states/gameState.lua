@@ -28,7 +28,6 @@ require("models/playerModel")
 
 --Systems
 -- Logic
-require("systems/event/playerControlSystem")
 require("systems/logic/levelGeneratorSystem")
 require("systems/logic/animatedMoveSystem")
 require("systems/logic/gameOverSystem")
@@ -50,8 +49,13 @@ require("systems/draw/stringDrawSystem")
 require("systems/draw/actionBarDisplaySystem")
 require("systems/draw/playerChangeDisplaySystem")
 
+--Event
+require("systems/event/playerControlSystem")
+require("systems/event/shapeDestroySystem")
+
 --Events
 require("events/playerMoved")
+require("events/shapeDestroyEvent")
 
 GameState = class("GameState", State)
 
@@ -167,9 +171,12 @@ function GameState:load()
     -- Eventsystems
     local playercontrol = PlayerControlSystem()
     local levelgenerator = LevelGeneratorSystem()
+    local shapedestroy = ShapeDestroySystem()
     self.eventmanager:addListener("PlayerMoved", {levelgenerator, levelgenerator.fireEvent})
     self.eventmanager:addListener("KeyPressed", {playercontrol, playercontrol.fireEvent})
+    self.eventmanager:addListener("ShapeDestroyEvent", {shapedestroy, shapedestroy.fireEvent})
 
+    self.engine:addSystem(shapedestroy)
     self.engine:addSystem(levelgenerator)
 
     local playerChangeSystem = PlayerChangeSystem()

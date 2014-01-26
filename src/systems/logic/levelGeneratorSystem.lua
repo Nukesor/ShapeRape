@@ -98,24 +98,40 @@ function LevelGeneratorSystem:addRow(corner, direction)
                 entity:addComponent(ShapeComponent("triangle"))
                 entity:addComponent(ColorComponent(69, 255, 56))
                 entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
-            elseif random <= 61 then
-                entity:addComponent(ColorComponent(255,255,0))
-                entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
-                entity:addComponent(PowerUpComponent("SlowMotion"))
-            elseif random <= 62 then
-                local random2 = love.math.random(0, 100)
-                entity:addComponent(PowerUpComponent("ShapeChange"))
-                local shape
-                if random2 <= 33 then
-                    shape = "circle"
-                elseif random2 <= 66 then
-                    shape = "square"
-                elseif random2 <= 100 then
-                    shape = "triangle"
-                end
+            elseif random <= 63 then
+                local random2 = love.math.random(1,10)
+                if random2 == 1 then
+                    entity:addComponent(ColorComponent(255,255,0))
+                    entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                    entity:addComponent(PowerUpComponent("SlowMotion"))
+                elseif random2 == 2 then
+                    local random3 = love.math.random(1, 3)
+                    entity:addComponent(PowerUpComponent("ShapeChange"))
+                    local shape
+                    if random3 == 1 then
+                        shape = "circle"
+                    elseif random3 == 2 then
+                        shape = "square"
+                    elseif random3 == 3 then
+                        shape = "triangle"
+                    end
+                        entity:addComponent(ShapeComponent(shape))
+                        entity:addComponent(ColorComponent(255, 141, 0))
+                        entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
+                elseif random2 <= 10 then
+                    local random3 = love.math.random(1, 3)
+                    if random3 == 1 then
+                        shape = "circle"
+                    elseif random3 == 2 then
+                        shape = "square"
+                    elseif random3 == 3 then
+                        shape = "triangle"
+                    end
+                    entity:addComponent(PowerUpComponent("DestroyShapes"))
                     entity:addComponent(ShapeComponent(shape))
-                    entity:addComponent(ColorComponent(255, 141, 0))
+                    entity:addComponent(ColorComponent(255, 100, 255))
                     entity:addComponent(DrawableComponent(resources.images[shape], 0, 0.2, 0.2, 0, 0))
+                end
             end 
         end
         added:getComponent("LinkComponent")[counterdirection] = corner
