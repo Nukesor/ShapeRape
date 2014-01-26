@@ -55,7 +55,7 @@ function PlayerControlSystem:getRequiredComponents()
 end
 
 function PlayerControlSystem:update(dt)
-
+    -- Reset Slowmo because we don't want soggy controls
     if stack:current().activeSlowmo then
         dt = dt*2
     end

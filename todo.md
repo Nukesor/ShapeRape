@@ -3,6 +3,8 @@
     - Achievements?
     - Increasing difficulty
     - "Meditation Mode"?
+    - Some additional time bonus when changing shape
+    - Some additional time bonus when collecting a shape?
 
 # Juice and graphics stuff
     - better color scheme
