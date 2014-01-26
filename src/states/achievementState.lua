@@ -24,8 +24,7 @@ function AchievementState:load()
     local screenHeight = love.graphics.getHeight()
 
     self.menupoints = {{"Back to Menu", function() stack:push(MenuState()) end}, 
-                        {"Reset Achievements"},
-                        {"Exit", function() love.event.quit() end}}
+                        {"Reset Achievements", function() end}}
 
     local targetX = love.graphics.getWidth()*(3/5)
     local targetY = love.graphics.getHeight()/20
