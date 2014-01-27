@@ -2,6 +2,8 @@
 
 A fast-paced action arcade game.
 
+To run from source (only unix supported for development right now) install love2d (a lua game library), then run `make run`.
+
 ## Credits
 
 The following files and directories are not part of this project and were redistributed under their respective licenses:
