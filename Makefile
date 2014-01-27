@@ -12,12 +12,12 @@ run: build
 	@love ShapeRape.love
 
 package-windows:
-	@lib/package.sh windows_x86
+	@lib/package.sh windows
 
 package-linux:
-	@lib/package.sh linux_x64
+	@lib/package.sh linux
 
 package-mac:
-	@lib/package.sh osx_x64
+	@lib/package.sh osx
 
 package: package-linux package-windows package-mac
