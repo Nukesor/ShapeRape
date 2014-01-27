@@ -11,8 +11,8 @@ fi
 
 echo -n "Packaging for $TARGET... "
 
-PKGDIR=pkg/$TARGET
-LIBDIR=lib/$TARGET
+PKGDIR=$ROOTDIR/pkg/$TARGET
+LIBDIR=$ROOTDIR/lib/$TARGET
 
 rm -rf $PKGDIR
 mkdir -p $PKGDIR
@@ -20,26 +20,13 @@ mkdir -p $PKGDIR
 cp -r $LIBDIR/* $PKGDIR
 
 if [ $TARGET = "linux_x64" ]; then
-	cp $ROOTDIR/$NAME.love $PKGDIR 
-	echo "DONE"
+	cp $ROOTDIR/$GAME $PKGDIR 
 elif [ $TARGET = "windows_x86" ]; then
-	BINARY=love.exe
-	ext=.exe
-
-	if [[ $ext == ".love" ]]; then ext=""; fi
-
 	cd $PKGDIR
-	cat $ROOTDIR/$LIBDIR/$BINARY $ROOTDIR/ShapeRape.love > $NAME$ext
-
-	echo "DONE"
+	cat $LIBDIR/love.exe $ROOTDIR/$GAME > $NAME$.exe
 elif [ $TARGET = "osx_x64" ]; then
-	ext=.app
-
-	cd $PKGDIR
-	[[ ! -e $NAME$ext ]] || rm -r $NAME$ext
-	cp -r $ROOTDIR/$LIBDIR/love.app $ROOTDIR/$PKGDIR/$NAME$ext
-	cp $ROOTDIR/$GAME $ROOTDIR/$PKGDIR/$NAME$ext/Contents/Resources/$GAME
-
-	echo "DONE"
+	cp -r $LIBDIR/love.app $PKGDIR/$NAME.app
+	cp $ROOTDIR/$GAME $PKGDIR/$NAME.app/Contents/Resources/$GAME
 fi
 
+echo "DONE"
