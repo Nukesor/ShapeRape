@@ -80,7 +80,7 @@ function PlayerControlSystem:update(dt)
 
     if self.current then
         self.holdcounter = self.holdcounter + dt
-        if self.holdcounter > 0.1337 then
+        if self.holdcounter > 0.12 then
             local player = table.firstElement(self.targets)
             local moveComp = player:getComponent("AnimatedMoveComponent")
             local playerNode = player:getComponent("PlayerNodeComponent")
