@@ -151,7 +151,7 @@ function PlayerControlSystem:update(dt)
             end
             if targetNode and targetNode:getComponent("PowerUpComponent") then
                 if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
-                    stack:current().slowmo = stack:current().slowmo + 2
+                    stack:current().slowmo = stack:current().slowmo + 3
                 elseif targetNode:getComponent("PowerUpComponent").type == "ShapeChange" then
                     player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
                     player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]

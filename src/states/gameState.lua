@@ -265,7 +265,7 @@ function GameState:update(dt)
     -- Slowmo stuff
     if self.slowmo > 0 then
         self.slowmo = self.slowmo - dt
-        self.engine:update(dt/2)
+        self.engine:update(dt/3)
     else
         self.engine:update(dt)
     end
