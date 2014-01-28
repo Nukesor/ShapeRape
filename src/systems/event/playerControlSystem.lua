@@ -56,7 +56,7 @@ end
 
 function PlayerControlSystem:update(dt)
     -- Reset Slowmo because we don't want soggy controls
-    if stack:current().activeSlowmo then
+    if stack:current().slowmo > 0 then
         dt = dt*3
     end
     --self. current = nil
