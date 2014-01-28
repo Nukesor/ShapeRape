@@ -157,6 +157,7 @@ function PlayerControlSystem:update(dt)
                     elseif powerup.type == "ShapeChange" then
                         player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
                         player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
+                        player:getComponent("PlayerChangeCountComponent").count = 0
                     elseif powerup.type == "DestroyShapes" then
                         stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:getComponent("ShapeComponent").shape))
                     end
