@@ -234,6 +234,8 @@ function GameState:load()
     self.engine:addSystem(WobbleSystem(), "logic", 7)
     self.engine:addSystem(PlayerColorSystem(), "logic", 8)
     self.engine:addSystem(UltiUpdateSystem(), "logic", 9)
+    local gridDrawSystem = GridDrawSystem()
+    self.engine:addSystem(gridDrawSystem, "logic", 10)
 
     if not self.noob then
         self.engine:addSystem(GameOverSystem(), "logic", 60)
@@ -241,7 +243,7 @@ function GameState:load()
     end
 
     -- draw systems
-    self.engine:addSystem(GridDrawSystem(), "draw", 1)
+    self.engine:addSystem(gridDrawSystem, "draw", 1)
     self.engine:addSystem(StringDrawSystem(), "draw", 2)
     self.engine:addSystem(ParticleDrawSystem(), "draw", 4)
     self.engine:addSystem(DrawSystem(), "draw", 5)

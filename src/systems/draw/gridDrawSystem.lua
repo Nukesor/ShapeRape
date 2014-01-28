@@ -30,8 +30,6 @@ function GridDrawSystem:draw()
     love.graphics.setLineStyle("rough")
 
     love.graphics.setShader(self.flash)
-    self.time = self.time + love.timer.getDelta()*2
-    self.flash:send("time", self.time)
 
     --draw Vertical Lines
     local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
@@ -53,6 +51,11 @@ function GridDrawSystem:draw()
     end
 
     love.graphics.setShader()
+end
+
+function GridDrawSystem:update(dt)
+    self.time = self.time + (dt*2)
+    self.flash:send("time", self.time)
 end
 
 function GridDrawSystem:getRequiredComponents()
