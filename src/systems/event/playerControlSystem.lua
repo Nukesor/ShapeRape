@@ -57,7 +57,7 @@ end
 function PlayerControlSystem:update(dt)
     -- Reset Slowmo because we don't want soggy controls
     if stack:current().activeSlowmo then
-        dt = dt*2
+        dt = dt*3
     end
     --self. current = nil
     for index, key in pairs(self.keymap) do
