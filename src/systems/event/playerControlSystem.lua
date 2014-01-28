@@ -103,78 +103,81 @@ function PlayerControlSystem:update(dt)
             local targetNode = playerNode.node:getComponent("LinkComponent")[direction]
     
             local playerWillMove = false
-    
-            if targetNode and targetNode:getComponent("ShapeComponent") == nil then 
-                playerWillMove = true
-            elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
-                playerWillMove = true
-                local countComp = player:getComponent("PlayerChangeCountComponent")
-                countComp.count = countComp.count + 1
-                
-                stack:current().actionBar = stack:current().actionBar + 5
-                if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
-    
-                if targetNode:getComponent("ShapeComponent").shape=="circle" then
-                    resources.sounds.pling:rewind()
-                    resources.sounds.pling:play()
-                elseif targetNode:getComponent("ShapeComponent").shape=="square" then
-                    resources.sounds.plinglo:rewind()
-                    resources.sounds.plinglo:play()
-                elseif targetNode:getComponent("ShapeComponent").shape=="triangle" then
-                    resources.sounds.plinghi:rewind()
-                    resources.sounds.plinghi:play()
-                end
-                local nodeWidth = stack:current().nodeWidth/2
-                local position = targetNode:getComponent("PositionComponent")
-                explosion = Entity()
+            
+            if targetNode then
+                if targetNode:getComponent("ShapeComponent") == nil then 
+                    playerWillMove = true
+                elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
+                    playerWillMove = true
+                    local countComp = player:getComponent("PlayerChangeCountComponent")
+                    countComp.count = countComp.count + 1
+                    
+                    stack:current().actionBar = stack:current().actionBar + 5
+                    if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
+        
+                    if targetNode:getComponent("ShapeComponent").shape=="circle" then
+                        resources.sounds.pling:rewind()
+                        resources.sounds.pling:play()
+                    elseif targetNode:getComponent("ShapeComponent").shape=="square" then
+                        resources.sounds.plinglo:rewind()
+                        resources.sounds.plinglo:play()
+                    elseif targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                        resources.sounds.plinghi:rewind()
+                        resources.sounds.plinghi:play()
+                    end
+                    local nodeWidth = stack:current().nodeWidth/2
+                    local position = targetNode:getComponent("PositionComponent")
+                    explosion = Entity()
 
-                explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
-                explosion:addComponent(ParticleComponent(resources.images[targetNode:getComponent("ShapeComponent").shape], 400))
-                explosion:addComponent(position)
+                    explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
+                    explosion:addComponent(ParticleComponent(resources.images[targetNode:getComponent("ShapeComponent").shape], 400))
+                    explosion:addComponent(position)
 
-                local radius = 100/nodeWidth
-                local particle = explosion:getComponent("ParticleComponent").particle
-                particle:setEmissionRate(200)
-                particle:setSpeed((radius*80), (radius*80))
-                particle:setSizes(0.05, 0.05)
-                particle:setColors(255, 255, 255, 255, 255,255,255,0)
-                particle:setPosition(position.x+nodeWidth, position.y+nodeWidth)
-                particle:setEmitterLifetime(0.1) -- Zeit die der Partikelstrahl anhält
-                particle:setParticleLifetime(0.2, 0.3) -- setzt Lebenszeit in min-max
-                -- particle:setOffset(x, y) -- Punkt um den der Partikel rotiert
-                particle:setRotation(0, 360) -- Der Rotationswert des Partikels bei seiner Erstellung
-                particle:setDirection(0)
-                particle:setSpread(360)
-                particle:setRadialAcceleration((radius*-7.5), (radius*-7.5))
-                particle:start()
-                stack:current().engine:addEntity(explosion)
-            end
-            if targetNode and targetNode:getComponent("PowerUpComponent") then
-                if targetNode:getComponent("PowerUpComponent").type == "SlowMotion" then
-                    stack:current().slowmo = stack:current().slowmo + 3
-                elseif targetNode:getComponent("PowerUpComponent").type == "ShapeChange" then
-                    player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
-                    player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
-                elseif targetNode:getComponent("PowerUpComponent").type == "DestroyShapes" then
-                    stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:getComponent("ShapeComponent").shape))
+                    local radius = 100/nodeWidth
+                    local particle = explosion:getComponent("ParticleComponent").particle
+                    particle:setEmissionRate(200)
+                    particle:setSpeed((radius*80), (radius*80))
+                    particle:setSizes(0.05, 0.05)
+                    particle:setColors(255, 255, 255, 255, 255,255,255,0)
+                    particle:setPosition(position.x+nodeWidth, position.y+nodeWidth)
+                    particle:setEmitterLifetime(0.1) -- Zeit die der Partikelstrahl anhält
+                    particle:setParticleLifetime(0.2, 0.3) -- setzt Lebenszeit in min-max
+                    -- particle:setOffset(x, y) -- Punkt um den der Partikel rotiert
+                    particle:setRotation(0, 360) -- Der Rotationswert des Partikels bei seiner Erstellung
+                    particle:setDirection(0)
+                    particle:setSpread(360)
+                    particle:setRadialAcceleration((radius*-7.5), (radius*-7.5))
+                    particle:start()
+                    stack:current().engine:addEntity(explosion)
                 end
-                targetNode:removeComponent("PowerUpComponent")
-                playerWillMove = true
-            end
-            if player:getComponent("UltiComponent") then
-                playerWillMove = true
-            end
-            if playerWillMove and targetNode then                
-                if targetNode:getComponent("ShapeComponent") then
-                    targetNode:removeComponent("ShapeComponent")
+                local powerup = targetNode:getComponent("PowerUpComponent")
+                if powerup then
+                    if powerup.type == "SlowMotion" then
+                        stack:current().slowmo = stack:current().slowmo + 3
+                    elseif powerup.type == "ShapeChange" then
+                        player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
+                        player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
+                    elseif powerup.type == "DestroyShapes" then
+                        stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:getComponent("ShapeComponent").shape))
+                    end
+                    targetNode:removeComponent("PowerUpComponent")
+                    playerWillMove = true
                 end
-                if targetNode:getComponent("DrawableComponent") then
-                    targetNode:removeComponent("DrawableComponent")
+                if player:getComponent("UltiComponent") then
+                    playerWillMove = true
                 end
-                local targetPosition = targetNode:getComponent("PositionComponent")
-                local origin = playerNode.node:getComponent("PositionComponent")
-                player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
-                stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, direction))        
+                if playerWillMove then                
+                    if targetNode:getComponent("ShapeComponent") then
+                        targetNode:removeComponent("ShapeComponent")
+                    end
+                    if targetNode:getComponent("DrawableComponent") then
+                        targetNode:removeComponent("DrawableComponent")
+                    end
+                    local targetPosition = targetNode:getComponent("PositionComponent")
+                    local origin = playerNode.node:getComponent("PositionComponent")
+                    player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
+                    stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, direction))        
+                end
             end
             self.holdcounter = 0
         end
