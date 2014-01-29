@@ -67,9 +67,9 @@ function GameState:__init(size, noob)
 
     self.bloom = love.graphics.newShader [[
         extern int samples = 6;
-        extern float stepSize = 1.9; 
+        extern float stepSize = 1.9;
         extern vec2 size;
-         
+
         vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc)
         {
             vec4 source = texture2D(tex, tc);
@@ -88,11 +88,29 @@ function GameState:__init(size, noob)
             return vec4(average.rgb + source.rgb/2, average.a + source.a);
         }
     ]]
+
+    self.pixel = love.graphics.newShader [[
+        extern float time;
+        extern vec2 size;
+
+        float mod(float x, float y) {
+            return x - y * floor(x/y);
+        }
+
+        vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc) {
+            vec2 pix = tc*size;
+            float p = 5 + 0.04 * round(abs(sin(time*5)));
+            float g = max(0, 1 - (mod(pix.y, p) < 1 ? 1 : 0) - (mod(pix.x, p) < 1 ? 1 : 0));
+            return mix(texture2D(tex, floor(pix/p)/size*p), vec4(1, 1, 1, 0), 1-g);
+        }
+    ]]
+
     self.noob = noob or false
 end
 
 function GameState:load()
     self.bloom:send("size", {love.graphics.getWidth(), love.graphics.getHeight()})
+    self.pixel:send("size", {love.graphics.getWidth(), love.graphics.getHeight()})
 
     self.canvas = love.graphics.newCanvas()
 
@@ -103,6 +121,7 @@ function GameState:load()
     self.actionBar = 100
     self.slowmo = 0
     self.activeSlowmo = false
+    self.time = 0
 
     -- Shake Variablen
     self.nextShake = 1
@@ -164,7 +183,7 @@ function GameState:load()
                     end
                         entity:addComponent(ShapeComponent(shape))
                         entity:addComponent(ColorComponent(255, 255, 0))
-                end 
+                end
             end
         end
     end
@@ -248,9 +267,11 @@ function GameState:load()
     self.engine:addSystem(ParticleDrawSystem(), "draw", 4)
     self.engine:addSystem(DrawSystem(), "draw", 5)
     self.engine:addSystem(PlayerChangeDisplaySystem(), "draw", 6)
+
 end
 
 function GameState:update(dt)
+    self.time = self.time + dt
     self.score = self.score + dt*100
 
     -- Camerashake
@@ -271,6 +292,8 @@ function GameState:update(dt)
     else
         self.engine:update(dt)
     end
+
+    self.pixel:send("time", self.time)
 end
 
 function GameState:draw()
@@ -281,11 +304,16 @@ function GameState:draw()
 
     self.engine:draw()
 
-    love.graphics.setCanvas()
-    love.graphics.clear()
     love.graphics.setColor(255,255,255,255)
-    love.graphics.setShader(self.bloom)
+
+    -- love.graphics.setCanvas(self.canvas)
+    -- love.graphics.setShader(self.bloom)
+    -- love.graphics.draw(self.canvas)
+
+    love.graphics.setCanvas()
+    love.graphics.setShader(self.pixel)
     love.graphics.draw(self.canvas)
+
     love.graphics.setShader()
 end
 
