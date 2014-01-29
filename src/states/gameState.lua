@@ -104,7 +104,7 @@ function GameState:__init(size, noob)
         vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc) {
             vec2 m = vec2(0.5, 0.5);
             vec2 d = tc - m;
-            tc = m + mix(0.8, 1.2, pow(length(d)/sqrt(2), 0.4)) * d;
+            tc = m + mix(0.8, 1.2, pow(length(d), 0.4)) * d;
 
             vec2 pix = tc*size;
             float p = 4 + 0.04 * abs(sin(time*5)); // * 0.001 + 7;
@@ -235,7 +235,7 @@ function GameState:load()
         -- score
         local scoreString = Entity()
         scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
-        scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
+        scoreString:addComponent(StringComponent(resources.fonts.CoolFont40, {255, 255, 255, 255}, "%i", {{self, "score"}}))
         self.engine:addEntity(scoreString)
     end
 
