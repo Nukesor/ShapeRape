@@ -97,11 +97,24 @@ function GameState:__init(size, noob)
             return x - y * floor(x/y);
         }
 
+        float mid(float min, float max, float f) {
+            return mix(min, max, 0.5 * f + 0.5);
+        }
+
         vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc) {
+            vec2 m = vec2(0.5, 0.5);
+            vec2 d = tc - m;
+            tc = m + mix(0.8, 1.2, pow(length(d)/sqrt(2), 0.4)) * d;
+
             vec2 pix = tc*size;
-            float p = 5 + 0.04 * round(abs(sin(time*5)));
+            float p = 4 + 0.04 * abs(sin(time*5)); // * 0.001 + 7;
             float g = max(0, 1 - (mod(pix.y, p) < 1 ? 1 : 0) - (mod(pix.x, p) < 1 ? 1 : 0));
-            return mix(texture2D(tex, floor(pix/p)/size*p), vec4(1, 1, 1, 0), 1-g);
+            float x = mod(pix.x, p)/p * mod(pix.y, p)/p * sqrt(2);
+
+            vec4 c = texture2D(tex, floor(pix/p)/size*p);
+            c = mix(c, vec4(1, 1, 1, 0), 1-g);
+            //c = c * (0.5 + 0.5 * x);
+            return c;
         }
     ]]
 

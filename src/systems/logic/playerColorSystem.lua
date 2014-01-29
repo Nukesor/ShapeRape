@@ -26,6 +26,10 @@ function PlayerColorSystem:update(dt)
             color.r = 255
         end
     end
+
+    color.r = 255
+    color.g = 255
+    color.b = 255
 end
 
 function PlayerColorSystem:getRequiredComponents()
