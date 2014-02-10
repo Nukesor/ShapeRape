@@ -206,7 +206,7 @@ function LevelGeneratorSystem:removeRow(corner, direction)
         oldcorner = oldcorner:getComponent("LinkComponent")[frontlink]
     end
 end
-function LevelGeneratorSystem:getRequiredComponents()
+function LevelGeneratorSystem:requires()
     return {"CornerComponent"}
 end
 

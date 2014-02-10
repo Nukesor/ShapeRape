@@ -8,6 +8,6 @@ function ParticleDrawSystem:draw()
     end
 end
 
-function ParticleDrawSystem:getRequiredComponents()
+function ParticleDrawSystem:requires()
     return {"ParticleComponent"}
 end

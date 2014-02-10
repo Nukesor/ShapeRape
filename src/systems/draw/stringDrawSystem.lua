@@ -14,6 +14,6 @@ function StringDrawSystem:draw()
     end
 end
 
-function StringDrawSystem:getRequiredComponents()
+function StringDrawSystem:requires()
     return {"PositionComponent", "StringComponent"}
 end

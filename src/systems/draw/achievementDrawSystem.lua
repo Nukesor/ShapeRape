@@ -15,6 +15,6 @@ function AchievementDrawSystem:draw()
     end
 end
 
-function AchievementDrawSystem:getRequiredComponents()
+function AchievementDrawSystem:requires()
     return {"DrawableComponent", "PositionComponent", "AchievementComponent"}
 end

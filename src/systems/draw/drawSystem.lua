@@ -45,6 +45,6 @@ function DrawSystem:draw()
     end
 end
 
-function DrawSystem:getRequiredComponents()
+function DrawSystem:requires()
     return {"DrawableComponent", "PositionComponent"}
 end

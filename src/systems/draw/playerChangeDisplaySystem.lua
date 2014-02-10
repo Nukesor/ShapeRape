@@ -11,6 +11,6 @@ function PlayerChangeDisplaySystem:draw()
     end
 end
 
-function PlayerChangeDisplaySystem:getRequiredComponents()
+function PlayerChangeDisplaySystem:requires()
     return {"PlayerChangeCountComponent"}
 end

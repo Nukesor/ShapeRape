@@ -22,6 +22,6 @@ function RandomRotationSystem:update(dt)
 	end
 end
 
-function RandomRotationSystem:getRequiredComponents()
+function RandomRotationSystem:requires()
 	return {"DrawableComponent"}
 end

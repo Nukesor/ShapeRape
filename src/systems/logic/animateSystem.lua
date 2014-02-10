@@ -18,6 +18,6 @@ function AnimateSystem:animationDone(entity)
 	end
 end
 
-function AnimateSystem:getRequiredComponents()
+function AnimateSystem:requires()
 	return {"AnimateComponent"}
 end

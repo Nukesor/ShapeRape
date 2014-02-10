@@ -19,6 +19,6 @@ function ParticleUpdateSystem:update(dt)
     end
 end
 
-function ParticleUpdateSystem:getRequiredComponents(dt)
+function ParticleUpdateSystem:requires(dt)
     return {"ParticleComponent"}
 end

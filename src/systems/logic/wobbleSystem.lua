@@ -11,6 +11,6 @@ function WobbleSystem:update(dt)
     end
 end
 
-function WobbleSystem:getRequiredComponents()
+function WobbleSystem:requires()
     return {"WobbleComponent"}
 end

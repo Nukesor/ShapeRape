@@ -47,6 +47,6 @@ function ShapeDestroySystem:fireEvent(event)
     end
 end
 
-function ShapeDestroySystem:getRequiredComponents()
+function ShapeDestroySystem:requires()
     return {"ShapeComponent", "LinkComponent"}
 end

@@ -18,6 +18,6 @@ function UltiUpdateSystem:update(dt)
     end
 end
 
-function UltiUpdateSystem:getRequiredComponents()
+function UltiUpdateSystem:requires()
     return {"UltiComponent"}
 end

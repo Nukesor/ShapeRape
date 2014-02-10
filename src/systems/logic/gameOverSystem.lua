@@ -16,6 +16,6 @@ function GameOverSystem:update(dt)
     end
 end
 
-function GameOverSystem:getRequiredComponents()
+function GameOverSystem:requires()
     return {"UltiComponent"}
 end

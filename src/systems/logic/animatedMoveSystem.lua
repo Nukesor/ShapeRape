@@ -19,6 +19,6 @@ function AnimatedMoveSystem:update(dt)
 	tween.update(dt)
 end
 
-function AnimatedMoveSystem:getRequiredComponents()
+function AnimatedMoveSystem:requires()
 	return {"AnimatedMoveComponent", "PositionComponent"}
 end

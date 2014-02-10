@@ -28,6 +28,6 @@ function PlayerColorSystem:update(dt)
     end
 end
 
-function PlayerColorSystem:getRequiredComponents()
+function PlayerColorSystem:requires()
     return {"PlayerNodeComponent"}
 end

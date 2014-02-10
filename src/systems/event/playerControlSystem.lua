@@ -50,7 +50,7 @@ function PlayerControlSystem.fireEvent(self, event)
     end
 end
 
-function PlayerControlSystem:getRequiredComponents()
+function PlayerControlSystem:requires()
     return {"PlayerNodeComponent"}
 end
 

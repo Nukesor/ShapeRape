@@ -58,7 +58,7 @@ function GridDrawSystem:update(dt)
     self.flash:send("time", self.time)
 end
 
-function GridDrawSystem:getRequiredComponents()
+function GridDrawSystem:requires()
     return {"CornerComponent", "PositionComponent"}
 end
 
