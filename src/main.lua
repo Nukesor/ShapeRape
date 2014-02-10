@@ -30,7 +30,7 @@ function love.load()
     resources:addImage("circle", "data/img/circle.png")
     resources:addImage("square", "data/img/square.png")
     resources:addImage("clock", "data/img/timer.png")
-    
+
     resources:addImage("bombTriangle", "data/img/bombTriangle.png")
     resources:addImage("bombCircle", "data/img/bombCircle.png")
     resources:addImage("bombSquare", "data/img/bombSquare.png")
@@ -68,12 +68,12 @@ end
 
 function love.update(dt)
     stack:current():update(dt)
-    
+
 end
 
 function love.draw()
     stack:current():draw()
-end 
+end
 
 function love.keypressed(key, isrepeat)
     stack:current():keypressed(key, isrepeat)
