@@ -4,19 +4,24 @@ A fast-paced action arcade game.
 
 Push your fingers to the limits! Try to collect as many shapes as possible while your time is constantly running out!
 
-## Technology Notes: 
+## Technology Notes 
 
 We are using löve (http://www.love2d.org), a lua game library, together with the lovetoys (https://github.com/Nukesor/lua-lovetoys) library that provides an Entity System.  
-To run from source (only unix supported for development right now) install love2d (a lua game library), then run `make run`.  
-Don't foget to run `git submodule update --init` to get the entity system. The game won't work otherwise.
 
+## Installation
+
+1. To run from source install love2d (a lua game library)
+2. Run `git submodule update --init` to get the entity system
+3. `make run`.  
+
+Note: Right now there is only unix support for development.
 
 ## Participants
 
-Arne Beer - [https://github.com/Nukesor](https://github.com/Nukesor)
-Rafael Epplée - [https://github.com/raffomania](https://github.com/raffomania)
-Anne-Victoria Meyer - [https://github.com/C-gotoh](https://github.com/C-gotoh)
-Julian Tobergte - [https://github.com/Anne-Victoria](https://github.com/Anne-Victoria)
+Arne Beer - [https://github.com/Nukesor](https://github.com/Nukesor)  
+Rafael Epplée - [https://github.com/raffomania](https://github.com/raffomania)  
+Anne-Victoria Meyer - [https://github.com/C-gotoh](https://github.com/C-gotoh)  
+Julian Tobergte - [https://github.com/Anne-Victoria](https://github.com/Anne-Victoria)  
 
 Copyright &copy; 2014 Arne Beer, Rafael Epplée, Anne-Victoria Meyer and Julian Tobergte 
 
