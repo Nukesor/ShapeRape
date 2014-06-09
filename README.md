@@ -4,6 +4,8 @@ A fast-paced action arcade game.
 
 Push your fingers to the limits! Try to collect as many shapes as possible while your time is constantly running out!
 
+This game has been made during the Global Gamejam 2014. Check out the official [website](http://globalgamejam.org/2014/games/shaperape)
+
 ## Technology Notes 
 
 We are using löve (http://www.love2d.org), a lua game library, together with the lovetoys (https://github.com/Nukesor/lua-lovetoys) library that provides an Entity System.  
