@@ -2,7 +2,7 @@ PlayerColorSystem = class("PlayerColorSystem", System)
 
 function PlayerColorSystem:update(dt)
     local player = table.firstElement(self.targets)
-    local color = player:getComponent("ColorComponent")
+    local color = player:get("ColorComponent")
     local dt = dt *200
     if color.r > 0 and color.b == 0 then
         color.r = color.r - dt

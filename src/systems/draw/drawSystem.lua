@@ -7,8 +7,8 @@ function DrawSystem:draw()
     local middleoffset = nodeWidth/2
 
     for index, entity in pairs(self.targets) do
-        local drawable = entity:getComponent("DrawableComponent")
-        local pos = entity:getComponent("PositionComponent")
+        local drawable = entity:get("DrawableComponent")
+        local pos = entity:get("PositionComponent")
         local posXnew = pos.x + middleoffset
         local posYnew = pos.y + middleoffset
 
@@ -16,14 +16,14 @@ function DrawSystem:draw()
         local offsetY = (drawable.image:getHeight())/2
 
         local color
-        if entity:getComponent("ColorComponent") then
-            local color = entity:getComponent("ColorComponent")
+        if entity:get("ColorComponent") then
+            local color = entity:get("ColorComponent")
             love.graphics.setColor(color.r, color.g, color.b)
         end
 
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
-        if entity:getComponent("WobbleComponent") then
-            scale = 1 + 0.1*math.sin(entity:getComponent("WobbleComponent").value)
+        if entity:get("WobbleComponent") then
+            scale = 1 + 0.1*math.sin(entity:get("WobbleComponent").value)
             love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx*scale, drawable.sy*scale, offsetX, offsetY)
         else
             love.graphics.draw(drawable.image, posXnew, posYnew, drawable.r, drawable.sx, drawable.sy, offsetX, offsetY)
@@ -31,7 +31,7 @@ function DrawSystem:draw()
 
 
 --        VERSION VON SVEN         
---        color = entity:getComponent("ColorComponent")
+--        color = entity:get("ColorComponent")
 --        love.graphics.setColor(color.r, color.g, color.b)
 --        end
 --

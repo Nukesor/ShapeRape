@@ -6,8 +6,8 @@ end
 
 function PlayerChangeDisplaySystem:draw()
     for index, entity in pairs(self.targets) do
-        particle = entity:getComponent("ParticleComponent").particle
-        particle:setEmissionRate(self.rate*entity:getComponent("PlayerChangeCountComponent").count/stack:current().size)
+        particle = entity:get("ParticleComponent").particle
+        particle:setEmissionRate(self.rate*entity:get("PlayerChangeCountComponent").count/stack:current().size)
     end
 end
 

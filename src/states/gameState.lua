@@ -131,39 +131,39 @@ function GameState:load()
 
             local entity = matrix[x][y]
             if random <= 10 then
-                entity:addComponent(ShapeComponent("circle"))
-                entity:addComponent(ColorComponent(56, 69, 255))
-                entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("circle"))
+                entity:add(ColorComponent(56, 69, 255))
+                entity:add(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 20 then
-                entity:addComponent(ShapeComponent("square"))
-                entity:addComponent(ColorComponent(255, 69, 56))
-                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("square"))
+                entity:add(ColorComponent(255, 69, 56))
+                entity:add(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
             elseif random <= 30 then
-                entity:addComponent(ShapeComponent("triangle"))
-                entity:addComponent(ColorComponent(69, 255, 56))
-                entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("triangle"))
+                entity:add(ColorComponent(69, 255, 56))
+                entity:add(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 31 then
                 local random2 = love.math.random(1,2)
                 if random2 == 1 then
-                    entity:addComponent(ColorComponent(255,255,0))
-                    entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
-                    entity:addComponent(PowerUpComponent("SlowMotion"))
+                    entity:add(ColorComponent(255,255,0))
+                    entity:add(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                    entity:add(PowerUpComponent("SlowMotion"))
                 elseif random2 == 2 then
                     local random3 = love.math.random(1, 3)
-                    entity:addComponent(PowerUpComponent("ShapeChange"))
+                    entity:add(PowerUpComponent("ShapeChange"))
                     local shape
                     if random3 == 1 then
                         shape = "circle"
-                        entity:addComponent(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 2 then
                         shape = "square"
-                        entity:addComponent(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 3 then
                         shape = "triangle"
-                        entity:addComponent(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
                     end
-                        entity:addComponent(ShapeComponent(shape))
-                        entity:addComponent(ColorComponent(255, 255, 0))
+                        entity:add(ShapeComponent(shape))
+                        entity:add(ColorComponent(255, 255, 0))
                 end 
             end
         end
@@ -171,39 +171,39 @@ function GameState:load()
     for x, column in pairs(matrix) do
         for y, node in pairs(matrix[x]) do
             if matrix[x][y-1] then
-                node:getComponent("LinkComponent").up = matrix[x][y-1]
+                node:get("LinkComponent").up = matrix[x][y-1]
             end
             if matrix[x][y+1] then
-                node:getComponent("LinkComponent").down = matrix[x][y+1]
+                node:get("LinkComponent").down = matrix[x][y+1]
             end
             if matrix[x+1] then
                 if matrix[x+1][y] then
-                    node:getComponent("LinkComponent").right = matrix[x+1][y]
+                    node:get("LinkComponent").right = matrix[x+1][y]
                 end
             end
             if matrix[x-1] then
                 if matrix[x-1][y] then
-                    node:getComponent("LinkComponent").left = matrix[x-1][y]
+                    node:get("LinkComponent").left = matrix[x-1][y]
                 end
             end
             self.engine:addEntity(node)
         end
     end
-    matrix[1][1]:addComponent(CornerComponent("topleft"))
-    matrix[nodesOnScreen][1]:addComponent(CornerComponent("topright"))
-    matrix[1][nodesOnScreen]:addComponent(CornerComponent("bottomleft"))
-    matrix[nodesOnScreen][nodesOnScreen]:addComponent(CornerComponent("bottomright"))
+    matrix[1][1]:add(CornerComponent("topleft"))
+    matrix[nodesOnScreen][1]:add(CornerComponent("topright"))
+    matrix[1][nodesOnScreen]:add(CornerComponent("bottomleft"))
+    matrix[nodesOnScreen][nodesOnScreen]:add(CornerComponent("bottomright"))
 
     -- Player initialization
-    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("ShapeComponent")
-    matrix[nodesOnScreen/2][nodesOnScreen/2]:removeComponent("DrawableComponent")
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:remove("ShapeComponent")
+    matrix[nodesOnScreen/2][nodesOnScreen/2]:remove("DrawableComponent")
     self.engine:addEntity(PlayerModel(matrix[nodesOnScreen/2][nodesOnScreen/2],self.nodeWidth))
 
     if not self.noob then
         -- score
         local scoreString = Entity()
-        scoreString:addComponent(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
-        scoreString:addComponent(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
+        scoreString:add(PositionComponent(love.graphics.getWidth()*8/10, love.graphics.getHeight()*1/20))
+        scoreString:add(StringComponent(resources.fonts.CoolFont, {255, 255, 255, 255}, "Score:  %i", {{self, "score"}}))
         self.engine:addEntity(scoreString)
     end
 

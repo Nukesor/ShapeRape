@@ -32,13 +32,13 @@ function PlayerControlSystem.fireEvent(self, event)
             local screenshot = love.graphics.newImage(canvas)
             stack:push(PauseState(screenshot))
         else
-            local moveComp = player:getComponent("AnimatedMoveComponent")
-            local playerNode = player:getComponent("PlayerNodeComponent")
+            local moveComp = player:get("AnimatedMoveComponent")
+            local playerNode = player:get("PlayerNodeComponent")
         end
 
         if moveComp then
             tween.stopAll()
-            local pos = player:getComponent("PositionComponent")
+            local pos = player:get("PositionComponent")
             pos.x = moveComp.targetX
             pos.y = moveComp.targetY
             playerNode.node = moveComp.targetNode
@@ -82,12 +82,12 @@ function PlayerControlSystem:update(dt)
         self.holdcounter = self.holdcounter + dt
         if self.holdcounter > 0.12 then
             local player = table.firstElement(self.targets)
-            local moveComp = player:getComponent("AnimatedMoveComponent")
-            local playerNode = player:getComponent("PlayerNodeComponent")
+            local moveComp = player:get("AnimatedMoveComponent")
+            local playerNode = player:get("PlayerNodeComponent")
         
             if moveComp then
                 tween.stopAll()
-                local pos = player:getComponent("PositionComponent")
+                local pos = player:get("PositionComponent")
                 pos.x = moveComp.targetX
                 pos.y = moveComp.targetY
                 playerNode.node = moveComp.targetNode
@@ -100,41 +100,41 @@ function PlayerControlSystem:update(dt)
             end
             --print(current)
         
-            local targetNode = playerNode.node:getComponent("LinkComponent")[direction]
+            local targetNode = playerNode.node:get("LinkComponent")[direction]
     
             local playerWillMove = false
             
             if targetNode then
-                if targetNode:getComponent("ShapeComponent") == nil then 
+                if targetNode:get("ShapeComponent") == nil then 
                     playerWillMove = true
-                elseif targetNode and targetNode:getComponent("ShapeComponent").shape == player:getComponent("ShapeComponent").shape and not targetNode:getComponent("PowerUpComponent") then
+                elseif targetNode and targetNode:get("ShapeComponent").shape == player:get("ShapeComponent").shape and not targetNode:get("PowerUpComponent") then
                     playerWillMove = true
-                    local countComp = player:getComponent("PlayerChangeCountComponent")
+                    local countComp = player:get("PlayerChangeCountComponent")
                     countComp.count = countComp.count + 1
                     
                     stack:current().actionBar = stack:current().actionBar + 5
                     if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
         
-                    if targetNode:getComponent("ShapeComponent").shape=="circle" then
+                    if targetNode:get("ShapeComponent").shape=="circle" then
                         resources.sounds.pling:rewind()
                         resources.sounds.pling:play()
-                    elseif targetNode:getComponent("ShapeComponent").shape=="square" then
+                    elseif targetNode:get("ShapeComponent").shape=="square" then
                         resources.sounds.plinglo:rewind()
                         resources.sounds.plinglo:play()
-                    elseif targetNode:getComponent("ShapeComponent").shape=="triangle" then
+                    elseif targetNode:get("ShapeComponent").shape=="triangle" then
                         resources.sounds.plinghi:rewind()
                         resources.sounds.plinghi:play()
                     end
                     local nodeWidth = stack:current().nodeWidth/2
-                    local position = targetNode:getComponent("PositionComponent")
+                    local position = targetNode:get("PositionComponent")
                     explosion = Entity()
 
-                    explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
-                    explosion:addComponent(ParticleComponent(resources.images[targetNode:getComponent("ShapeComponent").shape], 400))
-                    explosion:addComponent(position)
+                    explosion:add(ParticleTimerComponent(0.6, 0.6))
+                    explosion:add(ParticleComponent(resources.images[targetNode:get("ShapeComponent").shape], 400))
+                    explosion:add(position)
 
                     local radius = 100/nodeWidth
-                    local particle = explosion:getComponent("ParticleComponent").particle
+                    local particle = explosion:get("ParticleComponent").particle
                     particle:setEmissionRate(200)
                     particle:setSpeed((radius*80), (radius*80))
                     particle:setSizes(0.05, 0.05)
@@ -150,33 +150,33 @@ function PlayerControlSystem:update(dt)
                     particle:start()
                     stack:current().engine:addEntity(explosion)
                 end
-                local powerup = targetNode:getComponent("PowerUpComponent")
+                local powerup = targetNode:get("PowerUpComponent")
                 if powerup then
                     if powerup.type == "SlowMotion" then
                         stack:current().slowmo = stack:current().slowmo + 3
                     elseif powerup.type == "ShapeChange" then
-                        player:getComponent("ShapeComponent").shape = targetNode:getComponent("ShapeComponent").shape
-                        player:getComponent("DrawableComponent").image = resources.images[targetNode:getComponent("ShapeComponent").shape]
-                        player:getComponent("PlayerChangeCountComponent").count = 0
+                        player:get("ShapeComponent").shape = targetNode:get("ShapeComponent").shape
+                        player:get("DrawableComponent").image = resources.images[targetNode:get("ShapeComponent").shape]
+                        player:get("PlayerChangeCountComponent").count = 0
                     elseif powerup.type == "DestroyShapes" then
-                        stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:getComponent("ShapeComponent").shape))
+                        stack:current().eventmanager:fireEvent(ShapeDestroyEvent(targetNode:get("ShapeComponent").shape))
                     end
-                    targetNode:removeComponent("PowerUpComponent")
+                    targetNode:remove("PowerUpComponent")
                     playerWillMove = true
                 end
-                if player:getComponent("UltiComponent") then
+                if player:get("UltiComponent") then
                     playerWillMove = true
                 end
                 if playerWillMove then                
-                    if targetNode:getComponent("ShapeComponent") then
-                        targetNode:removeComponent("ShapeComponent")
+                    if targetNode:get("ShapeComponent") then
+                        targetNode:remove("ShapeComponent")
                     end
-                    if targetNode:getComponent("DrawableComponent") then
-                        targetNode:removeComponent("DrawableComponent")
+                    if targetNode:get("DrawableComponent") then
+                        targetNode:remove("DrawableComponent")
                     end
-                    local targetPosition = targetNode:getComponent("PositionComponent")
-                    local origin = playerNode.node:getComponent("PositionComponent")
-                    player:addComponent(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
+                    local targetPosition = targetNode:get("PositionComponent")
+                    local origin = playerNode.node:get("PositionComponent")
+                    player:add(AnimatedMoveComponent(targetPosition.x, targetPosition.y, origin.x, origin.y, targetNode))            
                     stack:current().eventmanager:fireEvent(PlayerMoved(playerNode.node, targetNode, direction))        
                 end
             end

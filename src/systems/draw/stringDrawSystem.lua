@@ -2,8 +2,8 @@ StringDrawSystem = class("StringDrawSystem", System)
 
 function StringDrawSystem:draw()
     for index, entity in pairs(self.targets) do
-        local str = entity:getComponent("StringComponent")
-        local position = entity:getComponent("PositionComponent")
+        local str = entity:get("StringComponent")
+        local position = entity:get("PositionComponent")
         local val = {}
         for k, v in pairs(str.values) do
             table.insert(val, v[1][v[2]])

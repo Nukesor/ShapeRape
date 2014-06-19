@@ -1,10 +1,10 @@
 NodeModel = class("NodeModel", Entity)
 
 function NodeModel:__init(x, y, direction, node)
-    self:addComponent(PositionComponent(x, y))
-    self:addComponent(LinkComponent())
+    self:add(PositionComponent(x, y))
+    self:add(LinkComponent())
     if direction and node then
-        self:getComponent("LinkComponent")[direction] = node
+        self:get("LinkComponent")[direction] = node
     end
-    self:addComponent(WobbleComponent())
+    self:add(WobbleComponent())
 end

@@ -1,15 +1,15 @@
 AnimatedMoveSystem = class("AnimatedMoveSystem", System)
 
 function AnimatedMoveSystem:movementFinished(entity)
-	local moveComp = entity:getComponent("AnimatedMoveComponent")
-	entity:getComponent("PlayerNodeComponent").node = moveComp.targetNode
-	entity:removeComponent("AnimatedMoveComponent")
+	local moveComp = entity:get("AnimatedMoveComponent")
+	entity:get("PlayerNodeComponent").node = moveComp.targetNode
+	entity:remove("AnimatedMoveComponent")
 end
 
 function AnimatedMoveSystem:update(dt)
 	for index, entity in pairs(self.targets) do
-		local moveComp = entity:getComponent("AnimatedMoveComponent")
-		local position = entity:getComponent("PositionComponent")
+		local moveComp = entity:get("AnimatedMoveComponent")
+		local position = entity:get("PositionComponent")
 
 		if moveComp.tweenID == nil then
 			moveComp.tweenID = 

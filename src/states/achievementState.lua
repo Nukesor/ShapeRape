@@ -44,27 +44,27 @@ function AchievementState:load()
         local targetY = targetY*index +love.graphics.getHeight()*1/10
         local positionComponent = PositionComponent(x, targetY)
         --love.graphics.setColor(255, 255, 255)
-        achievementEntity:addComponent(positionComponent)
-        achievementEntity:addComponent(AnimateComponent((0.2*index), positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
+        achievementEntity:add(positionComponent)
+        achievementEntity:add(AnimateComponent((0.2*index), positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
         if value == 0 then
-            achievementEntity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
-            achievementEntity:addComponent(ColorComponent(255,0,0))
+            achievementEntity:add(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
+            achievementEntity:add(ColorComponent(255,0,0))
         
         elseif value == 1 then
-            achievementEntity:addComponent(DrawableComponent(resources.images.triangle, 0, 1, 1, 0, 0))
+            achievementEntity:add(DrawableComponent(resources.images.triangle, 0, 1, 1, 0, 0))
         elseif value == 2 then
-            achievementEntity:addComponent(DrawableComponent(resources.images.circle, 0, 1, 1, 0, 0))
+            achievementEntity:add(DrawableComponent(resources.images.circle, 0, 1, 1, 0, 0))
         end
 
-        achievementEntity:addComponent(AchievementComponent())
+        achievementEntity:add(AchievementComponent())
         self.engine:addEntity(achievementEntity)
     end
 
     local AchievementCaption = Entity()
     positionComponent = PositionComponent(x, y)
-    AchievementCaption:addComponent(positionComponent)
-    AchievementCaption:addComponent(AnimateComponent(2, positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
-    AchievementCaption:addComponent(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "You have Unlocked", {}))
+    AchievementCaption:add(positionComponent)
+    AchievementCaption:add(AnimateComponent(2, positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
+    AchievementCaption:add(StringComponent(resources.fonts.CoolFont40, {255,255,255,255}, "You have Unlocked", {}))
     self.engine:addEntity(AchievementCaption)
 
     local menuPointDisplaySystem = MenuPointDisplaySystem()

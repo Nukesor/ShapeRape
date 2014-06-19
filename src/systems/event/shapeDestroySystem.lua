@@ -4,24 +4,24 @@ function ShapeDestroySystem:fireEvent(event)
     local bomb = false
     for index, entity in pairs(self.targets) do
         bomb = true
-        if entity:getComponent("ShapeComponent").shape == event.shape then
-            entity:removeComponent("ShapeComponent")
-            entity:removeComponent("DrawableComponent")
-            entity:removeComponent("ColorComponent")
-            if entity:getComponent("PowerUpComponent") then
-                entity:removeComponent("PowerUpComponent")
+        if entity:get("ShapeComponent").shape == event.shape then
+            entity:remove("ShapeComponent")
+            entity:remove("DrawableComponent")
+            entity:remove("ColorComponent")
+            if entity:get("PowerUpComponent") then
+                entity:remove("PowerUpComponent")
             end
 
             local nodeWidth = stack:current().nodeWidth/2
-            local position = entity:getComponent("PositionComponent")
+            local position = entity:get("PositionComponent")
             explosion = Entity()
 
-            explosion:addComponent(ParticleTimerComponent(0.6, 0.6))
-            explosion:addComponent(ParticleComponent(resources.images[event.shape], 400))
-            explosion:addComponent(position)
+            explosion:add(ParticleTimerComponent(0.6, 0.6))
+            explosion:add(ParticleComponent(resources.images[event.shape], 400))
+            explosion:add(position)
 
             local radius = 100/nodeWidth
-            local particle = explosion:getComponent("ParticleComponent").particle
+            local particle = explosion:get("ParticleComponent").particle
             particle:setEmissionRate(400)
             particle:setSpeed((radius*50), (radius*3))
             particle:setSizes(0.1, 0.1)

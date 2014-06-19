@@ -12,10 +12,10 @@ end
 function LevelGeneratorSystem:fireEvent(event)
     local direction = event.direction
     local count = 0
-    local goingnode = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent")):getComponent("PlayerNodeComponent").node
-    while goingnode:getComponent("LinkComponent")[direction] do
+    local goingnode = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent")):get("PlayerNodeComponent").node
+    while goingnode:get("LinkComponent")[direction] do
         count = count + 1
-        goingnode = goingnode:getComponent("LinkComponent")[direction]
+        goingnode = goingnode:get("LinkComponent")[direction]
     end
     if count < 4 then
         local corner
@@ -47,7 +47,7 @@ end
 
 function LevelGeneratorSystem:getCorner(string)
     for index, entity in pairs(self.targets) do
-        if entity:getComponent("CornerComponent").corner == string then
+        if entity:get("CornerComponent").corner == string then
             return entity
         end
     end
@@ -72,77 +72,77 @@ function LevelGeneratorSystem:addRow(corner, direction)
         frontlink = "right"
         backlink = "left"
     end
-    local position = {corner:getComponent("PositionComponent").x, corner:getComponent("PositionComponent").y}
+    local position = {corner:get("PositionComponent").x, corner:get("PositionComponent").y}
     local newposition = table.add(position, self.stepDistances[direction])
     local added = NodeModel(newposition[1], newposition[2], counterdirection, corner)
-    corner:getComponent("LinkComponent")[direction] = added
+    corner:get("LinkComponent")[direction] = added
     stack:current().engine:addEntity(added)
     while added do
-        position = {added:getComponent("PositionComponent").x, added:getComponent("PositionComponent").y}
-        if corner:getComponent("LinkComponent")[frontlink] then
+        position = {added:get("PositionComponent").x, added:get("PositionComponent").y}
+        if corner:get("LinkComponent")[frontlink] then
             newposition = table.add(position, self.stepDistances[frontlink])
-            added:getComponent("LinkComponent")[frontlink] = NodeModel(newposition[1], newposition[2], backlink, added)
-            stack:current().engine:addEntity(added:getComponent("LinkComponent")[frontlink])
+            added:get("LinkComponent")[frontlink] = NodeModel(newposition[1], newposition[2], backlink, added)
+            stack:current().engine:addEntity(added:get("LinkComponent")[frontlink])
 
             local random = love.math.random(0, 120)
-            local entity = added:getComponent("LinkComponent")[frontlink]
+            local entity = added:get("LinkComponent")[frontlink]
             if random <= 20 then
-                entity:addComponent(ShapeComponent("circle"))
-                entity:addComponent(ColorComponent(56, 69, 255))
-                entity:addComponent(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("circle"))
+                entity:add(ColorComponent(56, 69, 255))
+                entity:add(DrawableComponent(resources.images.circle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 40 then
-                entity:addComponent(ShapeComponent("square"))
-                entity:addComponent(ColorComponent(255, 69, 56))
-                entity:addComponent(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("square"))
+                entity:add(ColorComponent(255, 69, 56))
+                entity:add(DrawableComponent(resources.images.square, 0, 0.2, 0.2, 0, 0))
             elseif random <= 60 then
-                entity:addComponent(ShapeComponent("triangle"))
-                entity:addComponent(ColorComponent(69, 255, 56))
-                entity:addComponent(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
+                entity:add(ShapeComponent("triangle"))
+                entity:add(ColorComponent(69, 255, 56))
+                entity:add(DrawableComponent(resources.images.triangle, 0, 0.2, 0.2, 0, 0))
             elseif random <= 63 then
                 local random2 = love.math.random(1,3)
                 if random2 == 1 then
-                    entity:addComponent(ColorComponent(255,255,0))
-                    entity:addComponent(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
-                    entity:addComponent(PowerUpComponent("SlowMotion"))
+                    entity:add(ColorComponent(255,255,0))
+                    entity:add(DrawableComponent(resources.images.clock, 0, 0.5, 0.5, 0, 0))
+                    entity:add(PowerUpComponent("SlowMotion"))
                 elseif random2 == 2 then
                     local random3 = love.math.random(1, 3)
-                    entity:addComponent(PowerUpComponent("ShapeChange"))
+                    entity:add(PowerUpComponent("ShapeChange"))
                     local shape
                     if random3 == 1 then
                         shape = "circle"
-                        entity:addComponent(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeCircle, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 2 then
                         shape = "square"
-                        entity:addComponent(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeSquare, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 3 then
                         shape = "triangle"
-                        entity:addComponent(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.changeTriangle, 0, 0.2, 0.2, 0, 0))
                     end
-                        entity:addComponent(ShapeComponent(shape))
-                        entity:addComponent(ColorComponent(255, 255, 0))
+                        entity:add(ShapeComponent(shape))
+                        entity:add(ColorComponent(255, 255, 0))
                 elseif random2 ==3 then
                     local random3 = love.math.random(1, 3)
                     if random3 == 1 then
                         shape = "circle"
-                        entity:addComponent(DrawableComponent(resources.images.bombCircle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.bombCircle, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 2 then
                         shape = "square"
-                        entity:addComponent(DrawableComponent(resources.images.bombSquare, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.bombSquare, 0, 0.2, 0.2, 0, 0))
                     elseif random3 == 3 then
                         shape = "triangle"
-                        entity:addComponent(DrawableComponent(resources.images.bombTriangle, 0, 0.2, 0.2, 0, 0))
+                        entity:add(DrawableComponent(resources.images.bombTriangle, 0, 0.2, 0.2, 0, 0))
                     end
-                    entity:addComponent(PowerUpComponent("DestroyShapes"))
-                    entity:addComponent(ShapeComponent(shape))
-                    entity:addComponent(ColorComponent(255, 255, 0))
+                    entity:add(PowerUpComponent("DestroyShapes"))
+                    entity:add(ShapeComponent(shape))
+                    entity:add(ColorComponent(255, 255, 0))
                 end
             end 
         end
-        added:getComponent("LinkComponent")[counterdirection] = corner
-        corner:getComponent("LinkComponent")[direction] = added
-        if corner:getComponent("LinkComponent")[frontlink] then
-            added = added:getComponent("LinkComponent")[frontlink]
-            corner = corner:getComponent("LinkComponent")[frontlink]
+        added:get("LinkComponent")[counterdirection] = corner
+        corner:get("LinkComponent")[direction] = added
+        if corner:get("LinkComponent")[frontlink] then
+            added = added:get("LinkComponent")[frontlink]
+            corner = corner:get("LinkComponent")[frontlink]
         else
             added = false
         end
@@ -155,28 +155,28 @@ function LevelGeneratorSystem:changeCorners(direction)
         table.insert(corners, v)
     end
     for index, entity in pairs(corners) do
-        local corner = entity:getComponent("CornerComponent")
-        entity:getComponent("LinkComponent")[direction]:addComponent(corner)
-        entity:removeComponent("CornerComponent")
+        local corner = entity:get("CornerComponent")
+        entity:get("LinkComponent")[direction]:add(corner)
+        entity:remove("CornerComponent")
     end
 end
 
 function LevelGeneratorSystem:shiftNodes(direction)
     for index, entity in pairs(stack:current().engine:getEntityList("LinkComponent")) do
         if direction == "right" then
-            entity:getComponent("PositionComponent").x = entity:getComponent("PositionComponent").x - stack:current().nodeWidth
+            entity:get("PositionComponent").x = entity:get("PositionComponent").x - stack:current().nodeWidth
         elseif direction == "left" then
-            entity:getComponent("PositionComponent").x = entity:getComponent("PositionComponent").x + stack:current().nodeWidth
+            entity:get("PositionComponent").x = entity:get("PositionComponent").x + stack:current().nodeWidth
         elseif direction == "up" then
-            entity:getComponent("PositionComponent").y = entity:getComponent("PositionComponent").y + stack:current().nodeWidth
+            entity:get("PositionComponent").y = entity:get("PositionComponent").y + stack:current().nodeWidth
         elseif direction == "down" then
-            entity:getComponent("PositionComponent").y = entity:getComponent("PositionComponent").y - stack:current().nodeWidth
+            entity:get("PositionComponent").y = entity:get("PositionComponent").y - stack:current().nodeWidth
         end
     end
     local moveComponent = table.firstElement(stack:current().engine:getEntityList("AnimatedMoveComponent"))
-        :getComponent("AnimatedMoveComponent")
-    moveComponent.targetX = moveComponent.targetNode:getComponent("PositionComponent").x
-    moveComponent.targetY = moveComponent.targetNode:getComponent("PositionComponent").y
+        :get("AnimatedMoveComponent")
+    moveComponent.targetX = moveComponent.targetNode:get("PositionComponent").x
+    moveComponent.targetY = moveComponent.targetNode:get("PositionComponent").y
 end
 
 function LevelGeneratorSystem:removeRow(corner, direction)
@@ -199,11 +199,11 @@ function LevelGeneratorSystem:removeRow(corner, direction)
         backlink = "left"
     end
 
-    local oldcorner = corner:getComponent("LinkComponent")[counterdirection]
+    local oldcorner = corner:get("LinkComponent")[counterdirection]
     while oldcorner do
         stack:current().engine:removeEntity(oldcorner)
-        oldcorner:getComponent("LinkComponent")[direction]:getComponent("LinkComponent")[counterdirection] = nil
-        oldcorner = oldcorner:getComponent("LinkComponent")[frontlink]
+        oldcorner:get("LinkComponent")[direction]:get("LinkComponent")[counterdirection] = nil
+        oldcorner = oldcorner:get("LinkComponent")[frontlink]
     end
 end
 function LevelGeneratorSystem:requires()

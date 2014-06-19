@@ -12,18 +12,18 @@ end
 
 function GridDrawSystem:draw()
 
-    local topleftX = self:getCornerNode("topleft"):getComponent("PositionComponent").x
-    local toprightX = self:getCornerNode("topright"):getComponent("PositionComponent").x
+    local topleftX = self:getCornerNode("topleft"):get("PositionComponent").x
+    local toprightX = self:getCornerNode("topright"):get("PositionComponent").x
 
     local nodeWidth = stack:current().nodeWidth
     -- previous
-    --local nodeWidth = self:getCornerNode("topleft"):getComponent("LinkComponent").right
-        --:getComponent("PositionComponent").x - topleftX
+    --local nodeWidth = self:getCornerNode("topleft"):get("LinkComponent").right
+        --:get("PositionComponent").x - topleftX
 
     local gridWidth = toprightX + nodeWidth - topleftX
 
-    local topleftY = self:getCornerNode("topleft"):getComponent("PositionComponent").y
-    local bottomleftY = self:getCornerNode("bottomleft"):getComponent("PositionComponent").y
+    local topleftY = self:getCornerNode("topleft"):get("PositionComponent").y
+    local bottomleftY = self:getCornerNode("bottomleft"):get("PositionComponent").y
     local gridHeight = bottomleftY + nodeWidth - topleftY
 
     love.graphics.setColor(255,255,255, 100)
@@ -32,22 +32,22 @@ function GridDrawSystem:draw()
     love.graphics.setShader(self.flash)
 
     --draw Vertical Lines
-    local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").right
+    local currentNode = self:getCornerNode("topleft"):get("LinkComponent").right
 
     while currentNode do 
-        local x = currentNode:getComponent("PositionComponent").x
-        local y = currentNode:getComponent("PositionComponent").y
+        local x = currentNode:get("PositionComponent").x
+        local y = currentNode:get("PositionComponent").y
         love.graphics.line(x, y, x, y+gridHeight)
-        currentNode = currentNode:getComponent("LinkComponent").right
+        currentNode = currentNode:get("LinkComponent").right
     end
     --draw Horizontal Lines
-    local currentNode = self:getCornerNode("topleft"):getComponent("LinkComponent").down
+    local currentNode = self:getCornerNode("topleft"):get("LinkComponent").down
 
     while currentNode do 
-        local x = currentNode:getComponent("PositionComponent").x
-        local y = currentNode:getComponent("PositionComponent").y
+        local x = currentNode:get("PositionComponent").x
+        local y = currentNode:get("PositionComponent").y
         love.graphics.line(x, y, x+gridWidth, y)
-        currentNode = currentNode:getComponent("LinkComponent").down
+        currentNode = currentNode:get("LinkComponent").down
     end
 
     love.graphics.setShader()
@@ -64,7 +64,7 @@ end
 
 function GridDrawSystem:getCornerNode(id)
     for index, node in pairs(self.targets) do
-        if node:getComponent("CornerComponent").corner == id then
+        if node:get("CornerComponent").corner == id then
             return node
         end
     end

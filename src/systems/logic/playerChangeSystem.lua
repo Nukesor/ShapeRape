@@ -3,9 +3,9 @@ PlayerChangeSystem = class("PlayerChangeSystem", System)
 function PlayerChangeSystem:playerMoved(event)
     
     local player = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent"))
-    currentShape = player:getComponent("ShapeComponent").shape
+    currentShape = player:get("ShapeComponent").shape
     
-    if player:getComponent("PlayerChangeCountComponent").count > stack:current().size-1 then
+    if player:get("PlayerChangeCountComponent").count > stack:current().size-1 then
         stack:current().shaketimer = 0.4
         stack:current().translate = 10
 
@@ -15,11 +15,11 @@ function PlayerChangeSystem:playerMoved(event)
             stack:current().actionBar = 100 
         end
 
-        player:getComponent("PlayerChangeCountComponent").count = 0
-        player:getComponent("PlayerChangeCountComponent").ulti = player:getComponent("PlayerChangeCountComponent").ulti + 1
-        if player:getComponent("PlayerChangeCountComponent").ulti > 3 then
-            player:addComponent(UltiComponent())
-            player:getComponent("PlayerChangeCountComponent").ulti = 0
+        player:get("PlayerChangeCountComponent").count = 0
+        player:get("PlayerChangeCountComponent").ulti = player:get("PlayerChangeCountComponent").ulti + 1
+        if player:get("PlayerChangeCountComponent").ulti > 3 then
+            player:add(UltiComponent())
+            player:get("PlayerChangeCountComponent").ulti = 0
         end
 
         if  currentShape == "circle" then
@@ -36,21 +36,21 @@ function PlayerChangeSystem:playerMoved(event)
         resources.sounds.plinglo:rewind()
         resources.sounds.plinglo:play()
  
-        player:getComponent("ShapeComponent").shape = nextShape
-        player:getComponent("ParticleComponent").particle:setImage(resources.images[nextShape])
-        player:getComponent("DrawableComponent").image = resources.images[nextShape]
+        player:get("ShapeComponent").shape = nextShape
+        player:get("ParticleComponent").particle:setImage(resources.images[nextShape])
+        player:get("DrawableComponent").image = resources.images[nextShape]
 
-        local position = player:getComponent("PositionComponent")
+        local position = player:get("PositionComponent")
 
         local nodeWidth = stack:current().nodeWidth/2
 
         entity = Entity()
 
-        entity:addComponent(ParticleTimerComponent(0.6, 0.6))
-        entity:addComponent(ParticleComponent(resources.images[nextShape], 400))
-        entity:addComponent(position)
+        entity:add(ParticleTimerComponent(0.6, 0.6))
+        entity:add(ParticleComponent(resources.images[nextShape], 400))
+        entity:add(position)
 
-        local particle = entity:getComponent("ParticleComponent").particle
+        local particle = entity:get("ParticleComponent").particle
         particle:setEmissionRate(400)
         particle:setSpeed(100, 200)
         particle:setSizes(0.05, 0.05)

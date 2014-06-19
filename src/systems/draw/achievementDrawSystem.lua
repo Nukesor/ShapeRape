@@ -2,12 +2,12 @@ AchievementDrawSystem = class("AchievementDrawSystem", System)
 
 function AchievementDrawSystem:draw()
     for index, entity in pairs(self.targets) do
-        local drawable = entity:getComponent("DrawableComponent")
-        local pos = entity:getComponent("PositionComponent")
+        local drawable = entity:get("DrawableComponent")
+        local pos = entity:get("PositionComponent")
 
         local color
-        if entity:getComponent("ColorComponent") then
-            color = entity:getComponent("ColorComponent")
+        if entity:get("ColorComponent") then
+            color = entity:get("ColorComponent")
             love.graphics.setColor(color.r, color.b, color.g,100)
         end
         -- Draws the Picture. If Entity is near to the beginng or the end of the screen, the Entity is drawed on both sides for sideChangeSystem animation.
