@@ -22,8 +22,8 @@ Note: Right now there is only unix support for development.
 
 Arne Beer - [https://github.com/Nukesor](https://github.com/Nukesor)  
 Rafael Epplée - [https://github.com/raffomania](https://github.com/raffomania)  
-Anne-Victoria Meyer - [https://github.com/C-gotoh](https://github.com/C-gotoh)  
-Julian Tobergte - [https://github.com/Anne-Victoria](https://github.com/Anne-Victoria)  
+Julian Tobergte - [https://github.com/C-gotoh](https://github.com/C-gotoh)  
+Anne-Victoria Meyer - [https://github.com/Anne-Victoria](https://github.com/Anne-Victoria)  
 
 Copyright &copy; 2014 Arne Beer, Rafael Epplée, Anne-Victoria Meyer and Julian Tobergte 
 
