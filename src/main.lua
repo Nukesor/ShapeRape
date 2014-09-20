@@ -1,5 +1,5 @@
 -- Main Library
-require("lib/lua-lovetoys/lovetoys/engine")
+require("lib/Lovetoys/src/engine")
 -- Helper
 require("helper/tables")
 require("helper/math")
