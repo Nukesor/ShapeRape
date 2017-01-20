@@ -1,10 +1,10 @@
 PlayerChangeSystem = class("PlayerChangeSystem", System)
 
 function PlayerChangeSystem:playerMoved(event)
-    
+
     local player = table.firstElement(stack:current().engine:getEntityList("PlayerNodeComponent"))
     currentShape = player:get("ShapeComponent").shape
-    
+
     if player:get("PlayerChangeCountComponent").count > stack:current().size-1 then
         stack:current().shaketimer = 0.4
         stack:current().translate = 10
@@ -12,7 +12,7 @@ function PlayerChangeSystem:playerMoved(event)
 
         stack:current().actionBar = stack:current().actionBar + 10
         if stack:current().actionBar > 100 then
-            stack:current().actionBar = 100 
+            stack:current().actionBar = 100
         end
 
         player:get("PlayerChangeCountComponent").count = 0
@@ -35,9 +35,9 @@ function PlayerChangeSystem:playerMoved(event)
         resources.sounds.plinglo:play()
         resources.sounds.plinglo:rewind()
         resources.sounds.plinglo:play()
- 
+
         player:get("ShapeComponent").shape = nextShape
-        player:get("ParticleComponent").particle:setImage(resources.images[nextShape])
+        player:get("ParticleComponent").particle:setTexture(resources.images[nextShape])
         player:get("DrawableComponent").image = resources.images[nextShape]
 
         local position = player:get("PositionComponent")
@@ -69,5 +69,5 @@ function PlayerChangeSystem:playerMoved(event)
         particle:start()
 
         stack:current().engine:addEntity(entity)
-    end  
+    end
 end

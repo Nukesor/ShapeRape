@@ -67,9 +67,9 @@ function GameState:__init(size, noob)
 
     self.bloom = love.graphics.newShader [[
         extern int samples = 6;
-        extern float stepSize = 1.9; 
+        extern float stepSize = 1.9;
         extern vec2 size;
-         
+
         vec4 effect(vec4 color, Image tex, vec2 tc, vec2 sc)
         {
             vec4 source = texture2D(tex, tc);
@@ -164,7 +164,7 @@ function GameState:load()
                     end
                         entity:add(ShapeComponent(shape))
                         entity:add(ColorComponent(255, 255, 0))
-                end 
+                end
             end
         end
     end
@@ -274,8 +274,8 @@ function GameState:update(dt)
 end
 
 function GameState:draw()
-    self.canvas:clear()
     love.graphics.setCanvas(self.canvas)
+    love.graphics.clear()
     -- Screenshake
     if self.shaketimer > 0 then love.graphics.translate(self.shakeX, self.shakeY) end
 
