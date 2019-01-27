@@ -11,7 +11,7 @@ function MenuPointDisplaySystem:update(dt)
 end
 
 function MenuPointDisplaySystem:draw()
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(1, 1, 1, 1)
     local menu = stack:current()
     for index, item in pairs(menu.menupoints) do
         if menu.index == index then

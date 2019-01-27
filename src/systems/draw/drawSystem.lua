@@ -2,7 +2,6 @@ DrawSystem = class("DrawSystem", System)
 
 function DrawSystem:draw()
     local player 
-    --love.graphics.setColor(255, 255, 255, 255)
     local nodeWidth = stack:current().nodeWidth
     local middleoffset = nodeWidth/2
 

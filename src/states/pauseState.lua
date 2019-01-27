@@ -36,7 +36,7 @@ function PauseState:update(dt)
 end
 
 function PauseState:draw()
-    love.graphics.setColor(255, 255, 255, 100)
+    love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.draw(self.screenshot, 0, 0)
     self.engine:draw()
 end

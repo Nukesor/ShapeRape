@@ -76,6 +76,7 @@ end
 
 
 function MenuState:draw()
+    love.graphics.setBackgroundColor(0 , 0, 0)
     self.engine:draw()
 end
 

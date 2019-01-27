@@ -283,7 +283,7 @@ function GameState:draw()
 
     love.graphics.setCanvas()
     love.graphics.clear()
-    love.graphics.setColor(255,255,255,255)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setShader(self.bloom)
     love.graphics.draw(self.canvas)
     love.graphics.setShader()

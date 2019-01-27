@@ -26,7 +26,7 @@ function GridDrawSystem:draw()
     local bottomleftY = self:getCornerNode("bottomleft"):get("PositionComponent").y
     local gridHeight = bottomleftY + nodeWidth - topleftY
 
-    love.graphics.setColor(255,255,255, 100)
+    love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.setLineStyle("rough")
 
     love.graphics.setShader(self.flash)

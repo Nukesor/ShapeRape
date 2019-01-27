@@ -43,7 +43,6 @@ function AchievementState:load()
         local achievementEntity = Entity()
         local targetY = targetY*index +love.graphics.getHeight()*1/10
         local positionComponent = PositionComponent(x, targetY)
-        --love.graphics.setColor(255, 255, 255)
         achievementEntity:add(positionComponent)
         achievementEntity:add(AnimateComponent((0.2*index), positionComponent, {x = targetX, y = targetY}, "inOutQuad"))
         if value == 0 then

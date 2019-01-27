@@ -116,13 +116,13 @@ function PlayerControlSystem:update(dt)
                     if stack:current().actionBar > 100 then stack:current().actionBar = 100 end
         
                     if targetNode:get("ShapeComponent").shape=="circle" then
-                        resources.sounds.pling:rewind()
+                        resources.sounds.pling:seek(0)
                         resources.sounds.pling:play()
                     elseif targetNode:get("ShapeComponent").shape=="square" then
-                        resources.sounds.plinglo:rewind()
+                        resources.sounds.plinglo:seek(0)
                         resources.sounds.plinglo:play()
                     elseif targetNode:get("ShapeComponent").shape=="triangle" then
-                        resources.sounds.plinghi:rewind()
+                        resources.sounds.plinghi:seek(0)
                         resources.sounds.plinghi:play()
                     end
                     local nodeWidth = stack:current().nodeWidth/2

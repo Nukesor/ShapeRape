@@ -29,11 +29,11 @@ function PlayerChangeSystem:playerMoved(event)
         else
             nextShape = "circle"
         end
-        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:seek(0)
         resources.sounds.plinglo:play()
-        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:seek(0)
         resources.sounds.plinglo:play()
-        resources.sounds.plinglo:rewind()
+        resources.sounds.plinglo:seek(0)
         resources.sounds.plinglo:play()
 
         player:get("ShapeComponent").shape = nextShape
